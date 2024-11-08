@@ -2,18 +2,17 @@ package com.sparta.gaeppa.product.dto;
 
 import com.sparta.gaeppa.product.entity.ProductCategory;
 import java.util.List;
-import lombok.Builder;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
 @Getter
-public class StoreProductsResponseDto {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class StoreProductListResponseDto {
     private int totalAmount;
     private List<CategoryResponseDto> details;
 
-    @Builder
-    protected StoreProductsResponseDto(List<ProductCategory> categories) {
+    public StoreProductListResponseDto(List<ProductCategory> categories) {
         this.totalAmount = categories.size();
         this.details = categories.stream().map(CategoryResponseDto::new).toList();
     }

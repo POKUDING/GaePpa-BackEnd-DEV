@@ -1,6 +1,6 @@
 package com.sparta.gaeppa.product.service;
 
-import com.sparta.gaeppa.product.dto.StoreProductsResponseDto;
+import com.sparta.gaeppa.product.dto.StoreProductListResponseDto;
 import com.sparta.gaeppa.product.entity.ProductCategory;
 import com.sparta.gaeppa.product.repository.ProductCategoryRepository;
 import com.sparta.gaeppa.product.repository.ProductRepository;
@@ -18,10 +18,8 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     @Transactional
-    public StoreProductsResponseDto getAllProductsByStoreId(UUID storeId) {
+    public StoreProductListResponseDto getAllProductsByStoreId(UUID storeId) {
         List<ProductCategory> productCategoryList = productCategoryRepository.findAllByStoreId(storeId);
-        return StoreProductsResponseDto.builder()
-                .categories(productCategoryList)
-                .build();
+        return new StoreProductListResponseDto(productCategoryList);
     }
 }
