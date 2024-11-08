@@ -1,4 +1,4 @@
-package com.sparta.ggaeppa.global.exception;
+package com.sparta.gaeppa.global.exception;
 
 public class ServiceException extends DefaultException {
     public ServiceException(ExceptionStatus exceptionStatus) {

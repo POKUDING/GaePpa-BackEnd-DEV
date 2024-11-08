@@ -1,10 +1,10 @@
-package com.sparta.ggaeppa;
+package com.sparta.gaeppa;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class GgaePpaApplicationTests {
+class GaePpaApplicationTests {
 
     @Test
     void contextLoads() {

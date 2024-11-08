@@ -1,4 +1,4 @@
-package com.sparta.ggaeppa.global.util;
+package com.sparta.gaeppa.global.util;
 
 import lombok.Getter;
 

@@ -1,6 +1,6 @@
 spring:
   application:
-    name: GgaePpa
+    name: GaePpa
   jackson:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false
@@ -17,10 +17,10 @@ spring:
     active: none # <develop, production, staging, none> 옵션
     include: oauth2
   datasource:
-#    driver-class-name: org.h2.Driver
-#    url: jdbc:h2:tcp://localhost/~/GgaePpa
-#    username: pu
-#    password:
+    #    driver-class-name: org.h2.Driver
+    #    url: jdbc:h2:tcp://localhost/~/GaePpa
+    #    username: pu
+    #    password:
     # MySQL
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${SPRING_DATASOURCE_URL}

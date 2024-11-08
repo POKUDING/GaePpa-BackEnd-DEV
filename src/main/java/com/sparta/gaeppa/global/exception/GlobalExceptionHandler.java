@@ -1,9 +1,9 @@
-package com.sparta.ggaeppa.global.exception;
+package com.sparta.gaeppa.global.exception;
 
-import static com.sparta.ggaeppa.global.util.ApiResponseUtil.error;
+import static com.sparta.gaeppa.global.util.ApiResponseUtil.error;
 
-import com.sparta.ggaeppa.global.util.ApiResponseUtil.ApiError;
-import com.sparta.ggaeppa.global.util.ApiResponseUtil.ApiResult;
+import com.sparta.gaeppa.global.util.ApiResponseUtil.ApiError;
+import com.sparta.gaeppa.global.util.ApiResponseUtil.ApiResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
