@@ -1,5 +1,15 @@
 package com.sparta.gaeppa.product.controller;
 
+import static com.sparta.gaeppa.global.util.ApiResponseUtil.success;
+
+import com.sparta.gaeppa.global.util.ApiResponseUtil.ApiResult;
+import com.sparta.gaeppa.product.dto.StoreProductsResponseDto;
+import com.sparta.gaeppa.product.service.ProductCategoryService;
+import com.sparta.gaeppa.product.service.ProductService;
+import java.util.UUID;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,11 +21,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/v1/products")
+@RequiredArgsConstructor
 public class ProductController {
 
-    @GetMapping("/")
-    public String getProducts(@RequestParam("storeid") String storeId) {
-        return "Products";
+    private final ProductCategoryService productCategoryService;
+    private final ProductService productService;
+
+
+    @GetMapping()
+    public ResponseEntity<ApiResult<StoreProductsResponseDto>> getProducts(@RequestParam("storeid") UUID storeId) {
+        StoreProductsResponseDto responseDto = productService.getAllProductsByStoreId(storeId);
+        return new ResponseEntity<>(success(responseDto), HttpStatus.OK);
     }
 
     @GetMapping("/{productId}/options")
