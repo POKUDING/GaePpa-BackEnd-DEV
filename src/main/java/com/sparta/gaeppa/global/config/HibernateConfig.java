@@ -1,4 +1,4 @@
-package com.sparta.ggaeppa.global.config;
+package com.sparta.gaeppa.global.config;
 
 import com.fasterxml.jackson.datatype.hibernate6.Hibernate6Module;
 import org.springframework.context.annotation.Bean;
