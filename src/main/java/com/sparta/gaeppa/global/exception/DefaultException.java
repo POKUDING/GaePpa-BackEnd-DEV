@@ -1,4 +1,4 @@
-package com.sparta.ggaeppa.global.exception;
+package com.sparta.gaeppa.global.exception;
 
 import lombok.Getter;
 
