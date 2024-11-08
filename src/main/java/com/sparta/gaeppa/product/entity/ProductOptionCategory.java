@@ -13,7 +13,7 @@ import java.util.UUID;
 public class ProductOptionCategory {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "product_option_category_id")
     private UUID id;
 
