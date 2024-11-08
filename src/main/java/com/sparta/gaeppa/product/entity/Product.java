@@ -3,6 +3,7 @@ package com.sparta.gaeppa.product.entity;
 import com.sparta.gaeppa.global.base.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -12,10 +13,12 @@ import jakarta.persistence.Table;
 import java.util.UUID;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "p_products")
 @Getter
+@NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
 public class Product extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,7 +37,7 @@ public class Product extends BaseEntity {
     @Column(name = "product_hide_status", nullable = false)
     private boolean hideStatus;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_category_id", nullable = false)
     private ProductCategory category;
 
