@@ -3,7 +3,8 @@ package com.sparta.gaeppa.product.controller;
 import static com.sparta.gaeppa.global.util.ApiResponseUtil.success;
 
 import com.sparta.gaeppa.global.util.ApiResponseUtil.ApiResult;
-import com.sparta.gaeppa.product.dto.StoreProductsResponseDto;
+import com.sparta.gaeppa.product.dto.ProductOptionListResponseDto;
+import com.sparta.gaeppa.product.dto.StoreProductListResponseDto;
 import com.sparta.gaeppa.product.service.ProductCategoryService;
 import com.sparta.gaeppa.product.service.ProductService;
 import java.util.UUID;
@@ -29,13 +30,14 @@ public class ProductController {
 
 
     @GetMapping()
-    public ResponseEntity<ApiResult<StoreProductsResponseDto>> getProducts(@RequestParam("storeid") UUID storeId) {
-        StoreProductsResponseDto responseDto = productService.getAllProductsByStoreId(storeId);
+    public ResponseEntity<ApiResult<StoreProductListResponseDto>> getProducts(@RequestParam("storeid") UUID storeId) {
+        StoreProductListResponseDto responseDto = productService.getAllProductsByStoreId(storeId);
         return new ResponseEntity<>(success(responseDto), HttpStatus.OK);
     }
 
     @GetMapping("/{productId}/options")
-    public String getProductOptions(@PathVariable String productId) {
+    public ResponseEntity<ApiResult<ProductOptionListResponseDto>> getProductOptions(@PathVariable UUID productId) {
+        ProductOptionListResponseDto responseDto = productService.getProductOptions(productId);
         return "Product Options";
     }
 

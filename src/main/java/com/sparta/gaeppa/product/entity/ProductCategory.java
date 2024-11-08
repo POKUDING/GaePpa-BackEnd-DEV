@@ -1,5 +1,6 @@
 package com.sparta.gaeppa.product.entity;
 
+import com.sparta.gaeppa.global.base.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "p_product_categories")
 @Getter
 @NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
-public class ProductCategory {
+public class ProductCategory extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
