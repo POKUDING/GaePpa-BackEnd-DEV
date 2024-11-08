@@ -13,11 +13,12 @@ public class StoreProductsResponseDto {
     private List<CategoryResponseDto> details;
 
     @Builder
-    protected StoreProductsResponseDto(int totalAmount, List<ProductCategory> categories) {
-        this.totalAmount = totalAmount;
+    protected StoreProductsResponseDto(List<ProductCategory> categories) {
+        this.totalAmount = categories.size();
         this.details = categories.stream().map(CategoryResponseDto::new).toList();
     }
 
+    @Getter
     private class CategoryResponseDto {
         private String category;
         private List<ProductResponseDto> products;
