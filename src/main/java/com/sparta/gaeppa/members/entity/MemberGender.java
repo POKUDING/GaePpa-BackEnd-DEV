@@ -1,2 +1,5 @@
-package com.sparta.gaeppa.members.entity;public enum MemberGender {
+package com.sparta.gaeppa.members.entity;
+
+public enum MemberGender {
+    MALE, FEMALE, OTHER
 }
