@@ -1,4 +1,4 @@
-package com.sparta.gaeppa.security.authentication;
+package com.sparta.gaeppa.security.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;

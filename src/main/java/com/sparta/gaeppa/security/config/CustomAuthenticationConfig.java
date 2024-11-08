@@ -7,7 +7,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 
 @Configuration
 @Primary
-public class AuthenticationConfig {
+public class CustomAuthenticationConfig {
     @Bean
     public AuthenticationConfiguration authenticationConfig() {
         return new AuthenticationConfiguration();
