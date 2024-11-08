@@ -5,12 +5,11 @@ import com.sparta.gaeppa.product.entity.ProductOptionCategory;
 import com.sparta.gaeppa.product.repository.ProductOptionCategoryRepository;
 import java.util.List;
 import java.util.UUID;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@RequiredArgsConstructor
 public class ProductOptionService {
 
     private final ProductOptionCategoryRepository productOptionCategoryRepository;

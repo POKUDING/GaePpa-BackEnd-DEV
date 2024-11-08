@@ -7,12 +7,11 @@ import com.sparta.gaeppa.product.repository.ProductRepository;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@RequiredArgsConstructor
 public class ProductService {
     private final ProductCategoryRepository productCategoryRepository;
     private final ProductRepository productRepository;

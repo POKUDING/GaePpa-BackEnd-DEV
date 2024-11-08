@@ -44,4 +44,8 @@ public class ProductCategory extends BaseEntity {
         this.name = name;
         this.storeId = storeId;
     }
+
+    public void update(String name) {
+        this.name = name;
+    }
 }

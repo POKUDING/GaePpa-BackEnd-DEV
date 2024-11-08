@@ -13,6 +13,9 @@ public enum ExceptionStatus {
             "Product option category not found"), PRODUCT_OPTION_CATEGORY_ALREADY_EXISTS(HttpStatus.CONFLICT, "P005",
             "Product option category already exists"),
 
+    //ProductCategory
+    PRODUCT_CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "PC001", "상품 카테고리가 존제하지 않습니다."),
+
     //Users
 
     //Orders
@@ -22,6 +25,8 @@ public enum ExceptionStatus {
 
     // ROLE
     ACCESS_DENIED(HttpStatus.FORBIDDEN, "r001", "권한이 없습니다."), //Common
+
+    //Common
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "s001", "서버 에러입니다.");
 
     private final int status;
