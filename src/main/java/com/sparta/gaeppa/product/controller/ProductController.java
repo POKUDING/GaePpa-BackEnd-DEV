@@ -6,6 +6,7 @@ import com.sparta.gaeppa.global.util.ApiResponseUtil.ApiResult;
 import com.sparta.gaeppa.product.dto.ProductOptionListResponseDto;
 import com.sparta.gaeppa.product.dto.StoreProductListResponseDto;
 import com.sparta.gaeppa.product.service.ProductCategoryService;
+import com.sparta.gaeppa.product.service.ProductOptionService;
 import com.sparta.gaeppa.product.service.ProductService;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ public class ProductController {
 
     private final ProductCategoryService productCategoryService;
     private final ProductService productService;
+    private final ProductOptionService productOptionService;
 
 
     @GetMapping()
@@ -37,8 +39,8 @@ public class ProductController {
 
     @GetMapping("/{productId}/options")
     public ResponseEntity<ApiResult<ProductOptionListResponseDto>> getProductOptions(@PathVariable UUID productId) {
-        ProductOptionListResponseDto responseDto = productService.getProductOptions(productId);
-        return "Product Options";
+        ProductOptionListResponseDto responseDto = productOptionService.getProductOptionsByProductId(productId);
+        return new ResponseEntity<>(success(responseDto), HttpStatus.OK);
     }
 
     @GetMapping("/pictures/{pictureId}")
