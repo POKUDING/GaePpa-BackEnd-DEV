@@ -26,6 +26,6 @@ public class OrderOptions extends BaseEntity {
     private String optionName;
 
     @Column(nullable = false, name = "option_price")
-    private String optionPrice;
+    private int optionPrice;
 
 }
