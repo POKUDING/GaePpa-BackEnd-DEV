@@ -1,5 +1,6 @@
 package com.sparta.gaeppa.store.entity;
 
+import com.sparta.gaeppa.global.base.BaseEntity;
 import com.sparta.gaeppa.members.entity.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "p_store")
-public class Store {
+public class Store extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

@@ -1,5 +1,6 @@
 package com.sparta.gaeppa.members.entity;
 
+import com.sparta.gaeppa.global.base.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -21,7 +22,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "p_members", uniqueConstraints = {
         @UniqueConstraint(columnNames = "provider_user_id")
 })
-public class Member {
+public class Member extends BaseEntity {
 
     @Id
     @Column(name = "member_id")

@@ -1,5 +1,6 @@
 package com.sparta.gaeppa.store.entity;
 
+import com.sparta.gaeppa.global.base.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

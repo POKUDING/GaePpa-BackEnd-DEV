@@ -1,5 +1,6 @@
 package com.sparta.gaeppa.profile.entity;
 
+import com.sparta.gaeppa.global.base.BaseEntity;
 import com.sparta.gaeppa.members.entity.Member;
 import com.sparta.gaeppa.members.entity.MemberGender;
 import jakarta.persistence.Column;
@@ -24,7 +25,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "p_profile")
-public class Profile {
+public class Profile extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
