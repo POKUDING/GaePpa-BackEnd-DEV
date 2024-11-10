@@ -6,9 +6,9 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 
 @Configuration
-@Primary
 public class CustomAuthenticationConfig {
     @Bean
+    @Primary
     public AuthenticationConfiguration authenticationConfig() {
         return new AuthenticationConfiguration();
     }
