@@ -14,6 +14,7 @@ import java.util.UUID;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "p_product_categories")
@@ -26,10 +27,11 @@ public class ProductCategory extends BaseEntity {
     @Column(name = "product_category_id")
     private UUID id;
 
-    @Column(name = "product_category_name")
+    @Column(name = "product_category_name", nullable = false)
     private String name;
 
     //TODO: 스토어와 합칠때는 삭제후 주석 코드 사용
+    @Setter
     @Column(name = "store_id")
     private UUID storeId;
 
@@ -43,10 +45,11 @@ public class ProductCategory extends BaseEntity {
     @Builder
     protected ProductCategory(String name, UUID storeId) {
         this.name = name;
-        this.storeId = storeId;
+//        this.storeId = storeId;
     }
 
     public void update(String name) {
         this.name = name;
     }
+
 }
