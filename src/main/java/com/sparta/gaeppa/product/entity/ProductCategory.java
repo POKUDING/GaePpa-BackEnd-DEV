@@ -39,7 +39,7 @@ public class ProductCategory extends BaseEntity {
 //    @JoinColumn(name = "store_id", nullable = false)
 //    private Store store;
 
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "productCategory", fetch = FetchType.LAZY)
     private List<Product> products;
 
     @Builder
