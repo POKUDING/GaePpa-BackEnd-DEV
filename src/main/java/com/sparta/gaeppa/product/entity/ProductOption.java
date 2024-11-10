@@ -25,10 +25,10 @@ public class ProductOption extends BaseEntity {
     @Column(name = "product_option_id")
     private UUID id;
 
-    @Column(name = "product_option_name")
+    @Column(name = "product_option_name", nullable = false)
     private String name;
 
-    @Column(name = "product_option_price")
+    @Column(name = "product_option_price", nullable = false)
     private int price;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -22,17 +22,17 @@ spring:
     #    username: pu
     #    password:
     # MySQL
-    #    driver-class-name: com.mysql.cj.jdbc.Driver
-    #    url: ${SPRING_DATASOURCE_URL}
-    #    username: ${MYSQL_USERNAME}
-    #    password: ${MYSQL_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
     # H2
     #    driver-class-name: org.h2.Driver
     #PostgreSQL
-    driver-class-name: org.postgresql.Driver
-    url: ${SPRING_DATASOURCE_URL}
-    username: ${POSTGRES_USERNAME}
-    password: ${POSTGRES_PASSWORD}
+  #    driver-class-name: org.postgresql.Driver
+  #    url: ${SPRING_DATASOURCE_URL}
+  #    username: ${POSTGRES_USERNAME}
+  #    password: ${POSTGRES_PASSWORD}
   mail:
     username: gokorea1214@naver.com
     password: ${NAVER_PASSWORD}
@@ -50,7 +50,7 @@ spring:
   #  none 기존테이블을 더 이상 건드리지 않음.
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
@@ -92,7 +92,7 @@ logging:
 
 spring.jpa:
   open-in-view: true
-  
+
 server:
   servlet:
     context-path: /api

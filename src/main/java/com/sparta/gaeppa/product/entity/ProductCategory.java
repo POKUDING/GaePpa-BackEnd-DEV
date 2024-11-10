@@ -29,10 +29,11 @@ public class ProductCategory extends BaseEntity {
     @Column(name = "product_category_name")
     private String name;
 
+    //TODO: 스토어와 합칠때는 삭제후 주석 코드 사용
     @Column(name = "store_id")
     private UUID storeId;
 
-//    @ManyToOne
+//    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "store_id", nullable = false)
 //    private Store store;
 

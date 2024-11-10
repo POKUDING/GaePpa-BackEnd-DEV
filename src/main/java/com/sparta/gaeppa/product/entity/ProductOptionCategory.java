@@ -27,10 +27,10 @@ public class ProductOptionCategory extends BaseEntity {
     @Column(name = "product_option_category_id")
     private UUID id;
 
-    @Column(name = "product_option_category_name")
+    @Column(name = "product_option_category_name", nullable = false)
     private String name;
 
-    @Column(name = "product_option_max_limits")
+    @Column(name = "product_option_max_limits", nullable = false)
     private Integer maxLimits;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -39,6 +39,4 @@ public class ProductOptionCategory extends BaseEntity {
 
     @OneToMany(mappedBy = "optionCategory", fetch = FetchType.LAZY)
     private List<ProductOption> options;
-
-    // getters and setters
 }
