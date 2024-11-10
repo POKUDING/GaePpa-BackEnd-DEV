@@ -3,6 +3,8 @@ package com.sparta.gaeppa.product.controller;
 import static com.sparta.gaeppa.global.util.ApiResponseUtil.success;
 
 import com.sparta.gaeppa.global.util.ApiResponseUtil.ApiResult;
+import com.sparta.gaeppa.product.dto.ProductRequestDto;
+import com.sparta.gaeppa.product.dto.ProductResponseDto;
 import com.sparta.gaeppa.product.dto.StoreProductListResponseDto;
 import com.sparta.gaeppa.product.service.ProductService;
 import java.util.UUID;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,29 +28,36 @@ public class ProductController {
 
     private final ProductService productService;
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<ApiResult<StoreProductListResponseDto>> getProducts(@RequestParam("storeid") UUID storeId) {
+
         StoreProductListResponseDto responseDto = productService.getAllProductsByStoreId(storeId);
+
         return new ResponseEntity<>(success(responseDto), HttpStatus.OK);
     }
 
-    @PostMapping("/")
-    public String createProduct() {
-        return "Product Created";
+    @PostMapping
+    public ResponseEntity<ApiResult<ProductResponseDto>> createProduct(@RequestBody ProductRequestDto requestDto) {
+
+        ProductResponseDto productResponseDto = productService.createProduct(requestDto);
+
+        return new ResponseEntity<>(success(productResponseDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{productId}")
-    public String updateProduct(@PathVariable String productId) {
-        return "Product Updated";
-    }
+    public ResponseEntity<ApiResult<String>> updateProduct(@PathVariable UUID productId,
+                                                           @RequestBody ProductRequestDto requestDto) {
 
-    @PutMapping("/{productId}/options")
-    public String updateProductOption(@PathVariable String productId) {
-        return "Product Option Updated";
+        productService.updateProduct(productId, requestDto);
+
+        return new ResponseEntity<>(success("Update Product Success"), HttpStatus.OK);
     }
 
     @DeleteMapping("/{productId}")
-    public String deleteProduct(@PathVariable String productId) {
-        return "Product Deleted";
+    public ResponseEntity<ApiResult<String>> deleteProduct(@PathVariable UUID productId) {
+
+        productService.deleteProduct(productId);
+
+        return new ResponseEntity<>(success("Delete Product Success"), HttpStatus.OK);
     }
 }
