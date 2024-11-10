@@ -29,6 +29,7 @@ public class ProductService {
         return new StoreProductListResponseDto(productCategoryList);
     }
 
+    @Transactional
     public ProductResponseDto createProduct(ProductRequestDto requestDto) {
 
         ProductCategory productCategory = productCategoryRepository.findById(requestDto.getProductCategoryId())
@@ -40,6 +41,7 @@ public class ProductService {
         return new ProductResponseDto(productRepository.save(newProduct));
     }
 
+    @Transactional
     public void updateProduct(UUID productId, ProductRequestDto requestDto) {
 
         Product product = productRepository.findById(productId)
@@ -51,6 +53,7 @@ public class ProductService {
         product.update(requestDto);
     }
 
+    @Transactional
     public void deleteProduct(UUID productId) {
 
         Product product = productRepository.findById(productId)

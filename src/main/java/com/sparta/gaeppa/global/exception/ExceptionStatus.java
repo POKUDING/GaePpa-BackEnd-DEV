@@ -6,16 +6,21 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum ExceptionStatus {
 
-    //Products
-    PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, "P001", "Product not found"), PRODUCT_ALREADY_EXISTS(HttpStatus.CONFLICT,
-            "P002", "Product already exists"), PRODUCT_OPTION_NOT_FOUND(HttpStatus.NOT_FOUND, "P003",
-            "Product option not found"), PRODUCT_OPTION_CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "P004",
-            "Product option category not found"), PRODUCT_OPTION_CATEGORY_ALREADY_EXISTS(HttpStatus.CONFLICT, "P005",
-            "Product option category already exists"),
-
     //ProductCategory
     PRODUCT_CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "PC001", "상품 카테고리가 존제하지 않습니다."),
     PRODUCT_CATEGORY_HAS_PRODUCTS(HttpStatus.BAD_REQUEST, "PC002", "상품 카테고리에 상품이 존재합니다."),
+
+    //Products
+    PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, "P001", "상품이 존재하지 않습니다."),
+    PRODUCT_ALREADY_EXISTS(HttpStatus.CONFLICT, "P002", "상품이 이미 존재합니다."),
+
+    //ProductOptionCategory
+    PRODUCT_OPTION_CATEGORY_HAS_OPTIONS(HttpStatus.BAD_REQUEST, "POC001", "상품 옵션 카테고리에 옵션이 존재합니다."),
+    PRODUCT_OPTION_CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "POC002", "상품 옵션 카테고리가 존재하지 않습니다."),
+    PRODUCT_OPTION_CATEGORY_ALREADY_EXISTS(HttpStatus.CONFLICT, "POC003", "상품 옵션 카테고리가 이미 존재합니다."),
+
+    //ProductOption
+    PRODUCT_OPTION_NOT_FOUND(HttpStatus.NOT_FOUND, "PO001", "상품 옵션이 존재하지 않습니다."),
 
     //Users
 

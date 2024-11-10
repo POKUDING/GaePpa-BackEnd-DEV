@@ -4,6 +4,8 @@ import static com.sparta.gaeppa.global.util.ApiResponseUtil.success;
 
 import com.sparta.gaeppa.global.util.ApiResponseUtil.ApiResult;
 import com.sparta.gaeppa.product.dto.ProductOptionListResponseDto;
+import com.sparta.gaeppa.product.dto.ProductOptionRequestDto;
+import com.sparta.gaeppa.product.dto.ProductOptionResponseDto;
 import com.sparta.gaeppa.product.service.ProductOptionService;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,22 +29,35 @@ public class ProductOptionController {
 
     @GetMapping("/{productId}/options")
     public ResponseEntity<ApiResult<ProductOptionListResponseDto>> getProductOptions(@PathVariable UUID productId) {
+
         ProductOptionListResponseDto responseDto = productOptionService.getProductOptionsByProductId(productId);
+
         return new ResponseEntity<>(success(responseDto), HttpStatus.OK);
     }
 
     @PostMapping("/options")
-    public String createProductOption() {
-        return "Product Option Created";
+    public ResponseEntity<ApiResult<ProductOptionResponseDto>> createProductOption(
+            @RequestBody ProductOptionRequestDto requestDto) {
+
+        ProductOptionResponseDto productOptionResponseDto = productOptionService.createProductOption(requestDto);
+
+        return new ResponseEntity<>(success(productOptionResponseDto), HttpStatus.CREATED);
     }
 
-    @PutMapping("/{productId}/options")
-    public String updateProductOption(@PathVariable String productId) {
-        return "Product Option Updated";
+    @PutMapping("/options/{optionId}")
+    public ResponseEntity<ApiResult<String>> updateProductOption(@PathVariable UUID optionId,
+                                                                 @RequestBody ProductOptionRequestDto requestDto) {
+
+        productOptionService.updateProductOption(optionId, requestDto);
+
+        return new ResponseEntity<>(success("Update Product Option Success"), HttpStatus.OK);
     }
 
     @DeleteMapping("/options/{optionId}")
-    public String deleteProductOption(@PathVariable String optionId) {
-        return "Product Option Deleted";
+    public ResponseEntity<ApiResult<String>> deleteProductOption(@PathVariable UUID optionId) {
+
+        productOptionService.deleteProductOption(optionId);
+
+        return new ResponseEntity<>(success("Delete Product Option Success"), HttpStatus.OK);
     }
 }

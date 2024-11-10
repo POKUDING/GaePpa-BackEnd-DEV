@@ -19,12 +19,13 @@ public class ProductOptionListResponseDto {
 
     @Getter
     private class ProductOptionCategoryResponseDto {
-        private String optionCategory;
-        private List<ProductOptionResponseDto> options;
+        private final String optionCategory;
+        private final List<ProductOptionResponseDto> options;
 
         public ProductOptionCategoryResponseDto(ProductOptionCategory productOptionCategory) {
             this.optionCategory = productOptionCategory.getName();
-            this.options = productOptionCategory.getOptions().stream().map(ProductOptionResponseDto::new).toList();
+            this.options = productOptionCategory.getProductOptions().stream().map(ProductOptionResponseDto::new)
+                    .toList();
         }
     }
 }
