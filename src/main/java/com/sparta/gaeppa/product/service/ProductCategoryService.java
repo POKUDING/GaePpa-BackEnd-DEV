@@ -19,6 +19,7 @@ public class ProductCategoryService {
     private final ProductCategoryRepository productCategoryRepository;
     private final ProductRepository productRepository;
 
+    @Transactional
     public ProductCategoryResponseDto createProductCategory(ProductCategoryRequestDto requestDto) {
 
         ProductCategory newProductCategory = productCategoryRepository.save(requestDto.toEntity());
@@ -40,11 +41,12 @@ public class ProductCategoryService {
         productCategory.update(requestDto.getCategoryName());
     }
 
+    @Transactional
     public void deleteProductCategory(UUID productCategoryId) {
         ProductCategory productCategory = productCategoryRepository.findById(productCategoryId)
                 .orElseThrow(() -> new RepositoryException(ExceptionStatus.PRODUCT_CATEGORY_NOT_FOUND));
 
-        if (!productRepository.existsByCategory(productCategory)) {
+        if (!productRepository.existsByProductCategory(productCategory)) {
             throw new RepositoryException(ExceptionStatus.PRODUCT_CATEGORY_HAS_PRODUCTS);
         }
 
