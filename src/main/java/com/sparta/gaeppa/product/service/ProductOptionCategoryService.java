@@ -2,6 +2,7 @@ package com.sparta.gaeppa.product.service;
 
 import com.sparta.gaeppa.global.exception.ExceptionStatus;
 import com.sparta.gaeppa.global.exception.RepositoryException;
+import com.sparta.gaeppa.product.dto.ProductMapper;
 import com.sparta.gaeppa.product.dto.ProductOptionCategoryRequestDto;
 import com.sparta.gaeppa.product.dto.ProductOptionCategoryResponseDto;
 import com.sparta.gaeppa.product.entity.Product;
@@ -29,7 +30,8 @@ public class ProductOptionCategoryService {
                 .orElseThrow(() -> new RepositoryException(
                         ExceptionStatus.PRODUCT_NOT_FOUND));
 
-        ProductOptionCategory productOptionCategory = requestDto.toEntity();
+        ProductOptionCategory productOptionCategory = ProductMapper.productOptionCategoryRequestDtoToProductOptionCategory(
+                requestDto);
         productOptionCategory.setProduct(product);
 
         return new ProductOptionCategoryResponseDto(productOptionCategoryRepository.save(productOptionCategory));
@@ -42,11 +44,6 @@ public class ProductOptionCategoryService {
                 .orElseThrow(() -> new RepositoryException(
                         ExceptionStatus.PRODUCT_OPTION_CATEGORY_NOT_FOUND));
 
-        Product product = productRepository.findById(requestDto.getProductId())
-                .orElseThrow(() -> new RepositoryException(
-                        ExceptionStatus.PRODUCT_NOT_FOUND));
-
-        productOptionCategory.setProduct(product);
         productOptionCategory.update(requestDto);
     }
 

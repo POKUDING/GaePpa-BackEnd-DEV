@@ -1,6 +1,7 @@
 package com.sparta.gaeppa.product.entity;
 
 import com.sparta.gaeppa.global.base.BaseEntity;
+import com.sparta.gaeppa.store.entity.Store;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -43,12 +44,12 @@ public class ProductCategory extends BaseEntity {
     private List<Product> products;
 
     @Builder
-    protected ProductCategory(String name, UUID storeId) {
+    protected ProductCategory(String name, Store store) {
         this.name = name;
-//        this.storeId = storeId;
+//        this.store = store;
     }
 
-    public void update(String name) {
+    public void updateName(String name) {
         this.name = name;
     }
 

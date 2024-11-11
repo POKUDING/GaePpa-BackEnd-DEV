@@ -1,7 +1,6 @@
 package com.sparta.gaeppa.product.entity;
 
 import com.sparta.gaeppa.global.base.BaseEntity;
-import com.sparta.gaeppa.product.dto.ProductRequestDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -27,6 +26,7 @@ public class Product extends BaseEntity {
     @Column(name = "product_id")
     private UUID id;
 
+    @Setter
     @Column(name = "product_name", nullable = false)
     private String name;
 
@@ -53,9 +53,10 @@ public class Product extends BaseEntity {
         this.productCategory = category;
     }
 
-    public void update(ProductRequestDto requestDto) {
-        this.name = requestDto.getProductName();
-        this.description = requestDto.getProductDescription();
-        this.price = requestDto.getProductPrice();
+    public void update(String name, String description, int price, boolean hideStatus) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.hideStatus = hideStatus;
     }
 }

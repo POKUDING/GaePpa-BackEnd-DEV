@@ -1,5 +1,6 @@
 package com.sparta.gaeppa.product.service;
 
+import com.sparta.gaeppa.product.dto.ProductMapper;
 import com.sparta.gaeppa.product.dto.ProductOptionListResponseDto;
 import com.sparta.gaeppa.product.dto.ProductOptionRequestDto;
 import com.sparta.gaeppa.product.dto.ProductOptionResponseDto;
@@ -36,7 +37,7 @@ public class ProductOptionService {
                         requestDto.getProductOptionCategoryId())
                 .orElseThrow(() -> new IllegalArgumentException("Product Option Category Not Found"));
 
-        ProductOption productOption = requestDto.toEntity();
+        ProductOption productOption = ProductMapper.ProductOptionRequestDtoToProductOption(requestDto);
 
         productOption.setProductOptionCategory(productOptionCategory);
 
