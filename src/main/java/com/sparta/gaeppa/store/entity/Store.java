@@ -11,7 +11,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.UUID;
@@ -48,8 +51,9 @@ public class Store extends BaseEntity {
     private String storeAddress;
 
     @Column(nullable = false)
-    @Min(10L)
-    @Max(11L)
+//    @Min(10L)
+//    @Max(11L)
+    @Size(min = 10, max = 11, message = "전화번호는 10자 이상 11자 이하이어야 합니다.")
     private String storeTelephone;
 
     @Column(nullable = true)
