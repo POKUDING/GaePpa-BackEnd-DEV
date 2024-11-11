@@ -2,8 +2,8 @@ package com.sparta.gaeppa.product.service;
 
 import com.sparta.gaeppa.global.exception.ExceptionStatus;
 import com.sparta.gaeppa.global.exception.ServiceException;
-import com.sparta.gaeppa.product.dto.ProductCategoryRequestDto;
-import com.sparta.gaeppa.product.dto.ProductCategoryResponseDto;
+import com.sparta.gaeppa.product.dto.productCategory.ProductCategoryRequestDto;
+import com.sparta.gaeppa.product.dto.productCategory.ProductCategoryResponseDto;
 import com.sparta.gaeppa.product.entity.ProductCategory;
 import com.sparta.gaeppa.product.repository.ProductCategoryRepository;
 import com.sparta.gaeppa.product.repository.ProductRepository;
@@ -48,7 +48,7 @@ public class ProductCategoryService {
         ProductCategory productCategory = productCategoryRepository.findById(productCategoryId)
                 .orElseThrow(() -> new ServiceException(ExceptionStatus.PRODUCT_CATEGORY_NOT_FOUND));
 
-        if (!productRepository.existsByProductCategory(productCategory)) {
+        if (productRepository.existsByProductCategory(productCategory)) {
             throw new ServiceException(ExceptionStatus.PRODUCT_CATEGORY_HAS_PRODUCTS);
         }
 

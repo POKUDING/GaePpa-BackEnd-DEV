@@ -3,9 +3,9 @@ package com.sparta.gaeppa.product.controller;
 import static com.sparta.gaeppa.global.util.ApiResponseUtil.success;
 
 import com.sparta.gaeppa.global.util.ApiResponseUtil.ApiResult;
-import com.sparta.gaeppa.product.dto.ProductRequestDto;
-import com.sparta.gaeppa.product.dto.ProductResponseDto;
-import com.sparta.gaeppa.product.dto.StoreProductListResponseDto;
+import com.sparta.gaeppa.product.dto.product.ProductRequestDto;
+import com.sparta.gaeppa.product.dto.product.ProductResponseDto;
+import com.sparta.gaeppa.product.dto.product.StoreProductListResponseDto;
 import com.sparta.gaeppa.product.service.ProductService;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/v1/products")
+@RequestMapping("/v1/product-categories/products")
 @RequiredArgsConstructor
 public class ProductController {
 
@@ -58,6 +58,6 @@ public class ProductController {
 
         productService.deleteProduct(productId);
 
-        return new ResponseEntity<>(success("Delete Product Success"), HttpStatus.OK);
+        return new ResponseEntity<>(success("Delete Product Success"), HttpStatus.NO_CONTENT);
     }
 }

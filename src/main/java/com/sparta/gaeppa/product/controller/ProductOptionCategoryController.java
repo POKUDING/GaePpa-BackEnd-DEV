@@ -3,8 +3,9 @@ package com.sparta.gaeppa.product.controller;
 import static com.sparta.gaeppa.global.util.ApiResponseUtil.success;
 
 import com.sparta.gaeppa.global.util.ApiResponseUtil.ApiResult;
-import com.sparta.gaeppa.product.dto.ProductOptionCategoryRequestDto;
-import com.sparta.gaeppa.product.dto.ProductOptionCategoryResponseDto;
+import com.sparta.gaeppa.product.dto.productOptionCategory.ProductOptionCategoryPutRequestDto;
+import com.sparta.gaeppa.product.dto.productOptionCategory.ProductOptionCategoryRequestDto;
+import com.sparta.gaeppa.product.dto.productOptionCategory.ProductOptionCategoryResponseDto;
 import com.sparta.gaeppa.product.service.ProductOptionCategoryService;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/v1/products/option-categories")
+@RequestMapping("/v1/product-categories/products/option-categories")
 @RequiredArgsConstructor
 public class ProductOptionCategoryController {
 
@@ -37,7 +38,7 @@ public class ProductOptionCategoryController {
 
     @PutMapping("/{optionCategoryId}")
     public ResponseEntity<ApiResult<String>> updateProductOptionCategory(@PathVariable UUID optionCategoryId,
-                                                                         @RequestBody ProductOptionCategoryRequestDto requestDto) {
+                                                                         @RequestBody ProductOptionCategoryPutRequestDto requestDto) {
 
         productOptionCategoryService.updateProductOptionCategory(optionCategoryId, requestDto);
 
@@ -49,6 +50,6 @@ public class ProductOptionCategoryController {
 
         productOptionCategoryService.deleteProductOptionCategory(optionCategoryId);
 
-        return new ResponseEntity<>(success("Delete Product Option Category Success"), HttpStatus.OK);
+        return new ResponseEntity<>(success("Delete Product Option Category Success"), HttpStatus.NO_CONTENT);
     }
 }

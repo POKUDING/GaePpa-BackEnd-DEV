@@ -1,7 +1,6 @@
 package com.sparta.gaeppa.product.entity;
 
 import com.sparta.gaeppa.global.base.BaseEntity;
-import com.sparta.gaeppa.product.dto.ProductOptionCategoryRequestDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -50,8 +49,8 @@ public class ProductOptionCategory extends BaseEntity {
         this.maxLimits = maxLimits;
     }
 
-    public void update(ProductOptionCategoryRequestDto requestDto) {
-        this.name = requestDto.getProductOptionCategoryName();
-        this.maxLimits = requestDto.getMaxLimits();
+    public void update(String name, int maxLimits) {
+        this.name = name;
+        this.maxLimits = maxLimits;
     }
 }

@@ -1,4 +1,4 @@
-package com.sparta.gaeppa.product.dto;
+package com.sparta.gaeppa.product.dto.productCategory;
 
 import com.sparta.gaeppa.product.entity.ProductCategory;
 import jakarta.validation.constraints.NotBlank;

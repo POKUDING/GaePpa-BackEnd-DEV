@@ -1,7 +1,7 @@
 package com.sparta.gaeppa.product.entity;
 
 import com.sparta.gaeppa.global.base.BaseEntity;
-import com.sparta.gaeppa.product.dto.ProductOptionRequestDto;
+import com.sparta.gaeppa.product.dto.productOption.ProductOptionRequestDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

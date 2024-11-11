@@ -3,9 +3,9 @@ package com.sparta.gaeppa.product.controller;
 import static com.sparta.gaeppa.global.util.ApiResponseUtil.success;
 
 import com.sparta.gaeppa.global.util.ApiResponseUtil.ApiResult;
-import com.sparta.gaeppa.product.dto.ProductOptionListResponseDto;
-import com.sparta.gaeppa.product.dto.ProductOptionRequestDto;
-import com.sparta.gaeppa.product.dto.ProductOptionResponseDto;
+import com.sparta.gaeppa.product.dto.productOption.ProductOptionListResponseDto;
+import com.sparta.gaeppa.product.dto.productOption.ProductOptionRequestDto;
+import com.sparta.gaeppa.product.dto.productOption.ProductOptionResponseDto;
 import com.sparta.gaeppa.product.service.ProductOptionService;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/v1/products")
+@RequestMapping("/v1/product-categories/products")
 @RequiredArgsConstructor
 public class ProductOptionController {
 
@@ -58,6 +58,6 @@ public class ProductOptionController {
 
         productOptionService.deleteProductOption(optionId);
 
-        return new ResponseEntity<>(success("Delete Product Option Success"), HttpStatus.OK);
+        return new ResponseEntity<>(success("Delete Product Option Success"), HttpStatus.NO_CONTENT);
     }
 }

@@ -2,8 +2,9 @@ package com.sparta.gaeppa.product.service;
 
 import com.sparta.gaeppa.global.exception.ExceptionStatus;
 import com.sparta.gaeppa.global.exception.ServiceException;
-import com.sparta.gaeppa.product.dto.ProductOptionCategoryRequestDto;
-import com.sparta.gaeppa.product.dto.ProductOptionCategoryResponseDto;
+import com.sparta.gaeppa.product.dto.productOptionCategory.ProductOptionCategoryPutRequestDto;
+import com.sparta.gaeppa.product.dto.productOptionCategory.ProductOptionCategoryRequestDto;
+import com.sparta.gaeppa.product.dto.productOptionCategory.ProductOptionCategoryResponseDto;
 import com.sparta.gaeppa.product.entity.Product;
 import com.sparta.gaeppa.product.entity.ProductOptionCategory;
 import com.sparta.gaeppa.product.repository.ProductOptionCategoryRepository;
@@ -36,13 +37,13 @@ public class ProductOptionCategoryService {
     }
 
     @Transactional
-    public void updateProductOptionCategory(UUID optionCategoryId, ProductOptionCategoryRequestDto requestDto) {
+    public void updateProductOptionCategory(UUID optionCategoryId, ProductOptionCategoryPutRequestDto requestDto) {
 
         ProductOptionCategory productOptionCategory = productOptionCategoryRepository.findById(optionCategoryId)
                 .orElseThrow(() -> new ServiceException(
                         ExceptionStatus.PRODUCT_OPTION_CATEGORY_NOT_FOUND));
 
-        productOptionCategory.update(requestDto);
+        productOptionCategory.update(requestDto.getProductOptionCategoryName(), requestDto.getMaxLimits());
     }
 
     @Transactional

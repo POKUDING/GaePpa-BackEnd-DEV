@@ -2,9 +2,9 @@ package com.sparta.gaeppa.product.service;
 
 import com.sparta.gaeppa.global.exception.ExceptionStatus;
 import com.sparta.gaeppa.global.exception.ServiceException;
-import com.sparta.gaeppa.product.dto.ProductRequestDto;
-import com.sparta.gaeppa.product.dto.ProductResponseDto;
-import com.sparta.gaeppa.product.dto.StoreProductListResponseDto;
+import com.sparta.gaeppa.product.dto.product.ProductRequestDto;
+import com.sparta.gaeppa.product.dto.product.ProductResponseDto;
+import com.sparta.gaeppa.product.dto.product.StoreProductListResponseDto;
 import com.sparta.gaeppa.product.entity.Product;
 import com.sparta.gaeppa.product.entity.ProductCategory;
 import com.sparta.gaeppa.product.repository.ProductCategoryRepository;
@@ -24,6 +24,7 @@ public class ProductService {
     @Transactional
     public StoreProductListResponseDto getAllProductsByStoreId(UUID storeId) {
 
+        storeId = null;
         List<ProductCategory> productCategoryList = productCategoryRepository.findAllByStore_StoreId(storeId);
 
         if (productCategoryList.isEmpty()) {

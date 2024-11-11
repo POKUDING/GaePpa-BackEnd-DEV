@@ -10,7 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sparta.gaeppa.product.dto.ProductCategoryRequestDto;
+import com.sparta.gaeppa.product.dto.productCategory.ProductCategoryRequestDto;
 import com.sparta.gaeppa.product.service.ProductCategoryService;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;

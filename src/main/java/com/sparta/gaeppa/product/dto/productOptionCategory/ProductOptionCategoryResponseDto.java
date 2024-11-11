@@ -1,4 +1,4 @@
-package com.sparta.gaeppa.product.dto;
+package com.sparta.gaeppa.product.dto.productOptionCategory;
 
 import com.sparta.gaeppa.product.entity.ProductOptionCategory;
 import java.util.UUID;

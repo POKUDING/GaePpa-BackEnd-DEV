@@ -2,9 +2,9 @@ package com.sparta.gaeppa.product.service;
 
 import com.sparta.gaeppa.global.exception.ExceptionStatus;
 import com.sparta.gaeppa.global.exception.ServiceException;
-import com.sparta.gaeppa.product.dto.ProductOptionListResponseDto;
-import com.sparta.gaeppa.product.dto.ProductOptionRequestDto;
-import com.sparta.gaeppa.product.dto.ProductOptionResponseDto;
+import com.sparta.gaeppa.product.dto.productOption.ProductOptionListResponseDto;
+import com.sparta.gaeppa.product.dto.productOption.ProductOptionRequestDto;
+import com.sparta.gaeppa.product.dto.productOption.ProductOptionResponseDto;
 import com.sparta.gaeppa.product.entity.ProductOption;
 import com.sparta.gaeppa.product.entity.ProductOptionCategory;
 import com.sparta.gaeppa.product.repository.ProductOptionCategoryRepository;

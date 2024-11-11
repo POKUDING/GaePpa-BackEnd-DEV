@@ -35,7 +35,8 @@ public class ProductCategory extends BaseEntity {
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "store_id", nullable = false)
+//    @JoinColumn(name = "store_id", nullable = false)
+    @JoinColumn(name = "store_id", nullable = true)
     private Store store;
 
     @OneToMany(mappedBy = "productCategory", fetch = FetchType.LAZY)

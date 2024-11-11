@@ -3,8 +3,8 @@ package com.sparta.gaeppa.product.controller;
 import static com.sparta.gaeppa.global.util.ApiResponseUtil.success;
 
 import com.sparta.gaeppa.global.util.ApiResponseUtil.ApiResult;
-import com.sparta.gaeppa.product.dto.ProductCategoryRequestDto;
-import com.sparta.gaeppa.product.dto.ProductCategoryResponseDto;
+import com.sparta.gaeppa.product.dto.productCategory.ProductCategoryRequestDto;
+import com.sparta.gaeppa.product.dto.productCategory.ProductCategoryResponseDto;
 import com.sparta.gaeppa.product.service.ProductCategoryService;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class ProductCategoryController {
 
     private final ProductCategoryService productCategoryService;
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<ApiResult<ProductCategoryResponseDto>> createProductCategory(
             @RequestBody ProductCategoryRequestDto requestDto) {
 
@@ -51,6 +51,6 @@ public class ProductCategoryController {
 
         productCategoryService.deleteProductCategory(productCategoryId);
 
-        return new ResponseEntity<>(success("Product Category Deleted"), HttpStatus.OK);
+        return new ResponseEntity<>(success("Product Category Deleted"), HttpStatus.NO_CONTENT);
     }
 }
