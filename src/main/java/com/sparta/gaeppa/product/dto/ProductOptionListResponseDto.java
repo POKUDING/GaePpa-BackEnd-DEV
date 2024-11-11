@@ -3,6 +3,7 @@ package com.sparta.gaeppa.product.dto;
 import com.sparta.gaeppa.product.entity.ProductOptionCategory;
 import java.util.List;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,20 +13,37 @@ public class ProductOptionListResponseDto {
     private int optionCategoryAmount;
     private List<ProductOptionCategoryResponseDto> options;
 
-    public ProductOptionListResponseDto(List<ProductOptionCategory> productOptionCategories) {
-        this.optionCategoryAmount = productOptionCategories.size();
-        this.options = productOptionCategories.stream().map(ProductOptionCategoryResponseDto::new).toList();
+    @Builder
+    private ProductOptionListResponseDto(int optionCategoryAmount, List<ProductOptionCategoryResponseDto> options) {
+        this.optionCategoryAmount = optionCategoryAmount;
+        this.options = options;
+    }
+
+    public static ProductOptionListResponseDto from(List<ProductOptionCategory> productOptionCategories) {
+        return ProductOptionListResponseDto.builder()
+                .optionCategoryAmount(productOptionCategories.size())
+                .options(productOptionCategories.stream().map(ProductOptionCategoryResponseDto::from).toList())
+                .build();
     }
 
     @Getter
-    private class ProductOptionCategoryResponseDto {
+    private static class ProductOptionCategoryResponseDto {
         private final String optionCategory;
         private final List<ProductOptionResponseDto> options;
 
-        public ProductOptionCategoryResponseDto(ProductOptionCategory productOptionCategory) {
-            this.optionCategory = productOptionCategory.getName();
-            this.options = productOptionCategory.getProductOptions().stream().map(ProductOptionResponseDto::new)
-                    .toList();
+        @Builder
+        private ProductOptionCategoryResponseDto(String optionCategory, List<ProductOptionResponseDto> productOptions) {
+            this.optionCategory = optionCategory;
+            this.options = productOptions;
+        }
+
+        public static ProductOptionCategoryResponseDto from(ProductOptionCategory productOptionCategory) {
+            return ProductOptionCategoryResponseDto.builder()
+                    .optionCategory(productOptionCategory.getName())
+                    .productOptions(
+                            productOptionCategory.getProductOptions().stream().map(ProductOptionResponseDto::from)
+                                    .toList())
+                    .build();
         }
     }
 }

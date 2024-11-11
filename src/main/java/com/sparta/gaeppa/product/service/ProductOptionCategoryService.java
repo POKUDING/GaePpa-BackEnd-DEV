@@ -1,8 +1,7 @@
 package com.sparta.gaeppa.product.service;
 
 import com.sparta.gaeppa.global.exception.ExceptionStatus;
-import com.sparta.gaeppa.global.exception.RepositoryException;
-import com.sparta.gaeppa.product.dto.ProductMapper;
+import com.sparta.gaeppa.global.exception.ServiceException;
 import com.sparta.gaeppa.product.dto.ProductOptionCategoryRequestDto;
 import com.sparta.gaeppa.product.dto.ProductOptionCategoryResponseDto;
 import com.sparta.gaeppa.product.entity.Product;
@@ -27,21 +26,20 @@ public class ProductOptionCategoryService {
     public ProductOptionCategoryResponseDto createProductOptionCategory(ProductOptionCategoryRequestDto requestDto) {
 
         Product product = productRepository.findById(requestDto.getProductId())
-                .orElseThrow(() -> new RepositoryException(
+                .orElseThrow(() -> new ServiceException(
                         ExceptionStatus.PRODUCT_NOT_FOUND));
 
-        ProductOptionCategory productOptionCategory = ProductMapper.productOptionCategoryRequestDtoToProductOptionCategory(
-                requestDto);
+        ProductOptionCategory productOptionCategory = requestDto.toEntity();
         productOptionCategory.setProduct(product);
 
-        return new ProductOptionCategoryResponseDto(productOptionCategoryRepository.save(productOptionCategory));
+        return ProductOptionCategoryResponseDto.from(productOptionCategoryRepository.save(productOptionCategory));
     }
 
     @Transactional
     public void updateProductOptionCategory(UUID optionCategoryId, ProductOptionCategoryRequestDto requestDto) {
 
         ProductOptionCategory productOptionCategory = productOptionCategoryRepository.findById(optionCategoryId)
-                .orElseThrow(() -> new RepositoryException(
+                .orElseThrow(() -> new ServiceException(
                         ExceptionStatus.PRODUCT_OPTION_CATEGORY_NOT_FOUND));
 
         productOptionCategory.update(requestDto);
@@ -51,11 +49,11 @@ public class ProductOptionCategoryService {
     public void deleteProductOptionCategory(UUID optionCategoryId) {
 
         ProductOptionCategory productOptionCategory = productOptionCategoryRepository.findById(optionCategoryId)
-                .orElseThrow(() -> new RepositoryException(
+                .orElseThrow(() -> new ServiceException(
                         ExceptionStatus.PRODUCT_OPTION_CATEGORY_NOT_FOUND));
 
         if (!productOptionRepository.existsByProductOptionCategory(productOptionCategory)) {
-            throw new RepositoryException(ExceptionStatus.PRODUCT_OPTION_CATEGORY_HAS_OPTIONS);
+            throw new ServiceException(ExceptionStatus.PRODUCT_OPTION_CATEGORY_HAS_OPTIONS);
         }
 
         productOptionCategoryRepository.delete(productOptionCategory);

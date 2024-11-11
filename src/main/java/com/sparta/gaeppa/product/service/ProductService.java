@@ -1,8 +1,7 @@
 package com.sparta.gaeppa.product.service;
 
 import com.sparta.gaeppa.global.exception.ExceptionStatus;
-import com.sparta.gaeppa.global.exception.RepositoryException;
-import com.sparta.gaeppa.product.dto.ProductMapper;
+import com.sparta.gaeppa.global.exception.ServiceException;
 import com.sparta.gaeppa.product.dto.ProductRequestDto;
 import com.sparta.gaeppa.product.dto.ProductResponseDto;
 import com.sparta.gaeppa.product.dto.StoreProductListResponseDto;
@@ -25,7 +24,11 @@ public class ProductService {
     @Transactional
     public StoreProductListResponseDto getAllProductsByStoreId(UUID storeId) {
 
-        List<ProductCategory> productCategoryList = productCategoryRepository.findAllByStoreId(storeId);
+        List<ProductCategory> productCategoryList = productCategoryRepository.findAllByStore_StoreId(storeId);
+
+        if (productCategoryList.isEmpty()) {
+            throw new ServiceException(ExceptionStatus.PRODUCT_CATEGORY_NOT_FOUND);
+        }
 
         return new StoreProductListResponseDto(productCategoryList);
     }
@@ -34,22 +37,22 @@ public class ProductService {
     public ProductResponseDto createProduct(ProductRequestDto requestDto) {
 
         ProductCategory productCategory = productCategoryRepository.findById(requestDto.getProductCategoryId())
-                .orElseThrow(() -> new RepositoryException(ExceptionStatus.PRODUCT_CATEGORY_NOT_FOUND));
+                .orElseThrow(() -> new ServiceException(ExceptionStatus.PRODUCT_CATEGORY_NOT_FOUND));
 
-        Product newProduct = ProductMapper.ProductRequestDtoToProduct(requestDto);
+        Product newProduct = requestDto.toEntity();
         newProduct.setProductCategory(productCategory);
 
-        return new ProductResponseDto(productRepository.save(newProduct));
+        return ProductResponseDto.from(productRepository.save(newProduct));
     }
 
     @Transactional
     public void updateProduct(UUID productId, ProductRequestDto requestDto) {
 
         Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new RepositoryException(ExceptionStatus.PRODUCT_NOT_FOUND));
+                .orElseThrow(() -> new ServiceException(ExceptionStatus.PRODUCT_NOT_FOUND));
 
         ProductCategory productCategory = productCategoryRepository.findById(requestDto.getProductCategoryId())
-                .orElseThrow(() -> new RepositoryException(ExceptionStatus.PRODUCT_CATEGORY_NOT_FOUND));
+                .orElseThrow(() -> new ServiceException(ExceptionStatus.PRODUCT_CATEGORY_NOT_FOUND));
 
         product.setProductCategory(productCategory);
         product.update(requestDto.getProductName(), requestDto.getProductDescription(), requestDto.getProductPrice(),
@@ -60,7 +63,7 @@ public class ProductService {
     public void deleteProduct(UUID productId) {
 
         Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new RepositoryException(ExceptionStatus.PRODUCT_NOT_FOUND));
+                .orElseThrow(() -> new ServiceException(ExceptionStatus.PRODUCT_NOT_FOUND));
 
         productRepository.delete(product);
     }

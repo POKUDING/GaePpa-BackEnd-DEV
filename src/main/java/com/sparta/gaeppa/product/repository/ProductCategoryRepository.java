@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProductCategoryRepository extends JpaRepository<ProductCategory, UUID> {
-    List<ProductCategory> findAllByStoreId(UUID storeId);
+    List<ProductCategory> findAllByStore_StoreId(UUID storeId);
 }

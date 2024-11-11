@@ -3,6 +3,7 @@ package com.sparta.gaeppa.product.dto;
 import com.sparta.gaeppa.product.entity.ProductOption;
 import java.util.UUID;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,9 +14,18 @@ public class ProductOptionResponseDto {
     private String optionName;
     private int optionPrice;
 
-    public ProductOptionResponseDto(ProductOption productOption) {
-        this.productOptionId = productOption.getId();
-        this.optionName = productOption.getName();
-        this.optionPrice = productOption.getPrice();
+    @Builder
+    private ProductOptionResponseDto(UUID productOptionId, String optionName, int optionPrice) {
+        this.productOptionId = productOptionId;
+        this.optionName = optionName;
+        this.optionPrice = optionPrice;
+    }
+
+    public static ProductOptionResponseDto from(ProductOption productOption) {
+        return ProductOptionResponseDto.builder()
+                .productOptionId(productOption.getId())
+                .optionName(productOption.getName())
+                .optionPrice(productOption.getPrice())
+                .build();
     }
 }

@@ -3,6 +3,7 @@ package com.sparta.gaeppa.product.dto;
 import com.sparta.gaeppa.product.entity.ProductOptionCategory;
 import java.util.UUID;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,9 +14,19 @@ public class ProductOptionCategoryResponseDto {
     private String productOptionCategoryName;
     private int maxLimits;
 
-    public ProductOptionCategoryResponseDto(ProductOptionCategory productOptionCategory) {
-        this.productOptionCategoryId = productOptionCategory.getId();
-        this.productOptionCategoryName = productOptionCategory.getName();
-        this.maxLimits = productOptionCategory.getMaxLimits();
+    @Builder
+    private ProductOptionCategoryResponseDto(UUID productOptionCategoryId, String productOptionCategoryName,
+                                             int maxLimits) {
+        this.productOptionCategoryId = productOptionCategoryId;
+        this.productOptionCategoryName = productOptionCategoryName;
+        this.maxLimits = maxLimits;
+    }
+
+    public static ProductOptionCategoryResponseDto from(ProductOptionCategory productOptionCategory) {
+        return ProductOptionCategoryResponseDto.builder()
+                .productOptionCategoryId(productOptionCategory.getId())
+                .productOptionCategoryName(productOptionCategory.getName())
+                .maxLimits(productOptionCategory.getMaxLimits())
+                .build();
     }
 }

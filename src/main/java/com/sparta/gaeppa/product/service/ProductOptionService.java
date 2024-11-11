@@ -1,6 +1,7 @@
 package com.sparta.gaeppa.product.service;
 
-import com.sparta.gaeppa.product.dto.ProductMapper;
+import com.sparta.gaeppa.global.exception.ExceptionStatus;
+import com.sparta.gaeppa.global.exception.ServiceException;
 import com.sparta.gaeppa.product.dto.ProductOptionListResponseDto;
 import com.sparta.gaeppa.product.dto.ProductOptionRequestDto;
 import com.sparta.gaeppa.product.dto.ProductOptionResponseDto;
@@ -27,7 +28,7 @@ public class ProductOptionService {
         List<ProductOptionCategory> productOptionCategoryList = productOptionCategoryRepository.findAllByProductId(
                 productId);
 
-        return new ProductOptionListResponseDto(productOptionCategoryList);
+        return ProductOptionListResponseDto.from(productOptionCategoryList);
     }
 
     @Transactional
@@ -35,24 +36,24 @@ public class ProductOptionService {
 
         ProductOptionCategory productOptionCategory = productOptionCategoryRepository.findById(
                         requestDto.getProductOptionCategoryId())
-                .orElseThrow(() -> new IllegalArgumentException("Product Option Category Not Found"));
+                .orElseThrow(() -> new ServiceException(ExceptionStatus.PRODUCT_OPTION_CATEGORY_NOT_FOUND));
 
-        ProductOption productOption = ProductMapper.ProductOptionRequestDtoToProductOption(requestDto);
+        ProductOption productOption = requestDto.toEntity();
 
         productOption.setProductOptionCategory(productOptionCategory);
 
-        return new ProductOptionResponseDto(productOptionRepository.save(productOption));
+        return ProductOptionResponseDto.from(productOptionRepository.save(productOption));
     }
 
     @Transactional
     public void updateProductOption(UUID optionId, ProductOptionRequestDto requestDto) {
 
         ProductOption productOption = productOptionRepository.findById(optionId)
-                .orElseThrow(() -> new IllegalArgumentException("Product Option Not Found"));
+                .orElseThrow(() -> new ServiceException(ExceptionStatus.PRODUCT_OPTION_NOT_FOUND));
 
         ProductOptionCategory productOptionCategory = productOptionCategoryRepository.findById(
                         requestDto.getProductOptionCategoryId())
-                .orElseThrow(() -> new IllegalArgumentException("Product Option Category Not Found"));
+                .orElseThrow(() -> new ServiceException(ExceptionStatus.PRODUCT_OPTION_CATEGORY_NOT_FOUND));
 
         productOption.setProductOptionCategory(productOptionCategory);
 
@@ -63,7 +64,7 @@ public class ProductOptionService {
     public void deleteProductOption(UUID optionId) {
 
         ProductOption productOption = productOptionRepository.findById(optionId)
-                .orElseThrow(() -> new IllegalArgumentException("Product Option Not Found"));
+                .orElseThrow(() -> new ServiceException(ExceptionStatus.PRODUCT_OPTION_NOT_FOUND));
 
         productOptionRepository.delete(productOption);
     }

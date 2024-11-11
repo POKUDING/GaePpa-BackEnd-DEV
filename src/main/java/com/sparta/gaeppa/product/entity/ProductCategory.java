@@ -8,6 +8,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.List;
@@ -31,14 +33,10 @@ public class ProductCategory extends BaseEntity {
     @Column(name = "product_category_name", nullable = false)
     private String name;
 
-    //TODO: 스토어와 합칠때는 삭제후 주석 코드 사용
     @Setter
-    @Column(name = "store_id")
-    private UUID storeId;
-
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "store_id", nullable = false)
-//    private Store store;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "store_id", nullable = false)
+    private Store store;
 
     @OneToMany(mappedBy = "productCategory", fetch = FetchType.LAZY)
     private List<Product> products;
@@ -46,7 +44,7 @@ public class ProductCategory extends BaseEntity {
     @Builder
     protected ProductCategory(String name, Store store) {
         this.name = name;
-//        this.store = store;
+        this.store = store;
     }
 
     public void updateName(String name) {
