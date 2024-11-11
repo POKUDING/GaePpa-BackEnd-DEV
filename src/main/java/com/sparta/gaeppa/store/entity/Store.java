@@ -29,7 +29,7 @@ import lombok.NoArgsConstructor;
 public class Store extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "store_id")
     private UUID storeId;
 
@@ -48,7 +48,6 @@ public class Store extends BaseEntity {
     private String storeAddress;
 
     @Column(nullable = false)
-//    @Size(min = 10, max = 11, message = "전화번호는 10자 이상 11자 이하이어야 합니다.")
     private String storeTelephone;
 
     @Column(nullable = true)
@@ -57,14 +56,10 @@ public class Store extends BaseEntity {
     @Column(nullable = false)
     private boolean icActive = true;
 
-    private BigDecimal reviewAvg = BigDecimal.valueOf(0.0);
+    private BigDecimal reviewAvg;
 
     private int reviewCount = 0;
 
     private String businessTime;
 
-    // 소수점 1자리까지 반올림하는 메서드
-    public void setReviewAvg(double reviewAvg) {
-        this.reviewAvg = BigDecimal.valueOf(reviewAvg).setScale(1, RoundingMode.HALF_UP);
-    }
 }
