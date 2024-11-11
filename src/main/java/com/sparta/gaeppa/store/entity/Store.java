@@ -11,14 +11,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.UUID;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -62,4 +58,12 @@ public class Store extends BaseEntity {
 
     private String businessTime;
 
+    @Builder
+    protected Store(String storeName, String storeAddress, String storeTelephone, String storeIntroduce,
+                    String businessTime) {
+        this.storeName = storeName;
+        this.storeAddress = storeAddress;
+        this.storeTelephone = storeTelephone;
+        this.storeIntroduce = storeIntroduce;
+    }
 }

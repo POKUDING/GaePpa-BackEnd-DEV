@@ -14,6 +14,7 @@ import java.util.UUID;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "p_products")
@@ -25,6 +26,7 @@ public class Product extends BaseEntity {
     @Column(name = "product_id")
     private UUID id;
 
+    @Setter
     @Column(name = "product_name", nullable = false)
     private String name;
 
@@ -37,9 +39,10 @@ public class Product extends BaseEntity {
     @Column(name = "product_hide_status", nullable = false)
     private boolean hideStatus;
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_category_id", nullable = false)
-    private ProductCategory category;
+    private ProductCategory productCategory;
 
     @Builder
     protected Product(String name, String description, int price, boolean hideStatus, ProductCategory category) {
@@ -47,6 +50,13 @@ public class Product extends BaseEntity {
         this.description = description;
         this.price = price;
         this.hideStatus = hideStatus;
-        this.category = category;
+        this.productCategory = category;
+    }
+
+    public void update(String name, String description, int price, boolean hideStatus) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.hideStatus = hideStatus;
     }
 }
