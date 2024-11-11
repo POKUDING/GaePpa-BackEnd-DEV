@@ -29,11 +29,9 @@ public class Member extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID memberId;
 
-    @NotBlank
     @Email
     private String email;
 
-    @NotBlank
     @Size(min = 8, message = "Password must be at least 8 characters")
     private String password;
 

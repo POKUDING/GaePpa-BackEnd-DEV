@@ -42,18 +42,13 @@ public class Store extends BaseEntity {
     private StoreCategory category;
 
     @Column
-    @NotBlank
-    @NotNull
     private String storeName;
 
     @Column(nullable = false)
-    @NotBlank
     private String storeAddress;
 
     @Column(nullable = false)
-//    @Min(10L)
-//    @Max(11L)
-    @Size(min = 10, max = 11, message = "전화번호는 10자 이상 11자 이하이어야 합니다.")
+//    @Size(min = 10, max = 11, message = "전화번호는 10자 이상 11자 이하이어야 합니다.")
     private String storeTelephone;
 
     @Column(nullable = true)
@@ -62,10 +57,8 @@ public class Store extends BaseEntity {
     @Column(nullable = false)
     private boolean icActive = true;
 
-    @Positive
     private BigDecimal reviewAvg = BigDecimal.valueOf(0.0);
 
-    @Positive
     private int reviewCount = 0;
 
     private String businessTime;

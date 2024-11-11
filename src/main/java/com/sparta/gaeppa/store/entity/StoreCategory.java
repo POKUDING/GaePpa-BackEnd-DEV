@@ -24,16 +24,14 @@ import lombok.NoArgsConstructor;
 public class StoreCategory {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue
     @Column(name = "store_category_id")
     private UUID storeCategoryId;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "store_id")
+    @JoinColumn(name = "store_id", nullable = false)
     private Store store;
 
-    @NotNull
-    @NotBlank
-    @Column(nullable = false)
+    @Column(name = "category_name", nullable = false, length = 50)
     private String categoryName;
 }
