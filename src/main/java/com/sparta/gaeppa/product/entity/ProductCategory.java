@@ -1,12 +1,15 @@
 package com.sparta.gaeppa.product.entity;
 
 import com.sparta.gaeppa.global.base.BaseEntity;
+import com.sparta.gaeppa.store.entity.Store;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.List;
@@ -14,6 +17,7 @@ import java.util.UUID;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "p_product_categories")
@@ -26,23 +30,26 @@ public class ProductCategory extends BaseEntity {
     @Column(name = "product_category_id")
     private UUID id;
 
-    @Column(name = "product_category_name")
+    @Column(name = "product_category_name", nullable = false)
     private String name;
 
-    //TODO: 스토어와 합칠때는 삭제후 주석 코드 사용
-    @Column(name = "store_id")
-    private UUID storeId;
-
-//    @ManyToOne(fetch = FetchType.LAZY)
+    @Setter
+    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "store_id", nullable = false)
-//    private Store store;
+    @JoinColumn(name = "store_id", nullable = true)
+    private Store store;
 
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "productCategory", fetch = FetchType.LAZY)
     private List<Product> products;
 
     @Builder
-    protected ProductCategory(String name, UUID storeId) {
+    protected ProductCategory(String name, Store store) {
         this.name = name;
-        this.storeId = storeId;
+        this.store = store;
     }
+
+    public void updateName(String name) {
+        this.name = name;
+    }
+
 }

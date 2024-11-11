@@ -13,8 +13,10 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.List;
 import java.util.UUID;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "p_product_option_categories")
@@ -31,12 +33,24 @@ public class ProductOptionCategory extends BaseEntity {
     private String name;
 
     @Column(name = "product_option_max_limits", nullable = false)
-    private Integer maxLimits;
+    private int maxLimits;
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @OneToMany(mappedBy = "optionCategory", fetch = FetchType.LAZY)
-    private List<ProductOption> options;
+    @OneToMany(mappedBy = "productOptionCategory", fetch = FetchType.LAZY)
+    private List<ProductOption> productOptions;
+
+    @Builder
+    protected ProductOptionCategory(String name, int maxLimits) {
+        this.name = name;
+        this.maxLimits = maxLimits;
+    }
+
+    public void update(String name, int maxLimits) {
+        this.name = name;
+        this.maxLimits = maxLimits;
+    }
 }
