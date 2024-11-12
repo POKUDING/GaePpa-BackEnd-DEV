@@ -21,6 +21,7 @@ public class ProductOptionListResponseDto {
 
     public static ProductOptionListResponseDto from(List<ProductOptionCategory> productOptionCategories) {
         return ProductOptionListResponseDto.builder()
+                //TODO: 상품 카테고리의 갯수를 받아오는 로직 점검 필요
                 .optionCategoryAmount(productOptionCategories.size())
                 .options(productOptionCategories.stream().map(ProductOptionCategoryResponseDto::from).toList())
                 .build();

@@ -53,7 +53,7 @@ public class ProductOptionCategoryService {
                 .orElseThrow(() -> new ServiceException(
                         ExceptionStatus.PRODUCT_OPTION_CATEGORY_NOT_FOUND));
 
-        if (!productOptionRepository.existsByProductOptionCategory(productOptionCategory)) {
+        if (productOptionRepository.existsByProductOptionCategory(productOptionCategory)) {
             throw new ServiceException(ExceptionStatus.PRODUCT_OPTION_CATEGORY_HAS_OPTIONS);
         }
 

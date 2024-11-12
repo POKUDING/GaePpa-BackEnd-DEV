@@ -13,8 +13,8 @@ public class StoreProductListResponseDto {
     private int totalAmount;
     private List<CategoryResponseDto> details;
 
-    public StoreProductListResponseDto(List<ProductCategory> categories) {
-        this.totalAmount = categories.size();
+    public StoreProductListResponseDto(int totalAmount, List<ProductCategory> categories) {
+        this.totalAmount = totalAmount;
         this.details = categories.stream().map(CategoryResponseDto::from).toList();
     }
 

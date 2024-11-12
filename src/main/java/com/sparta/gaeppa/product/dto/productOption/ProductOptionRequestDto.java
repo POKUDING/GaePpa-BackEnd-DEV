@@ -4,9 +4,15 @@ import com.sparta.gaeppa.product.entity.ProductOption;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.util.UUID;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class ProductOptionRequestDto {
     @NotBlank(message = "Product Option Category Id is required")
     private UUID productOptionCategoryId;
