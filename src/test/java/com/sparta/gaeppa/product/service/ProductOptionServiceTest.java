@@ -90,7 +90,9 @@ class ProductOptionServiceTest {
                 java.util.Optional.empty());
 
         //when-then
-        assertThrows(ServiceException.class, () -> productOptionService.createProductOption(requestDto));
+        ServiceException exception = assertThrows(ServiceException.class, () -> productOptionService.createProductOption(requestDto));
+        assertEquals(exception.getMessage(), "상품 옵션 카테고리가 존재하지 않습니다.");
+        assertEquals(exception.getStatus(), 404);
     }
 
     @Test
@@ -126,7 +128,9 @@ class ProductOptionServiceTest {
         given(productOptionRepository.findById(optionId)).willReturn(java.util.Optional.empty());
 
         //when-then
-        assertThrows(ServiceException.class, () -> productOptionService.updateProductOption(optionId, requestDto));
+        ServiceException exception = assertThrows(ServiceException.class, () -> productOptionService.updateProductOption(optionId, requestDto));
+        assertEquals(exception.getMessage(), "상품 옵션이 존재하지 않습니다.");
+        assertEquals(exception.getStatus(), 404);
     }
 
     @Test
@@ -146,7 +150,9 @@ class ProductOptionServiceTest {
                 java.util.Optional.empty());
 
         //when-then
-        assertThrows(ServiceException.class, () -> productOptionService.updateProductOption(optionId, requestDto));
+        ServiceException exception = assertThrows(ServiceException.class, () -> productOptionService.updateProductOption(optionId, requestDto));
+        assertEquals(exception.getMessage(), "상품 옵션 카테고리가 존재하지 않습니다.");
+        assertEquals(exception.getStatus(), 404);
     }
 
     @Test
@@ -170,6 +176,8 @@ class ProductOptionServiceTest {
         given(productOptionRepository.findById(optionId)).willReturn(java.util.Optional.empty());
 
         //when-then
-        assertThrows(ServiceException.class, () -> productOptionService.deleteProductOption(optionId));
+        ServiceException exception = assertThrows(ServiceException.class, () -> productOptionService.deleteProductOption(optionId));
+        assertEquals(exception.getMessage(), "상품 옵션이 존재하지 않습니다.");
+        assertEquals(exception.getStatus(), 404);
     }
 }

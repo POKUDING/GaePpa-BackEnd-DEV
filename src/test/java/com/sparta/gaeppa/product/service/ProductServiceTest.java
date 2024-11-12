@@ -100,7 +100,9 @@ class ProductServiceTest {
         given(productCategoryRepository.findById(productCategoryId)).willReturn(java.util.Optional.empty());
 
         //when-then
-        assertThrows(ServiceException.class, () -> productService.createProduct(productRequestDto));
+        ServiceException exception = assertThrows(ServiceException.class, () -> productService.createProduct(productRequestDto));
+        assertEquals(exception.getMessage(), "상품 카테고리가 존재하지 않습니다.");
+        assertEquals(exception.getStatus(), 404);
     }
 
     @Test
@@ -140,7 +142,9 @@ class ProductServiceTest {
         given(productRepository.findById(productId)).willReturn(java.util.Optional.empty());
 
         //when-then
-        assertThrows(ServiceException.class, () -> productService.updateProduct(productId, productRequestDto));
+        ServiceException exception = assertThrows(ServiceException.class, () -> productService.updateProduct(productId, productRequestDto));
+        assertEquals(exception.getMessage(),"상품이 존재하지 않습니다.");
+        assertEquals(exception.getStatus(), 404);
     }
 
     @Test
@@ -162,7 +166,8 @@ class ProductServiceTest {
                 java.util.Optional.empty());
 
         //when-then
-        assertThrows(ServiceException.class, () -> productService.updateProduct(productId, productRequestDto));
+        ServiceException exception = assertThrows(ServiceException.class, () -> productService.updateProduct(productId, productRequestDto));
+        assertEquals(exception.getMessage(), "상품 카테고리가 존재하지 않습니다.");
     }
 
     @Test
@@ -186,6 +191,8 @@ class ProductServiceTest {
         given(productRepository.findById(productId)).willReturn(java.util.Optional.empty());
 
         //when-then
-        assertThrows(ServiceException.class, () -> productService.deleteProduct(productId));
+        ServiceException exception = assertThrows(ServiceException.class, () -> productService.deleteProduct(productId));
+        assertEquals(exception.getMessage(),"상품이 존재하지 않습니다.");
+        assertEquals(exception.getStatus(), 404);
     }
 }

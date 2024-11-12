@@ -74,8 +74,10 @@ class ProductCategoryServiceTest {
                 java.util.Optional.empty());
 
         //when-then
-        assertThrows(ServiceException.class,
+        ServiceException exception = assertThrows(ServiceException.class,
                 () -> productCategoryService.updateProductCategory(UUID.randomUUID(), requestDto));
+        assertEquals(exception.getMessage(),"상품 카테고리가 존재하지 않습니다.");
+        assertEquals(exception.getStatus(), 404);
     }
 
     @Test
@@ -103,8 +105,10 @@ class ProductCategoryServiceTest {
                 java.util.Optional.empty());
 
         //when-then
-        assertThrows(ServiceException.class,
+        ServiceException exception = assertThrows(ServiceException.class,
                 () -> productCategoryService.deleteProductCategory(categoryId));
+        assertEquals(exception.getMessage(),"상품 카테고리가 존재하지 않습니다.");
+        assertEquals(exception.getStatus(), 404);
     }
 
     @Test
@@ -121,8 +125,10 @@ class ProductCategoryServiceTest {
         given(productRepository.existsByProductCategory(any(ProductCategory.class))).willReturn(true);
 
         //when-then
-        assertThrows(ServiceException.class,
+        ServiceException exception = assertThrows(ServiceException.class,
                 () -> productCategoryService.deleteProductCategory(categoryId));
+        assertEquals(exception.getMessage(),"상품 카테고리에 상품이 존재합니다.");
+        assertEquals(exception.getStatus(), 400);
     }
 }
 
