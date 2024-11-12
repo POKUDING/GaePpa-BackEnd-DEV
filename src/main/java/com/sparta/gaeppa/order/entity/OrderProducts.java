@@ -1,4 +1,4 @@
-package com.sparta.gaeppa.cart.entity;
+package com.sparta.gaeppa.order.entity;
 
 import com.sparta.gaeppa.global.base.BaseEntity;
 import jakarta.persistence.Column;
@@ -8,7 +8,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderColumn;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -29,6 +33,13 @@ public class OrderProducts extends BaseEntity {
     @JoinColumn(nullable = false, name = "order_id")
     private Orders order;
 
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(nullable = false, name = "product_id")
+//    private Product product;
+
+    @Column(name = "product_id")
+    private UUID productId;
+
     @Column(nullable = false, name = "order_product_name")
     private String orderProductName;
 
@@ -37,6 +48,11 @@ public class OrderProducts extends BaseEntity {
 
     @Column(nullable = false, name = "order_product_quantity")
     private int orderProductQuantity;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "order_product_id")
+    @OrderColumn(name = "order_product_option_idx")
+    private List<OrderOptions> orderOptionsList = new ArrayList<>();
 
 
 }
