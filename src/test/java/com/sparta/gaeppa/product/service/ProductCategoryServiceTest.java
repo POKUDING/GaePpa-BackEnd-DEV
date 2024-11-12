@@ -35,8 +35,7 @@ class ProductCategoryServiceTest {
     @DisplayName("상품 카테고리 생성 성공 테스트")
     void createProductCategory() {
         //given
-        ProductCategoryRequestDto requestDto = new ProductCategoryRequestDto();
-        requestDto.setCategoryName("면류");
+        ProductCategoryRequestDto requestDto = ProductCategoryRequestDto.builder().categoryName("면류").build();
 
         ProductCategory categoryEntity = requestDto.toEntity();
 
@@ -53,8 +52,7 @@ class ProductCategoryServiceTest {
     @DisplayName("상품 카테고리 수정 성공 테스트")
     void updateProductCategory() {
         //given
-        ProductCategoryRequestDto requestDto = new ProductCategoryRequestDto();
-        requestDto.setCategoryName("면류");
+        ProductCategoryRequestDto requestDto = ProductCategoryRequestDto.builder().categoryName("면류").build();
 
         given(productCategoryRepository.findById(any(UUID.class))).willReturn(
                 java.util.Optional.of(requestDto.toEntity()));
@@ -67,8 +65,7 @@ class ProductCategoryServiceTest {
     @DisplayName("카테고리 수정 실패 테스트 - 존재하지 않는 상품 카테고리")
     void updateProductCategoryFail() {
         //given
-        ProductCategoryRequestDto requestDto = new ProductCategoryRequestDto();
-        requestDto.setCategoryName("면류");
+        ProductCategoryRequestDto requestDto = ProductCategoryRequestDto.builder().categoryName("면류").build();
 
         given(productCategoryRepository.findById(any(UUID.class))).willReturn(
                 java.util.Optional.empty());
