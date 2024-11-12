@@ -45,7 +45,7 @@ public class Product extends BaseEntity {
     private ProductCategory productCategory;
 
     @Builder
-    protected Product(String name, String description, int price, boolean hideStatus, ProductCategory category) {
+    private Product(String name, String description, int price, boolean hideStatus, ProductCategory category) {
         this.name = name;
         this.description = description;
         this.price = price;

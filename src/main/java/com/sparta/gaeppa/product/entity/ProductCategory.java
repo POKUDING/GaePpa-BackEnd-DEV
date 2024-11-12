@@ -43,7 +43,7 @@ public class ProductCategory extends BaseEntity {
     private List<Product> products;
 
     @Builder
-    protected ProductCategory(String name, Store store) {
+    private ProductCategory(String name, Store store) {
         this.name = name;
         this.store = store;
     }

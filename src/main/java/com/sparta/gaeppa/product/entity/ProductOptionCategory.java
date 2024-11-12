@@ -44,7 +44,7 @@ public class ProductOptionCategory extends BaseEntity {
     private List<ProductOption> productOptions;
 
     @Builder
-    protected ProductOptionCategory(String name, int maxLimits) {
+    private ProductOptionCategory(String name, int maxLimits) {
         this.name = name;
         this.maxLimits = maxLimits;
     }
