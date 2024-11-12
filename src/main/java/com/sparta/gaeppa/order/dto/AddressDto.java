@@ -1,5 +1,6 @@
 package com.sparta.gaeppa.order.dto;
 
+import com.sparta.gaeppa.order.entity.Address;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,5 +19,13 @@ public class AddressDto {
         this.address = address;
         this.detailAddress = detailAddress;
         this.postAddress = postAddress;
+    }
+
+    public static AddressDto from(Address address) {
+        return AddressDto.builder()
+                .address(address.getAddress())
+                .detailAddress(address.getDetailAddress())
+                .postAddress(address.getPostAddress())
+                .build();
     }
 }

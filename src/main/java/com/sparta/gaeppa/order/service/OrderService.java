@@ -1,8 +1,14 @@
 package com.sparta.gaeppa.order.service;
 
+import com.sparta.gaeppa.global.exception.ExceptionStatus;
+import com.sparta.gaeppa.global.exception.ServiceException;
 import com.sparta.gaeppa.order.dto.OrderResponseDto;
+import com.sparta.gaeppa.order.dto.OrderResponseListDto;
 import com.sparta.gaeppa.order.entity.Orders;
 import com.sparta.gaeppa.order.repository.OrderRepository;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,11 +20,14 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
 
-    public OrderResponseDto getAllOrdersByMemberId(UUID memberId) {
+    public OrderResponseListDto getAllOrdersByMemberId(UUID memberId) {
 
-        Orders orders = orderRepository.findAllOrdersByMemberId(memberId);
+        List<Orders> orderlist = orderRepository.findAllOrdersByMemberId(memberId);
 
-//        return OrderResponseDto(orders);
-        return null;
+        if(orderlist.isEmpty()){
+            throw new ServiceException(ExceptionStatus.ORDER_NOT_FOUND);
+        }
+
+        return new OrderResponseListDto(orderlist);
     }
 }

@@ -1,16 +1,17 @@
 package com.sparta.gaeppa.order.entity;
 
 import com.sparta.gaeppa.global.base.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.sparta.gaeppa.order.dto.OrderProductDto;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.query.Order;
 
 @Entity
 @Table(name = "p_orders")
@@ -47,5 +48,11 @@ public class Orders extends BaseEntity {
 
     @Column(name = "order_request")
     private String orderRequest;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "order_id")
+    @OrderColumn(name = "order_product_idx")
+    private List<OrderProducts> orderProductsList = new ArrayList<>();
+
 
 }

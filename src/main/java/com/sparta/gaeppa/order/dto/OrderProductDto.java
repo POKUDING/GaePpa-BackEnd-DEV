@@ -1,17 +1,18 @@
 package com.sparta.gaeppa.order.dto;
 
-
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class OrderProductsListDto {
+public class OrderProductDto {
 
     private String productName;
-    private int quantity;
-    private int productTotalPrice;
-    private List<OrderProductOptionsListDto> optionList;
+    private int productQuantity;
+    private int productPrice;
+
+    private List<OrderProductOptionListDto> productOptionList;
 }
