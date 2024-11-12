@@ -24,7 +24,7 @@ public class ProductService {
     @Transactional
     public StoreProductListResponseDto getAllProductsByStoreId(UUID storeId) {
 
-        storeId = null;
+//        storeId = null;
         List<ProductCategory> productCategoryList = productCategoryRepository.findAllByStore_StoreId(storeId);
 
         if (productCategoryList.isEmpty()) {
