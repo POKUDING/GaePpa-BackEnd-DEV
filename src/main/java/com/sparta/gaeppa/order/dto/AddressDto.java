@@ -15,7 +15,7 @@ public class AddressDto {
     private int postAddress;
 
     @Builder
-    public AddressDto(String address, String detailAddress, int postAddress) {
+    private AddressDto(String address, String detailAddress, int postAddress) {
         this.address = address;
         this.detailAddress = detailAddress;
         this.postAddress = postAddress;

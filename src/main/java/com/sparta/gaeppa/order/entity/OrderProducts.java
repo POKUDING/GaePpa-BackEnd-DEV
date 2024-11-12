@@ -1,8 +1,16 @@
 package com.sparta.gaeppa.order.entity;
 
 import com.sparta.gaeppa.global.base.BaseEntity;
-import jakarta.persistence.*;
-
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderColumn;
+import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -45,9 +53,6 @@ public class OrderProducts extends BaseEntity {
     @JoinColumn(name = "order_product_id")
     @OrderColumn(name = "order_product_option_idx")
     private List<OrderOptions> orderOptionsList = new ArrayList<>();
-
-
-
 
 
 }
