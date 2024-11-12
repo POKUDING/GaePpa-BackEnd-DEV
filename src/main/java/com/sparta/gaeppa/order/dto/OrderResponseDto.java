@@ -37,7 +37,7 @@ public class OrderResponseDto {
 
     public static OrderResponseDto from(Orders orders) {
         return OrderResponseDto.builder()
-                .storeId(orders.getStoreId())
+                .storeId(orders.getStore().getStoreId())
                 .address(AddressDto.from(orders.getAddress()))
                 .orderStatus(orders.getOrderStatus())
                 .orderType(orders.getOrderType())
