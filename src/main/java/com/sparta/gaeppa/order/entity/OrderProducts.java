@@ -49,7 +49,7 @@ public class OrderProducts extends BaseEntity {
     @Column(nullable = false, name = "order_product_quantity")
     private int orderProductQuantity;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_product_id")
     @OrderColumn(name = "order_product_option_idx")
     private List<OrderOptions> orderOptionsList = new ArrayList<>();
