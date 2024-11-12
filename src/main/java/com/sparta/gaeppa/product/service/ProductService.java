@@ -24,6 +24,7 @@ public class ProductService {
     @Transactional
     public StoreProductListResponseDto getAllProductsByStoreId(UUID storeId) {
 
+        //TODO: store 레포지토리가 완성되면 조회 및 예외처리 로직 추가
 //        storeId = null;
         List<ProductCategory> productCategoryList = productCategoryRepository.findAllByStore_StoreId(storeId);
 
@@ -31,7 +32,9 @@ public class ProductService {
             throw new ServiceException(ExceptionStatus.PRODUCT_CATEGORY_NOT_FOUND);
         }
 
-        return new StoreProductListResponseDto(productCategoryList);
+        int totalAmount = productRepository.countByProductCategory_Store_StoreId(storeId);
+
+        return new StoreProductListResponseDto(totalAmount, productCategoryList);
     }
 
     @Transactional
