@@ -23,10 +23,10 @@ spring:
     username: ${MYSQL_USERNAME}
     password: ${MYSQL_PASSWORD}
     # ================= PostgreSQL =================
-#    driver-class-name: org.postgresql.Driver
-#    url: ${SPRING_DATASOURCE_URL}
-#    username: ${POSTGRES_USERNAME}
-#    password: ${POSTGRES_PASSWORD}
+  #    driver-class-name: org.postgresql.Driver
+  #    url: ${SPRING_DATASOURCE_URL}
+  #    username: ${POSTGRES_USERNAME}
+  #    password: ${POSTGRES_PASSWORD}
 
   web:
     resources:
@@ -34,3 +34,8 @@ spring:
 
   backend:
     url: ${BACKEND_URL}
+
+## 기본 API 경로를 /api 로 설정
+server:
+  servlet:
+    context-path: /api
