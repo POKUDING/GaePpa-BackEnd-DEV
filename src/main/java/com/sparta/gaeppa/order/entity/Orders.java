@@ -1,4 +1,4 @@
-package com.sparta.gaeppa.cart.entity;
+package com.sparta.gaeppa.order.entity;
 
 import com.sparta.gaeppa.global.base.BaseEntity;
 import jakarta.persistence.Column;
@@ -25,6 +25,10 @@ public class Orders extends BaseEntity {
 
     @Column(nullable = false, name = "member_id")
     private UUID memberId;
+
+//    @OneToOne
+//    @Column(nullable = false, name = "store_id")
+//    private Store store;
 
     @Column(nullable = false, name = "store_id")
     private UUID storeId;

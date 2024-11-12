@@ -1,4 +1,4 @@
-package com.sparta.gaeppa.cart.entity;
+package com.sparta.gaeppa.order.entity;
 
 import com.sparta.gaeppa.global.base.BaseEntity;
 import jakarta.persistence.Column;
@@ -28,6 +28,13 @@ public class OrderProducts extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false, name = "order_id")
     private Orders order;
+
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(nullable = false, name = "product_id")
+//    private Product product;
+
+    @Column(name = "product_id")
+    private UUID productId;
 
     @Column(nullable = false, name = "order_product_name")
     private String orderProductName;

@@ -1,4 +1,4 @@
-package com.sparta.gaeppa.cart.entity;
+package com.sparta.gaeppa.order.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
