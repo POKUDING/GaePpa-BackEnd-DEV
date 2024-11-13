@@ -11,7 +11,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.OrderColumn;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,9 +55,8 @@ public class Orders extends BaseEntity {
     @Column(name = "order_request")
     private String orderRequest;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
-    @OrderColumn(name = "order_product_idx")
     private List<OrderProducts> orderProductsList = new ArrayList<>();
 
 
