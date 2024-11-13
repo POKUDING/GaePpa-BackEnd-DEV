@@ -28,7 +28,6 @@ import lombok.NoArgsConstructor;
 public class Profile extends BaseEntity {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "profile_id")
     private UUID profileId;
@@ -46,8 +45,6 @@ public class Profile extends BaseEntity {
     private String introduce;
 
     @Enumerated(EnumType.STRING)
-    @NotNull
-//    @Column(name = "profile_img_path", nullable = false)
     @Column(name = "member_gender", nullable = false)
     private MemberGender memberGender;
 
