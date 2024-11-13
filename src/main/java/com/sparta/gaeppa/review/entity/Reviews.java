@@ -1,5 +1,8 @@
-package com.sparta.gaeppa.cart.entity;
+package com.sparta.gaeppa.review.entity;
 
+import com.sparta.gaeppa.global.base.BaseEntity;
+import com.sparta.gaeppa.order.entity.Images;
+import com.sparta.gaeppa.order.entity.Orders;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -17,9 +20,10 @@ import lombok.NoArgsConstructor;
 @Table(name = "p_reviews")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Reviews {
+public class Reviews extends BaseEntity {
 
     @Id
+    @Column(name = "review_id")
     @GeneratedValue
     private UUID reviewId;
 

@@ -40,7 +40,7 @@ public class ProductOption extends BaseEntity {
     private ProductOptionCategory productOptionCategory;
 
     @Builder
-    protected ProductOption(String name, int price) {
+    private ProductOption(String name, int price) {
         this.name = name;
         this.price = price;
     }

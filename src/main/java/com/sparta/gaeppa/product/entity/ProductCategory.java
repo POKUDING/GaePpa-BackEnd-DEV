@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.Builder;
@@ -40,10 +41,10 @@ public class ProductCategory extends BaseEntity {
     private Store store;
 
     @OneToMany(mappedBy = "productCategory", fetch = FetchType.LAZY)
-    private List<Product> products;
+    private List<Product> products = new ArrayList<>();
 
     @Builder
-    protected ProductCategory(String name, Store store) {
+    private ProductCategory(String name, Store store) {
         this.name = name;
         this.store = store;
     }
