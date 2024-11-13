@@ -50,7 +50,7 @@ public class OrderProducts extends BaseEntity {
     @Column(nullable = false, name = "order_product_quantity")
     private int orderProductQuantity;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany
     @JoinColumn(name = "order_product_id")
     private List<OrderOptions> orderOptionsList = new ArrayList<>();
 

@@ -2,12 +2,15 @@ package com.sparta.gaeppa.order.dto;
 
 import java.util.List;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
 public class OrderProductDto {
 
     private String productName;
@@ -16,12 +19,4 @@ public class OrderProductDto {
 
     private List<OrderProductOptionListDto> productOptionList;
 
-    @Builder
-    private OrderProductDto(String productName, int productQuantity, int productPrice,
-                            List<OrderProductOptionListDto> productOptionList) {
-        this.productName = productName;
-        this.productQuantity = productQuantity;
-        this.productPrice = productPrice;
-        this.productOptionList = productOptionList;
-    }
 }

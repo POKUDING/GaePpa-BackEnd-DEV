@@ -55,7 +55,7 @@ public class Orders extends BaseEntity {
     @Column(name = "order_request")
     private String orderRequest;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany
     @JoinColumn(name = "order_id")
     private List<OrderProducts> orderProductsList = new ArrayList<>();
 
