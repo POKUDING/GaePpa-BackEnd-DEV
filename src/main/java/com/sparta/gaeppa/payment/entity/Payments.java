@@ -1,6 +1,7 @@
-package com.sparta.gaeppa.cart.entity;
+package com.sparta.gaeppa.payment.entity;
 
 import com.sparta.gaeppa.global.base.BaseEntity;
+import com.sparta.gaeppa.order.entity.Orders;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
