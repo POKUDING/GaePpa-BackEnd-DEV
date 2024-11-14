@@ -81,4 +81,11 @@ public class AIService {
 
         return SystemPromptResponseDto.from(aiPrompt);
     }
+
+    public SystemPromptResponseDto getSystemPrompt() {
+        AIPrompt aiPrompt = aiPromptRepository.findFirstByOrderByCreatedAtDesc().orElseThrow(() -> new AIException(
+                ExceptionStatus.AI_PROMPT_NOT_FOUND));
+
+        return SystemPromptResponseDto.from(aiPrompt);
+    }
 }
