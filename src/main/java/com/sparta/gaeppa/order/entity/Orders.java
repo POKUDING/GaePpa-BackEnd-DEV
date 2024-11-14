@@ -7,7 +7,6 @@ import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
@@ -17,6 +16,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "p_orders")
@@ -55,9 +55,9 @@ public class Orders extends BaseEntity {
     @Column(name = "order_request")
     private String orderRequest;
 
-    @OneToMany(mappedBy = "orderProduct",
+    @Setter
+    @OneToMany(mappedBy = "order",
             cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "order_id")
     private List<OrderProduct> orderProductList = new ArrayList<>();
 
 //    Store API 추가 후 수정

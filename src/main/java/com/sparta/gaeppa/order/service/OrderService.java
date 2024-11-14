@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class OrderService {
 
 
@@ -38,7 +37,7 @@ public class OrderService {
                 .orElseThrow(() -> new ServiceException(ExceptionStatus.ORDER_NOT_FOUND));
     }
 
-
+    @Transactional
     public OrderResponseDto createOrder(OrderRequestDto requestDto) {
 
         Orders orders = requestDto.toEntity();
