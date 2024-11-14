@@ -29,12 +29,10 @@ public class Member extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID memberId;
 
-    @NotBlank
-    @Email
+    @Column(nullable = false)
     private String email;
 
-    @NotBlank
-    @Size(min = 8, message = "Password must be at least 8 characters")
+    @Column(nullable = false)
     private String password;
 
     @Column(nullable = false)
@@ -49,7 +47,6 @@ public class Member extends BaseEntity {
     private LoginType loginType;
 
     @Column(name = "provider_user_id", unique = true, nullable = false)
-    @NotBlank
     private String providerUserId; // Provider + provider Id 형식
 
     @Column(name = "email_token")
