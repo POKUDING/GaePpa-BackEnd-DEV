@@ -11,6 +11,8 @@ import com.sparta.gaeppa.order.entity.OrderOption;
 import com.sparta.gaeppa.order.entity.OrderProduct;
 import com.sparta.gaeppa.order.entity.Orders;
 import com.sparta.gaeppa.order.repository.OrderRepository;
+import com.sparta.gaeppa.product.entity.Product;
+import com.sparta.gaeppa.product.repository.ProductRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -24,6 +26,7 @@ public class OrderService {
 
 
     private final OrderRepository orderRepository;
+    private final ProductRepository productRepository;
 
 
     @Transactional(readOnly = true)
@@ -41,20 +44,30 @@ public class OrderService {
     public OrderResponseDto createOrder(OrderRequestDto requestDto) {
 
         Orders orders = requestDto.toEntity();
+        int orderTotalPrice = 0;
+
         List<OrderProductDto> productListDto = requestDto.getOrderProductList();
 
-        for (OrderProductDto productDto : productListDto) {
+        // 상품 리스트 한 개씩 엔티티화
+        for (OrderProductDto orderProductDto : productListDto) {
 
             try {
-                OrderProduct product = productDto.toEntity(orders);
-                orders.putOrderProduct(product);
 
-                List<OrderProductOptionDto> optionListDto = productDto.getProductOptionList();
+                Product product = productRepository.findById(orderProductDto.getProductId())
+                        .orElseThrow(() -> new ServiceException(ExceptionStatus.PRODUCT_NOT_FOUND));
+
+                OrderProduct orderProduct = orderProductDto.toEntity(product);
+
+                List<OrderProductOptionDto> optionListDto = orderProductDto.getProductOptionList();
                 for (OrderProductOptionDto optionDto : optionListDto) {
-                    OrderOption option = optionDto.toEntity(product);
-                    product.putOrderOption(option);
+
+                    OrderOption option = optionDto.toEntity();
+                    orderProduct.putOrderOption(option);
+                    orderTotalPrice += option.getOptionPrice();
                 }
 
+                orders.putOrderProduct(orderProduct);
+                orderTotalPrice += orderProduct.getOrderProductPrice() * orderProduct.getOrderProductPrice();
 
             } catch (NullPointerException e) {
                 throw new ServiceException(ExceptionStatus.ORDER_REQUEST_NOT_FOUND);

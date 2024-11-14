@@ -37,7 +37,7 @@ public class Orders extends BaseEntity {
 //    @JoinColumn(nullable = false, name = "store_id")
 //    private Store store;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "store_id")
     private UUID storeId;
 
     @Embedded
