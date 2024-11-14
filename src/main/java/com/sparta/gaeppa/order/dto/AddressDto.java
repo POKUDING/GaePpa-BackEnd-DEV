@@ -24,4 +24,12 @@ public class AddressDto {
                 .postAddress(address.getPostAddress())
                 .build();
     }
+
+    public static Address toEntity(AddressDto addressDto) {
+        return Address.builder()
+                .address(addressDto.getAddress())
+                .detailAddress(addressDto.getDetailAddress())
+                .postAddress(addressDto.getPostAddress())
+                .build();
+    }
 }

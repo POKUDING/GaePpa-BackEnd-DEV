@@ -1,21 +1,20 @@
 package com.sparta.gaeppa.order.entity;
 
 import com.sparta.gaeppa.global.base.BaseEntity;
-import com.sparta.gaeppa.store.entity.Store;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -33,12 +32,13 @@ public class Orders extends BaseEntity {
     @Column(nullable = false, name = "member_id")
     private UUID memberId;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false, name = "store_id")
-    private Store store;
+//    Store API 추가 후 수정
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(nullable = false, name = "store_id")
+//    private Store store;
 
-//    @Column(nullable = false, name = "store_id")
-//    private UUID storeId;
+    @Column(nullable = false)
+    private UUID storeId;
 
     @Embedded
     private Address address;
@@ -55,9 +55,39 @@ public class Orders extends BaseEntity {
     @Column(name = "order_request")
     private String orderRequest;
 
-    @OneToMany
+    @OneToMany(mappedBy = "orderProduct",
+            cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "order_id")
-    private List<OrderProducts> orderProductsList = new ArrayList<>();
+    private List<OrderProduct> orderProductList = new ArrayList<>();
 
+//    Store API 추가 후 수정
+//    @Builder
+//    private Orders(UUID memberId, Store store, Address address, int orderTotalPrice, String orderType,
+//                   String orderRequest, List<OrderProduct> orderProductList) {
+//        this.memberId = memberId;
+//        this.store = store;
+//        this.address = address;
+//        this.orderStatus = "주문대기";
+//        this.orderType = orderType;
+//        this.orderTotalPrice = orderTotalPrice;
+//        this.orderRequest = orderRequest;
+//        this.orderProductList = orderProductList;
+//    }
 
+    // Store 추가 후 삭제
+    @Builder
+    private Orders(UUID memberId, UUID storeId, Address address, String orderType, int orderTotalPrice,
+                   String orderRequest) {
+        this.memberId = memberId;
+        this.storeId = storeId;
+        this.address = address;
+        this.orderStatus = "주문대기";
+        this.orderType = orderType;
+        this.orderTotalPrice = orderTotalPrice;
+        this.orderRequest = orderRequest;
+    }
+
+    public void putOrderProduct(OrderProduct orderProduct) {
+        this.orderProductList.add(orderProduct);
+    }
 }
