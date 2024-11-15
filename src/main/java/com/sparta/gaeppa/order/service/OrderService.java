@@ -74,7 +74,7 @@ public class OrderService {
     }
 
     @Transactional
-    public void deleteOrder(UUID orderId) {
+    public void cancelOrder(UUID orderId) {
 
         Orders orders = orderRepository.findById(orderId)
                 .orElseThrow(() -> new ServiceException(ExceptionStatus.ORDER_NOT_FOUND));
@@ -83,7 +83,7 @@ public class OrderService {
             throw new ServiceException(ExceptionStatus.ORDER_MODIFICATION_NOT_ALLOWED);
         }
 
-        orderRepository.deleteById(orderId);
+        orders.cancel(orderId);
     }
 
     private boolean isWithinFiveMinutes(Orders order) {
@@ -93,4 +93,6 @@ public class OrderService {
 
         return duration.toMinutes() < 5;
     }
+
+
 }

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -58,6 +59,17 @@ public class Orders extends BaseEntity {
     private List<OrderProduct> orderProductList = new ArrayList<>();
 
 
+    @Builder
+    private Orders(UUID memberId, UUID storeId, Address address, String orderStatus, String orderType,
+                   String orderRequest) {
+        this.memberId = memberId;
+        this.storeId = storeId;
+        this.address = address;
+        this.orderStatus = orderStatus;
+        this.orderType = orderType;
+        this.orderRequest = orderRequest;
+    }
+
     public void putOrderProduct(OrderProduct orderProduct) {
         orderProductList.add(orderProduct);
     }
@@ -75,10 +87,7 @@ public class Orders extends BaseEntity {
 
     }
 
-    public void update(UUID storeId, Address address, String orderRequest) {
-        this.storeId = storeId;
-        this.address = address;
-        this.orderRequest = orderRequest;
-        this.orderProductList = new ArrayList<>();
+    public void cancel(UUID orderId) {
+        this.orderStatus = "주문취소";
     }
 }
