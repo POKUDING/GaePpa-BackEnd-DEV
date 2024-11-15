@@ -36,6 +36,15 @@ public enum ExceptionStatus {
     // AI
     AI_PROMPT_NOT_FOUND(HttpStatus.NOT_FOUND, "a001", "AI 프롬프트가 존재하지 않습니다."),
 
+    //Storage
+    FILE_UPLOAD_LOCATION_NOT_CONFIGURED(HttpStatus.INTERNAL_SERVER_ERROR, "s001", "파일 업로드 위치가 설정되지 않았습니다."),
+    EMPTY_FILE(HttpStatus.BAD_REQUEST, "s002", "빈 파일입니다."),
+    OUTSIDE_CURRENT_DIRECTORY(HttpStatus.BAD_REQUEST, "s003", "현재 디렉토리 밖에 있는 파일입니다."),
+    FILE_STORAGE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "s004", "파일 저장에 실패했습니다."),
+    READ_FILE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "s005", "파일 읽기에 실패했습니다."),
+    FILE_NOT_FOUND(HttpStatus.NOT_FOUND, "s006", "파일이 존재하지 않습니다."),
+    STORAGE_SERVICE_INIT_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "s007", "파일 저장 서비스 초기화에 실패했습니다."),
+
     //Common
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "s001", "서버 에러입니다.");
 
