@@ -2,6 +2,7 @@ package com.sparta.gaeppa.order.entity;
 
 import com.sparta.gaeppa.global.base.BaseEntity;
 import com.sparta.gaeppa.product.entity.Product;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,20 +12,21 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.OrderColumn;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "p_order_products")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class OrderProducts extends BaseEntity {
+public class OrderProduct extends BaseEntity {
 
     @Id
     @GeneratedValue
@@ -39,9 +41,6 @@ public class OrderProducts extends BaseEntity {
     @JoinColumn(nullable = false, name = "product_id")
     private Product product;
 
-//    @Column(name = "product_id")
-//    private UUID productId;
-
     @Column(nullable = false, name = "order_product_name")
     private String orderProductName;
 
@@ -51,10 +50,24 @@ public class OrderProducts extends BaseEntity {
     @Column(nullable = false, name = "order_product_quantity")
     private int orderProductQuantity;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_product_id")
-    @OrderColumn(name = "order_product_option_idx")
-    private List<OrderOptions> orderOptionsList = new ArrayList<>();
+    @Setter
+    @OneToMany(mappedBy = "orderProduct",
+            cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderOption> orderOptionList = new ArrayList<>();
 
+    @Builder
+    public OrderProduct(Orders order, Product product, String orderProductName, int orderProductPrice,
+                        int orderProductQuantity) {
+        this.order = order;
+        this.product = product;
+        this.orderProductName = orderProductName;
+        this.orderProductPrice = orderProductPrice;
+        this.orderProductQuantity = orderProductQuantity;
+    }
+
+
+    public void putOrderOption(OrderOption orderOption) {
+        this.orderOptionList.add(orderOption);
+    }
 
 }

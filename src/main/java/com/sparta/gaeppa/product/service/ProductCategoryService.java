@@ -29,9 +29,7 @@ public class ProductCategoryService {
 
         ProductCategory savedProductCategory = productCategoryRepository.save(requestDto.toEntity());
 
-        ProductCategory productCategory = productCategoryRepository.save(savedProductCategory);
-
-        return ProductCategoryResponseDto.from(productCategory);
+        return ProductCategoryResponseDto.from(savedProductCategory);
     }
 
     @Transactional
