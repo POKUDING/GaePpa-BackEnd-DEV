@@ -60,12 +60,12 @@ public class Orders extends BaseEntity {
 
 
     @Builder
-    private Orders(UUID memberId, UUID storeId, Address address, String orderStatus, String orderType,
+    private Orders(UUID memberId, UUID storeId, Address address, String orderType,
                    String orderRequest) {
         this.memberId = memberId;
         this.storeId = storeId;
         this.address = address;
-        this.orderStatus = orderStatus;
+        this.orderStatus = "주문대기";
         this.orderType = orderType;
         this.orderRequest = orderRequest;
     }

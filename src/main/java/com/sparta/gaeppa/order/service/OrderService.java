@@ -57,9 +57,12 @@ public class OrderService {
 
                 OrderProduct orderProduct = orderProductDto.toEntity(orders, product);
 
-                orderProductDto.getProductOptionList().stream()
-                        .map(OrderProductOptionDto::toEntity)
-                        .forEach(orderProduct::putOrderOption);
+                if (!orderProduct.getOrderOptionList().isEmpty()) {
+
+                    for (OrderProductOptionDto optionDto : orderProductDto.getProductOptionList()) {
+                        orderProduct.putOrderOption(optionDto.toEntity());
+                    }
+                }
 
                 log.info("[OrderService] orderProductId >>>>>>>> {}", orderProduct.getOrderProductId());
 

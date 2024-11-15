@@ -1,2 +1,6 @@
-### 1. orderId 로 Order 조회
+### 1. orderId 로 PaymentList 조회
+GET http://localhost:8080/api/v1/payments?orderId=0b0bd98d-a374-11ef-a7cd-d8bbc1571db6
+
+
+### 2. memberId 로 Payment 조회
 GET http://localhost:8080/api/v1/payments?memberId=73471008-a371-11ef-a7cd-d8bbc1571db6
