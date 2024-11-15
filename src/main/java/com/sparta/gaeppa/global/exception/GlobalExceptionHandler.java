@@ -40,7 +40,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResult<ApiError>> handleException(Exception e) {
         log.error("Exception: {}", e.getMessage());
-        return new ResponseEntity<>(error(e.getMessage()), new HttpHeaders(),
+        return new ResponseEntity<>(error("서버 오류입니다."), new HttpHeaders(),
                 ExceptionStatus.INTERNAL_SERVER_ERROR.getStatus());
     }
 }
