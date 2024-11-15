@@ -7,7 +7,6 @@ import com.sparta.gaeppa.order.dto.OrderProductDto;
 import com.sparta.gaeppa.order.dto.OrderProductOptionDto;
 import com.sparta.gaeppa.order.dto.OrderRequestDto;
 import com.sparta.gaeppa.order.dto.OrderResponseDto;
-import com.sparta.gaeppa.order.entity.OrderOption;
 import com.sparta.gaeppa.order.entity.OrderProduct;
 import com.sparta.gaeppa.order.entity.Orders;
 import com.sparta.gaeppa.order.repository.OrderRepository;
@@ -17,11 +16,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class OrderService {
 
 
@@ -46,40 +47,59 @@ public class OrderService {
         Orders orders = requestDto.toEntity();
         int orderTotalPrice = 0;
 
-        List<OrderProductDto> productListDto = requestDto.getOrderProductList();
-
-        // 상품 리스트 한 개씩 엔티티화
-        for (OrderProductDto orderProductDto : productListDto) {
+        for (OrderProductDto orderProductDto : requestDto.getOrderProductList()) {
 
             try {
 
                 Product product = productRepository.findById(orderProductDto.getProductId())
                         .orElseThrow(() -> new ServiceException(ExceptionStatus.PRODUCT_NOT_FOUND));
 
-                OrderProduct orderProduct = orderProductDto.toEntity(product);
+                OrderProduct orderProduct = orderProductDto.toEntity(orders, product);
 
                 if (!orderProduct.getOrderOptionList().isEmpty()) {
 
-                    List<OrderProductOptionDto> optionListDto = orderProductDto.getProductOptionList();
+                    for (OrderProductOptionDto optionDto : orderProductDto.getProductOptionList()) {
 
-                    for (OrderProductOptionDto optionDto : optionListDto) {
-
-                        System.out.println("optionDto =>>>>>> " + optionDto);
-                        OrderOption option = optionDto.toEntity();
-                        orderProduct.putOrderOption(option);
-                        orderTotalPrice += option.getOptionPrice();
+                        orderProduct.putOrderOption(optionDto.toEntity());
+                        orderTotalPrice += optionDto.getOptionPrice();
                     }
                 }
 
+                log.info("orderProductId >>>>>>" + orderProduct.getOrderProductId());
+
                 orders.putOrderProduct(orderProduct);
-                orderTotalPrice += orderProduct.getOrderProductPrice() * orderProduct.getOrderProductPrice();
+                orderTotalPrice += orderProduct.getOrderProductPrice() * orderProduct.getOrderProductQuantity();
 
             } catch (NullPointerException e) {
                 throw new ServiceException(ExceptionStatus.ORDER_REQUEST_NOT_FOUND);
             }
         }
+        orders.putOrderTotalPrice(orderTotalPrice);
 
         return OrderResponseDto.from(orderRepository.save(orders));
     }
 
+//    public void updateOrder(UUID orderId, OrderRequestDto requestDto) {
+//
+//        Orders orders = orderRepository.findById(orderId)
+//                .orElseThrow(() -> new ServiceException(ExceptionStatus.ORDER_NOT_FOUND));
+//
+//        if (!isWithinFiveMinutes(orders)) {
+//            throw new ServiceException(ExceptionStatus.ORDER_MODIFICATION_NOT_ALLOWED);
+//        }
+//
+//        orders.update(requestDto.getStoreId(), requestDto.toEntity().getAddress(), requestDto.getOrderRequest(),
+//                requestDto.toEntity().getOrderProductList());
+//        int orderTotalPrice = orders.getOrderTotalPrice();
+//
+//
+//    }
+//
+//    private boolean isWithinFiveMinutes(Orders order) {
+//
+//        LocalDateTime now = LocalDateTime.now();
+//        Duration duration = Duration.between(order.getCreatedAt(), now);
+//
+//        return duration.toMinutes() < 5;
+//    }
 }

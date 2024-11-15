@@ -1,6 +1,7 @@
 package com.sparta.gaeppa.order.dto;
 
 import com.sparta.gaeppa.order.entity.OrderProduct;
+import com.sparta.gaeppa.order.entity.Orders;
 import com.sparta.gaeppa.product.entity.Product;
 import java.util.List;
 import java.util.UUID;
@@ -26,9 +27,11 @@ public class OrderProductDto {
                 .build();
     }
 
-    public OrderProduct toEntity(Product product) {
+    public OrderProduct toEntity(Orders order, Product product) {
 
         return OrderProduct.builder()
+                .order(order)
+                .product(product)
                 .orderProductName(product.getName())
                 .orderProductPrice(product.getPrice())
                 .orderProductQuantity(getProductQuantity())

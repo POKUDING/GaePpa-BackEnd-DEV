@@ -32,7 +32,7 @@ public class OrderResponseDto {
                 .orderType(orders.getOrderType())
                 .totalPrice(orders.getOrderTotalPrice())
                 .orderRequest(orders.getOrderRequest())
-                .orderProductList(new OrderProductListDto(orders.getOrderProductList()).getProducts())
+                .orderProductList(orders.getOrderProductList().stream().map(OrderProductDto::from).toList())
                 .build();
     }
 

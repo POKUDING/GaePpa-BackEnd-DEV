@@ -20,7 +20,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "p_order_products")
@@ -50,7 +49,6 @@ public class OrderProduct extends BaseEntity {
     @Column(nullable = false, name = "order_product_quantity")
     private int orderProductQuantity;
 
-    @Setter
     @OneToMany(mappedBy = "orderProduct",
             cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderOption> orderOptionList = new ArrayList<>();

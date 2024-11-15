@@ -41,16 +41,16 @@ public class OrderController {
         return new ResponseEntity<>(success(responseDto), HttpStatus.CREATED);
     }
 
-//    @PutMapping("{/orderId}")
+//    @PutMapping("/{orderId}")
 //    public ResponseEntity<ApiResult<String>> updateOrder(@PathVariable("orderId") UUID orderId,
 //                                                         @RequestBody OrderRequestDto requestDto) {
 //
-//        orderService.updateOrder(requestDto);
+//        orderService.updateOrder(orderId, requestDto);
 //
 //        return new ResponseEntity<>(success("Update Order Success"), HttpStatus.OK);
 //    }
 //
-//    @DeleteMapping("{/orderId}")
+//    @DeleteMapping("/{orderId}")
 //    public ResponseEntity<ApiResult<String>> deleteOrder(@PathVariable("orderId") UUID orderId) {
 //
 //        orderService.deleteOrder(orderId);

@@ -16,7 +16,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "p_orders")
@@ -55,7 +54,6 @@ public class Orders extends BaseEntity {
     @Column(name = "order_request")
     private String orderRequest;
 
-    @Setter
     @OneToMany(mappedBy = "order",
             cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderProduct> orderProductList = new ArrayList<>();
@@ -88,6 +86,23 @@ public class Orders extends BaseEntity {
     }
 
     public void putOrderProduct(OrderProduct orderProduct) {
-        this.orderProductList.add(orderProduct);
+
+        if (!orderProductList.contains(orderProduct)) {
+            orderProductList.add(orderProduct);
+        }
+
+    }
+
+    public void putOrderTotalPrice(int orderTotalPrice) {
+        this.orderTotalPrice = orderTotalPrice;
+    }
+
+    public void update(UUID storeId, Address address, String orderRequest,
+                       List<OrderProduct> orderProductList) {
+        this.storeId = storeId;
+        this.address = address;
+        this.orderTotalPrice = 0;
+        this.orderRequest = orderRequest;
+        this.orderProductList = orderProductList;
     }
 }
