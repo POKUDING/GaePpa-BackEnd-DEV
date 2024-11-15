@@ -86,23 +86,26 @@ public class Orders extends BaseEntity {
     }
 
     public void putOrderProduct(OrderProduct orderProduct) {
+        orderProductList.add(orderProduct);
+    }
 
-        if (!orderProductList.contains(orderProduct)) {
-            orderProductList.add(orderProduct);
+    public void calOrderTotalPrice() {
+        int price = 0;
+
+        for (OrderProduct orderProduct : orderProductList) {
+            for (OrderOption orderOption : orderProduct.getOrderOptionList()) {
+                orderTotalPrice += orderOption.getOptionPrice();
+            }
+            price += orderProduct.getOrderProductPrice() * orderProduct.getOrderProductQuantity();
         }
+        this.orderTotalPrice = price;
 
     }
 
-    public void putOrderTotalPrice(int orderTotalPrice) {
-        this.orderTotalPrice = orderTotalPrice;
-    }
-
-    public void update(UUID storeId, Address address, String orderRequest,
-                       List<OrderProduct> orderProductList) {
+    public void update(UUID storeId, Address address, String orderRequest) {
         this.storeId = storeId;
         this.address = address;
-        this.orderTotalPrice = 0;
         this.orderRequest = orderRequest;
-        this.orderProductList = orderProductList;
+        this.orderProductList = new ArrayList<>();
     }
 }

@@ -12,6 +12,8 @@ import com.sparta.gaeppa.order.entity.Orders;
 import com.sparta.gaeppa.order.repository.OrderRepository;
 import com.sparta.gaeppa.product.entity.Product;
 import com.sparta.gaeppa.product.repository.ProductRepository;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -45,7 +47,6 @@ public class OrderService {
     public OrderResponseDto createOrder(OrderRequestDto requestDto) {
 
         Orders orders = requestDto.toEntity();
-        int orderTotalPrice = 0;
 
         for (OrderProductDto orderProductDto : requestDto.getOrderProductList()) {
 
@@ -56,50 +57,40 @@ public class OrderService {
 
                 OrderProduct orderProduct = orderProductDto.toEntity(orders, product);
 
-                if (!orderProduct.getOrderOptionList().isEmpty()) {
+                orderProductDto.getProductOptionList().stream()
+                        .map(OrderProductOptionDto::toEntity)
+                        .forEach(orderProduct::putOrderOption);
 
-                    for (OrderProductOptionDto optionDto : orderProductDto.getProductOptionList()) {
-
-                        orderProduct.putOrderOption(optionDto.toEntity());
-                        orderTotalPrice += optionDto.getOptionPrice();
-                    }
-                }
-
-                log.info("orderProductId >>>>>>" + orderProduct.getOrderProductId());
+                log.info("[OrderService] orderProductId >>>>>>>> {}", orderProduct.getOrderProductId());
 
                 orders.putOrderProduct(orderProduct);
-                orderTotalPrice += orderProduct.getOrderProductPrice() * orderProduct.getOrderProductQuantity();
 
             } catch (NullPointerException e) {
                 throw new ServiceException(ExceptionStatus.ORDER_REQUEST_NOT_FOUND);
             }
         }
-        orders.putOrderTotalPrice(orderTotalPrice);
-
+        orders.calOrderTotalPrice();
         return OrderResponseDto.from(orderRepository.save(orders));
     }
 
-//    public void updateOrder(UUID orderId, OrderRequestDto requestDto) {
-//
-//        Orders orders = orderRepository.findById(orderId)
-//                .orElseThrow(() -> new ServiceException(ExceptionStatus.ORDER_NOT_FOUND));
-//
-//        if (!isWithinFiveMinutes(orders)) {
-//            throw new ServiceException(ExceptionStatus.ORDER_MODIFICATION_NOT_ALLOWED);
-//        }
-//
-//        orders.update(requestDto.getStoreId(), requestDto.toEntity().getAddress(), requestDto.getOrderRequest(),
-//                requestDto.toEntity().getOrderProductList());
-//        int orderTotalPrice = orders.getOrderTotalPrice();
-//
-//
-//    }
-//
-//    private boolean isWithinFiveMinutes(Orders order) {
-//
-//        LocalDateTime now = LocalDateTime.now();
-//        Duration duration = Duration.between(order.getCreatedAt(), now);
-//
-//        return duration.toMinutes() < 5;
-//    }
+    @Transactional
+    public void deleteOrder(UUID orderId) {
+
+        Orders orders = orderRepository.findById(orderId)
+                .orElseThrow(() -> new ServiceException(ExceptionStatus.ORDER_NOT_FOUND));
+
+        if (!isWithinFiveMinutes(orders)) {
+            throw new ServiceException(ExceptionStatus.ORDER_MODIFICATION_NOT_ALLOWED);
+        }
+
+        orderRepository.deleteById(orderId);
+    }
+
+    private boolean isWithinFiveMinutes(Orders order) {
+
+        LocalDateTime now = LocalDateTime.now();
+        Duration duration = Duration.between(order.getCreatedAt(), now);
+
+        return duration.toMinutes() < 5;
+    }
 }

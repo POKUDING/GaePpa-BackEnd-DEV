@@ -1,5 +1,5 @@
 ### 1. MemberId 로 Order 조회
-GET http://localhost:8080/api/v1/orders?memberId=d191c389-a2a1-11ef-a7cd-d8bbc1571db6
+GET http://localhost:8080/api/v1/orders?memberId=ca732a55-a329-11ef-a7cd-d8bbc1571db6
 
 <> 2024-11-15T014358.200.json
 
@@ -40,11 +40,11 @@ Content-Type: application/json
   "orderRequest": "개조심",
   "orderProductList": [
     {
-      "productId": "5a4563aa-a2a2-11ef-a7cd-d8bbc1571db6",
+      "productId": "ca7e22fe-a329-11ef-a7cd-d8bbc1571db6",
       "productQuantity": 22,
       "productOptionList": [
         {
-          "optionName": "동해산광어",
+          "optionName": "동해산광어추가",
           "optionPrice": 9000000
         }
       ]
@@ -62,24 +62,6 @@ Content-Type: application/json
 #  "path": "/api/v1/orders"
 #}
 
-### 3. 주문 수정 테스트
-PUT http://localhost:8080/api/v1/orders
-Content-Type: application/json
-
-{
-  "orderId": "",
-  "memberId": "d191c38c-a2a1-11ef-a7cd-d8bbc1571db6",
-  "storeId": "d191c38c-a2a1-11ef-a7cd-d8bbc1571db6",
-  "address": {
-    "address": "강북동",
-    "detailAddress": "강북로"
-  },
-  "orderType": "배달",
-  "orderRequest": "고양이조심",
-  "orderProductList": [
-    {
-      "productId": "5a4569e4-a2a2-11ef-a7cd-d8bbc1571db6",
-      "productQuantity": 333
-    }
-  ]
-}
+### 3. 주문 삭제 요청
+### 주문 취소: 주문 생성 후 5분 이내에만 취소 가능하도록 제한
+DELETE http://localhost:8080/api/v1/orders?orderId=d9f059bc-3542-4f2f-ac89-aed58f38e37b
