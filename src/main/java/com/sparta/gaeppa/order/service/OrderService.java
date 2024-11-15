@@ -58,12 +58,17 @@ public class OrderService {
 
                 OrderProduct orderProduct = orderProductDto.toEntity(product);
 
-                List<OrderProductOptionDto> optionListDto = orderProductDto.getProductOptionList();
-                for (OrderProductOptionDto optionDto : optionListDto) {
+                if (!orderProduct.getOrderOptionList().isEmpty()) {
 
-                    OrderOption option = optionDto.toEntity();
-                    orderProduct.putOrderOption(option);
-                    orderTotalPrice += option.getOptionPrice();
+                    List<OrderProductOptionDto> optionListDto = orderProductDto.getProductOptionList();
+
+                    for (OrderProductOptionDto optionDto : optionListDto) {
+
+                        System.out.println("optionDto =>>>>>> " + optionDto);
+                        OrderOption option = optionDto.toEntity();
+                        orderProduct.putOrderOption(option);
+                        orderTotalPrice += option.getOptionPrice();
+                    }
                 }
 
                 orders.putOrderProduct(orderProduct);
