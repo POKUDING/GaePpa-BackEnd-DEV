@@ -30,4 +30,17 @@ public class GlobalExceptionHandler {
         log.error("RepositoryException: {}", e.getMessage());
         return new ResponseEntity<>(error(e.getMessage()), new HttpHeaders(), e.getStatus());
     }
+
+    @ExceptionHandler(AIException.class)
+    public ResponseEntity<ApiResult<ApiError>> handleAIException(AIException e) {
+        log.error("AIException: {}", e.getMessage());
+        return new ResponseEntity<>(error(e.getMessage()), new HttpHeaders(), e.getStatus());
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiResult<ApiError>> handleException(Exception e) {
+        log.error("Exception: {}", e.getMessage());
+        return new ResponseEntity<>(error(e.getMessage()), new HttpHeaders(),
+                ExceptionStatus.INTERNAL_SERVER_ERROR.getStatus());
+    }
 }
