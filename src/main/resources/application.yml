@@ -39,3 +39,7 @@ spring:
 server:
   servlet:
     context-path: /api
+
+google:
+  ai:
+    key: ${GOOGLE_AI_API_KEY}
