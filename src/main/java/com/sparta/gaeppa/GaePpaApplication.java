@@ -25,7 +25,6 @@ public class GaePpaApplication {
     @Bean
     CommandLineRunner init(StorageService storageService) {
         return (args) -> {
-            storageService.deleteAll();
             storageService.init();
         };
     }

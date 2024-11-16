@@ -9,7 +9,7 @@ public interface StorageService {
 
     void init();
 
-    void store(MultipartFile file);
+    void store(MultipartFile file, Path targetLocation, String fileName);
 
     Stream<Path> loadAll();
 
@@ -18,5 +18,5 @@ public interface StorageService {
     Resource loadAsResource(String filename);
 
     void deleteAll();
-    
+
 }

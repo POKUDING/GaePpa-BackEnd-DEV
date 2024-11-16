@@ -37,10 +37,16 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error(e.getMessage()), new HttpHeaders(), e.getStatus());
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResult<ApiError>> handleException(Exception e) {
-        log.error("Exception: {}", e.getMessage());
-        return new ResponseEntity<>(error("서버 오류입니다."), new HttpHeaders(),
-                ExceptionStatus.INTERNAL_SERVER_ERROR.getStatus());
+    @ExceptionHandler(StorageException.class)
+    public ResponseEntity<ApiResult<ApiError>> handleStorageException(StorageException e) {
+        log.error("StorageException: {}", e.getMessage());
+        return new ResponseEntity<>(error(e.getMessage()), new HttpHeaders(), e.getStatus());
     }
+
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<ApiResult<ApiError>> handleException(Exception e) {
+//        log.error("Exception: {}", e.getMessage());
+//        return new ResponseEntity<>(error("서버 오류입니다."), new HttpHeaders(),
+//                ExceptionStatus.INTERNAL_SERVER_ERROR.getStatus());
+//    }
 }

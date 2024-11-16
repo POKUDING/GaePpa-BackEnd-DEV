@@ -9,7 +9,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.Objects;
 import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -34,15 +33,15 @@ public class FileSystemStorageService implements StorageService {
     }
 
     @Override
-    public void store(MultipartFile file) {
+    public void store(MultipartFile file, Path targetLocation, String fileName) {
         try {
             if (file.isEmpty()) {
                 throw new StorageException(ExceptionStatus.EMPTY_FILE);
             }
-            Path destinationFile = this.rootLocation.resolve(
-                            Paths.get(Objects.requireNonNull(file.getOriginalFilename())))
+            Path destinationFile = this.rootLocation.resolve(targetLocation).resolve(
+                            Paths.get(fileName))
                     .normalize().toAbsolutePath();
-            if (!destinationFile.getParent().equals(this.rootLocation.toAbsolutePath())) {
+            if (!destinationFile.getParent().equals(this.rootLocation.resolve(targetLocation).toAbsolutePath())) {
                 // This is a security check
                 throw new StorageException(ExceptionStatus.OUTSIDE_CURRENT_DIRECTORY);
             }

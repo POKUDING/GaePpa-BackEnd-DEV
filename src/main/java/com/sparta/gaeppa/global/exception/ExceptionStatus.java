@@ -45,6 +45,10 @@ public enum ExceptionStatus {
     FILE_NOT_FOUND(HttpStatus.NOT_FOUND, "s006", "파일이 존재하지 않습니다."),
     STORAGE_SERVICE_INIT_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "s007", "파일 저장 서비스 초기화에 실패했습니다."),
 
+    //Image
+    PRODUCT_IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "i001", "상품 이미지가 존재하지 않습니다."),
+    NOT_SUPPORTED_EXTENSION(HttpStatus.BAD_REQUEST, "i002", "지원하지 않는 확장자입니다."),
+
     //Common
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "s001", "서버 에러입니다.");
 
