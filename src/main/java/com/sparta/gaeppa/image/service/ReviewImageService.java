@@ -8,8 +8,10 @@ import com.sparta.gaeppa.image.dto.ResourceDto;
 import com.sparta.gaeppa.image.entity.ReviewImage;
 import com.sparta.gaeppa.image.mime.MimeType;
 import com.sparta.gaeppa.image.repository.ReviewImageRepository;
+import com.sparta.gaeppa.members.entity.MemberRole;
 import com.sparta.gaeppa.review.entity.Review;
 import com.sparta.gaeppa.review.repository.ReviewRepository;
+import com.sparta.gaeppa.security.jwts.entity.CustomUserDetails;
 import java.nio.file.Path;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -48,5 +50,18 @@ public class ReviewImageService {
 
         Resource resource = storageService.loadAsResource(reviewImage.getFileName());
         return ResourceDto.builder().resource(resource).mimeType(reviewImage.getMimeType()).build();
+    }
+
+    public void deleteReviewImage(UUID imageId, CustomUserDetails userDetails) {
+
+        ReviewImage reviewImage = reviewImageRepository.findById(imageId)
+                .orElseThrow(() -> new ServiceException(ExceptionStatus.PRODUCT_IMAGE_NOT_FOUND));
+
+        if (userDetails.getMemberRole() != MemberRole.MANAGER && userDetails.getMemberRole() != MemberRole.OWNER
+                && !reviewImage.getCreatedBy().equals(userDetails.getUsername())) {
+            throw new ServiceException(ExceptionStatus.UNAUTHORIZED);
+        }
+
+        reviewImage.delete(userDetails.getUsername());
     }
 }

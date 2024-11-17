@@ -65,7 +65,11 @@ public enum ExceptionStatus {
     AUTHENTICATION_INVALID_CONTENT_TYPE(HttpStatus.BAD_REQUEST, "a008", "지원하지 않는 Content-Type입니다."),
     AUTHENTICATION_JSON_PARSE_ERROR(HttpStatus.BAD_REQUEST, "a009", "요청 본문을 파싱할 수 없습니다."),
     AUTHENTICATION_EMAIL_NOT_PROVIDED(HttpStatus.BAD_REQUEST, "a010", "이메일이 입력되지 않았습니다."),
-    AUTHENTICATION_PASSWORD_NOT_PROVIDED(HttpStatus.BAD_REQUEST, "a011", "비밀번호가 입력되지 않았습니다.");
+    AUTHENTICATION_PASSWORD_NOT_PROVIDED(HttpStatus.BAD_REQUEST, "a011", "비밀번호가 입력되지 않았습니다."),
+
+    //Authorization
+    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "z001", "인증에 실패했습니다."),
+    ;
 
 
     private final int status;
