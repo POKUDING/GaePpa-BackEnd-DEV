@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "p_reviews")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Reviews extends BaseEntity {
+public class Review extends BaseEntity {
 
     @Id
     @Column(name = "review_id")

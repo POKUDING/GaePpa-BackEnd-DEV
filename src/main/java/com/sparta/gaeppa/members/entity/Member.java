@@ -10,18 +10,20 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import jakarta.validation.constraints.*;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "p_members", uniqueConstraints = {
         @UniqueConstraint(columnNames = "provider_user_id")
 })
+@Entity
 public class Member extends BaseEntity {
 
     @Id
@@ -56,7 +58,13 @@ public class Member extends BaseEntity {
     private boolean isCertifyByMail = false;
 
     @Column(nullable = false)
-    private boolean isActivated = false;
+    private boolean isActivated = true; // 기본 활성화 상태로 설정
+
+    @Column(name = "account_non_locked", nullable = false)
+    private boolean isAccountNonLocked = true; // 계정이 기본적으로 잠기지 않음
+
+    @Column(name = "last_login_at")
+    private LocalDateTime lastLoginAt;
 
     // 계정 활성화 메서드
     public void activateAccount() {
@@ -67,4 +75,43 @@ public class Member extends BaseEntity {
     public void certifyEmail() {
         this.isCertifyByMail = true;
     }
+
+    public void encodePassword(PasswordEncoder passwordEncoder) {
+        this.password = passwordEncoder.encode(this.password);
+    }
+
+    public Member(String email, String password, String username, MemberRole role, LoginType loginType, String providerUserId, String emailToken, boolean isCertifyByMail, boolean isActivated) {
+        this.email = email;
+        this.password = password;
+        this.username = username;
+        this.role = role;
+        this.loginType = loginType;
+        this.providerUserId = providerUserId;
+        this.emailToken = emailToken;
+        this.isCertifyByMail = isCertifyByMail;
+        this.isActivated = isActivated;
+    }
+
+    @Builder
+    private Member(String email, String username, String password, String emailToken, String providerUserId, LoginType loginType, MemberRole role, boolean isCertifyByMail) {
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.emailToken = emailToken;
+        this.providerUserId = providerUserId;
+        this.loginType = loginType;
+        this.role = role;
+        this.isCertifyByMail = isCertifyByMail;
+    }
+
+    public void setLastLoginDate(LocalDateTime now) {
+        this.lastLoginAt = now;
+    }
+
+    // 일반 회원 생성 메서드
+
+    // 소셜 회원 생성 메서드
+
+    // 관리자 생성 메서드
+
 }
