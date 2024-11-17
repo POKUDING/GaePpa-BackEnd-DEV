@@ -3,6 +3,8 @@ package com.sparta.gaeppa.profile.entity;
 import com.sparta.gaeppa.global.base.BaseEntity;
 import com.sparta.gaeppa.members.entity.Member;
 import com.sparta.gaeppa.members.entity.MemberGender;
+import com.sparta.gaeppa.store.entity.Favorite;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -13,9 +15,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -48,9 +52,8 @@ public class Profile extends BaseEntity {
     @Column(name = "member_gender")
     private MemberGender memberGender;
 
-    public void setProfileImage(byte[] profileImage) {
-
-    }
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Favorite> favorites = new ArrayList<>(); // 즐겨찾기 목록
 
     public Profile(Member member, String profileImgName, String profileImgPath, String introduce,
                    MemberGender memberGender) {
@@ -64,5 +67,15 @@ public class Profile extends BaseEntity {
     // 최초 회원가입 시, 기본적으로 만들어주는 프로필. Profile 과 Member 는 강한 종속성을 띱니다.
     public static Profile createMemberProfile(Member member) {
         return new Profile(member, "자기 소개를 수정해주세요. ", null, null, null);
+    }
+
+    // 프로필 이미지 설정 메서드
+    public void setProfileImage(String profileImgName, String profileImgPath) {
+        this.profileImgName = profileImgName;
+        this.profileImgPath = profileImgPath;
+    }
+
+    public void updateIntroduce(String introduce) {
+        this.introduce = introduce;
     }
 }

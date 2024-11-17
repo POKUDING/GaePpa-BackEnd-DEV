@@ -10,6 +10,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -23,7 +24,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class JWTFilterV2 extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
-    private final WebCookieUtil webCookieUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -38,7 +38,7 @@ public class JWTFilterV2 extends OncePerRequestFilter {
 
         String requestURI = request.getRequestURI();
         String authorization = request.getHeader("Authorization");
-        String refreshAuthorization = webCookieUtil.getCookieValue(request, "refreshAuthorization");
+        String refreshAuthorization = WebCookieUtil.getCookieValue(request, "refreshAuthorization");
 
         log.debug("JWTFilterV2 - Processing request: {}, Authorization header: {}", request.getRequestURL(), authorization);
 
@@ -75,16 +75,15 @@ public class JWTFilterV2 extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-
     private Authentication getAuthentication(String token) {
         if (!jwtUtil.validateToken(token)) {
             throw new BadCredentialsException("Invalid token");
         }
 
-        String memberId = jwtUtil.getMemberId(token);
+        UUID memberId = jwtUtil.getMemberId(token);
         MemberRole role = jwtUtil.getRole(token);
 
-        AuthenticatedUserDto authenticatedUserDto = AuthenticatedUserDto.createAuthenticatedUserDto(Long.valueOf(memberId), role, true);
+        AuthenticatedUserDto authenticatedUserDto = AuthenticatedUserDto.createAuthenticatedUserDto(memberId, role, true);
         CustomUserDetails customOAuth2User = new CustomUserDetails(authenticatedUserDto);
 
         log.debug("JWTFilterV2 - Created CustomUserDetails for member ID: {}", memberId);
