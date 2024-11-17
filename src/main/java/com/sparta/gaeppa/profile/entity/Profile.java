@@ -36,19 +36,33 @@ public class Profile extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @Column(name = "profile_img_name", nullable = false)
+    @Column(name = "profile_img_name")
     private String profileImgName;
-    @Column(name = "profile_img_path", nullable = false)
+    @Column(name = "profile_img_path")
     private String profileImgPath;
 
     @Lob
     private String introduce;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "member_gender", nullable = false)
+    @Column(name = "member_gender")
     private MemberGender memberGender;
 
     public void setProfileImage(byte[] profileImage) {
 
+    }
+
+    public Profile(Member member, String profileImgName, String profileImgPath, String introduce,
+                   MemberGender memberGender) {
+        this.member = member;
+        this.profileImgName = profileImgName;
+        this.profileImgPath = profileImgPath;
+        this.introduce = introduce;
+        this.memberGender = memberGender;
+    }
+
+    // 최초 회원가입 시, 기본적으로 만들어주는 프로필. Profile 과 Member 는 강한 종속성을 띱니다.
+    public static Profile createMemberProfile(Member member) {
+        return new Profile(member, "자기 소개를 수정해주세요. ", null, null, null);
     }
 }
