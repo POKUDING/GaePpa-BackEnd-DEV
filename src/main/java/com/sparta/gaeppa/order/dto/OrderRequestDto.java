@@ -1,7 +1,6 @@
 package com.sparta.gaeppa.order.dto;
 
 import com.sparta.gaeppa.order.entity.Orders;
-import com.sparta.gaeppa.product.dto.product.ProductRequestDto;
 import java.util.List;
 import java.util.UUID;
 import lombok.AccessLevel;
@@ -17,10 +16,7 @@ import lombok.NoArgsConstructor;
 public class OrderRequestDto {
 
     private UUID memberId;
-    //    Store API 추가 후 수정
-//    private StoreRequestDto store;
     private UUID storeId;
-    private ProductRequestDto product;
     private AddressDto address;
     private String orderType;
     private int totalPrice;
@@ -35,7 +31,7 @@ public class OrderRequestDto {
                 .address(AddressDto.toEntity(this.address))
                 .orderType(this.orderType)
                 .orderRequest(this.orderRequest)
-                .orderTotalPrice(totalPrice)
                 .build();
     }
+
 }

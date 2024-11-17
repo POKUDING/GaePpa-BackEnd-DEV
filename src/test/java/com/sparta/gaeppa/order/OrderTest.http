@@ -1,0 +1,90 @@
+### 1. MemberId 로 Order 조회
+GET http://localhost:8080/api/v1/orders?memberId=0b0bd9a1-a374-11ef-a7cd-d8bbc1571db6
+
+### 결과
+#{
+#  "success": true,
+#  "response": {
+#    "orders": [
+#      {
+#        "storeId": "d191c38c-a2a1-11ef-a7cd-d8bbc1571db6",
+#        "address": {
+#          "address": "Sample Address 3",
+#          "detailAddress": null,
+#          "postAddress": 142124
+#        },
+#        "orderStatus": "주문대기",
+#        "orderType": "배달",
+#        "totalPrice": 25000,
+#        "orderRequest": "Extra napkins",
+#        "orderProductList": []
+#      }
+#    ]
+#  }
+#}
+
+### 2. 주문 생성 테스트
+POST http://localhost:8080/api/v1/orders
+Content-Type: application/json
+
+{
+  "memberId": "0b0bd9a1-a374-11ef-a7cd-d8bbc1571db6",
+  "storeId": "d191c38c-a2a1-11ef-a7cd-d8bbc1571db6",
+  "address": {
+    "address": "인천시",
+    "detailAddress": "인천공항점 파리바게트"
+  },
+  "orderType": "배달",
+  "orderRequest": "노크필수",
+  "orderProductList": [
+    {
+      "productId": "0b165b17-a374-11ef-a7cd-d8bbc1571db6",
+      "productQuantity": 1,
+      "productOptionList": [
+        {
+          "optionName": "리뷰남길게요 맛보기 추가",
+          "optionPrice": 0
+        }
+      ]
+    },
+    {
+      "productId": "0b165b17-a374-11ef-a7cd-d8bbc1571db6",
+      "productQuantity": 1,
+      "productOptionList": [
+        {
+          "optionName": "꿀꿀꿀 스틱",
+          "optionPrice": 500
+        }
+      ]
+    }
+  ]
+}
+
+###결과
+#{
+#  "success": true,
+#  "response": {
+#    "orderId": "69b8ed1f-3e3f-4ad7-a89b-dcae89dff4d9",
+#    "storeId": "d191c38c-a2a1-11ef-a7cd-d8bbc1571db6",
+#    "address": {
+#      "address": "강남동",
+#      "detailAddress": "강남로",
+#      "postAddress": 0
+#    },
+#    "orderStatus": "주문대기",
+#    "orderType": "배달",
+#    "totalPrice": 220000,
+#    "orderRequest": "개조심",
+#    "orderProductList": [
+#      {
+#        "productId": null,
+#        "productQuantity": 22,
+#        "productOptionList": null
+#      }
+#    ]
+#  }
+#}
+
+### 3. 주문 취소 요청
+### 주문 취소: 주문 생성 후 5분 이내에만 취소 가능하도록 제한
+PATCH http://localhost:8080/api/v1/orders?orderId=54fa3f48-bf78-435d-8970-4efcd734c806

@@ -35,6 +35,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error(e.getMessage()), new HttpHeaders(), e.getStatus());
     }
 
+    @ExceptionHandler(AIException.class)
+    public ResponseEntity<ApiResult<ApiError>> handleAIException(AIException e) {
+        log.error("AIException: {}", e.getMessage());
+        return new ResponseEntity<>(error(e.getMessage()), new HttpHeaders(), e.getStatus());
+    }
+
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ApiResult<ApiError>> handleIllegalArgumentException(IllegalArgumentException e) {
         log.error("Invalid argument: {}", e.getMessage());
@@ -89,4 +95,16 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error(ExceptionStatus.AUTHENTICATION_INVALID_CREDENTIALS.getMessage()), HttpStatus.UNAUTHORIZED);
     }
 
+    @ExceptionHandler(StorageException.class)
+    public ResponseEntity<ApiResult<ApiError>> handleStorageException(StorageException e) {
+        log.error("StorageException: {}", e.getMessage());
+        return new ResponseEntity<>(error(e.getMessage()), new HttpHeaders(), e.getStatus());
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiResult<ApiError>> handleException(Exception e) {
+        log.error("Exception: {}", e.getMessage());
+        return new ResponseEntity<>(error(e.getMessage()), new HttpHeaders(),
+                ExceptionStatus.INTERNAL_SERVER_ERROR.getStatus());
+    }
 }

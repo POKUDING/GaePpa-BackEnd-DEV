@@ -16,7 +16,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "p_orders")
@@ -37,7 +36,7 @@ public class Orders extends BaseEntity {
 //    @JoinColumn(nullable = false, name = "store_id")
 //    private Store store;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "store_id")
     private UUID storeId;
 
     @Embedded
@@ -55,39 +54,40 @@ public class Orders extends BaseEntity {
     @Column(name = "order_request")
     private String orderRequest;
 
-    @Setter
     @OneToMany(mappedBy = "order",
             cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderProduct> orderProductList = new ArrayList<>();
 
-//    Store API 추가 후 수정
-//    @Builder
-//    private Orders(UUID memberId, Store store, Address address, int orderTotalPrice, String orderType,
-//                   String orderRequest, List<OrderProduct> orderProductList) {
-//        this.memberId = memberId;
-//        this.store = store;
-//        this.address = address;
-//        this.orderStatus = "주문대기";
-//        this.orderType = orderType;
-//        this.orderTotalPrice = orderTotalPrice;
-//        this.orderRequest = orderRequest;
-//        this.orderProductList = orderProductList;
-//    }
 
-    // Store 추가 후 삭제
     @Builder
-    private Orders(UUID memberId, UUID storeId, Address address, String orderType, int orderTotalPrice,
+    private Orders(UUID memberId, UUID storeId, Address address, String orderType,
                    String orderRequest) {
         this.memberId = memberId;
         this.storeId = storeId;
         this.address = address;
         this.orderStatus = "주문대기";
         this.orderType = orderType;
-        this.orderTotalPrice = orderTotalPrice;
         this.orderRequest = orderRequest;
     }
 
     public void putOrderProduct(OrderProduct orderProduct) {
-        this.orderProductList.add(orderProduct);
+        orderProductList.add(orderProduct);
+    }
+
+    public void calOrderTotalPrice() {
+        int price = 0;
+
+        for (OrderProduct orderProduct : orderProductList) {
+            for (OrderOption orderOption : orderProduct.getOrderOptionList()) {
+                orderTotalPrice += orderOption.getOptionPrice();
+            }
+            price += orderProduct.getOrderProductPrice() * orderProduct.getOrderProductQuantity();
+        }
+        this.orderTotalPrice = price;
+
+    }
+
+    public void cancel(UUID orderId) {
+        this.orderStatus = "주문취소";
     }
 }
