@@ -38,7 +38,22 @@ public enum ExceptionStatus {
     AI_PROMPT_NOT_FOUND(HttpStatus.NOT_FOUND, "a001", "AI 프롬프트가 존재하지 않습니다."),
 
     //Common
-    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "s001", "서버 에러입니다.");
+    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "s001", "서버 에러입니다."),
+
+    // Authentication
+    AUTHENTICATION_INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "a001", "틀린 비밀번호를 입력했습니다."),
+    AUTHENTICATION_NOT_FOUND_EMAIL(HttpStatus.BAD_REQUEST, "a002", "존재하지 않는 이메일 입니다."),
+    AUTHENTICATION_FAILED(HttpStatus.UNAUTHORIZED, "a003", "인증에 실패했습니다."),
+    DUPLICATE_MEMBER(HttpStatus.UNAUTHORIZED, "a004", "중복되는 회원입니다."),
+    EXISTING_MEMBER_EMAIL(HttpStatus.BAD_REQUEST, "a005", "해당 이메일에 여러 계정이 존재합니다."),
+    // Authentication 관련 예외 추가
+    AUTHENTICATION_EMAIL_NOT_VERIFIED(HttpStatus.UNAUTHORIZED, "a006", "이메일 인증이 완료되지 않았습니다."),
+    AUTHENTICATION_INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "a007", "인증에 실패했습니다."),
+    AUTHENTICATION_INVALID_CONTENT_TYPE(HttpStatus.BAD_REQUEST, "a008", "지원하지 않는 Content-Type입니다."),
+    AUTHENTICATION_JSON_PARSE_ERROR(HttpStatus.BAD_REQUEST, "a009", "요청 본문을 파싱할 수 없습니다."),
+    AUTHENTICATION_EMAIL_NOT_PROVIDED(HttpStatus.BAD_REQUEST, "a010", "이메일이 입력되지 않았습니다."),
+    AUTHENTICATION_PASSWORD_NOT_PROVIDED(HttpStatus.BAD_REQUEST, "a011", "비밀번호가 입력되지 않았습니다.");
+
 
     private final int status;
     private final String customCode;
