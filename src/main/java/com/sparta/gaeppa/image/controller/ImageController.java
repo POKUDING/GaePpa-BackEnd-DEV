@@ -5,6 +5,7 @@ import static com.sparta.gaeppa.global.util.ApiResponseUtil.success;
 import com.sparta.gaeppa.global.storage.StorageService;
 import com.sparta.gaeppa.global.util.ApiResponseUtil.ApiResult;
 import com.sparta.gaeppa.image.dto.ImageResponseDto;
+import com.sparta.gaeppa.image.dto.ResourceDto;
 import com.sparta.gaeppa.image.service.ProductImageService;
 import com.sparta.gaeppa.image.service.ReviewImageService;
 import java.util.UUID;
@@ -33,24 +34,24 @@ public class ImageController {
     @GetMapping("/product-images/{imageId}")
     public ResponseEntity<Resource> getProductImagesByProductId(@PathVariable UUID imageId) {
 
-        Resource image = productImageService.getProductImage(imageId);
+        ResourceDto resourceDto = productImageService.getProductImage(imageId);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_TYPE, "image/jpeg");
+        headers.add(HttpHeaders.CONTENT_TYPE, resourceDto.getMimeType().getMimeType());
 
-        return new ResponseEntity<>(image, headers, HttpStatus.OK);
+        return new ResponseEntity<>(resourceDto.getResource(), headers, HttpStatus.OK);
 
     }
 
     @GetMapping("/review-images/{imageId}")
     public ResponseEntity<Resource> getReviewImagesByProductId(@PathVariable UUID imageId) {
 
-        Resource image = reviewImageService.getReviewImage(imageId);
+        ResourceDto resourceDto = reviewImageService.getReviewImage(imageId);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_TYPE, );
+        headers.add(HttpHeaders.CONTENT_TYPE, resourceDto.getMimeType().getMimeType());
 
-        return new ResponseEntity<>(image, headers, HttpStatus.OK);
+        return new ResponseEntity<>(resourceDto.getResource(), headers, HttpStatus.OK);
     }
 
     @PostMapping("/product-images")
