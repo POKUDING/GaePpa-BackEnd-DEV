@@ -26,7 +26,12 @@ public enum ExceptionStatus {
 
     //Orders
     ORDER_NOT_FOUND(HttpStatus.NOT_FOUND, "o001", "주문이 존재하지 않습니다."),
-    ORDER_REQUEST_NOT_FOUND(HttpStatus.NOT_FOUND, "o001", "주문이 존재하지 않습니다."),
+    ORDER_REQUEST_NOT_FOUND(HttpStatus.NOT_FOUND, "o002", "잘못된 주문 요청 입니다."),
+    ORDER_MODIFICATION_NOT_ALLOWED(HttpStatus.BAD_REQUEST, "o003", "주문 시간이 5분이 경과되어 수정이 불가능합니다."),
+
+    //Payments
+    PAYMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "PAY001", "결제내역이 존재하지 않습니다."),
+    PAYMENT_MODIFICATION_NOT_ALLOWED(HttpStatus.BAD_REQUEST, "PAY002", "취소된 주문은 결제 추가가 불가능합니다."),
 
     // JWT
     INVALID_REFRESH_TOKEN(HttpStatus.FORBIDDEN, "j001", "유효하지 않은 리프레시 토큰입니다."),

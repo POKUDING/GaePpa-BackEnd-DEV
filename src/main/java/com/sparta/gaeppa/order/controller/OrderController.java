@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +27,8 @@ public class OrderController {
     private final OrderService orderService;
 
     @GetMapping
-    public ResponseEntity<ApiResult<OrderListResponseDto>> getOrders(@RequestParam("memberId") UUID memberId) {
+    public ResponseEntity<ApiResult<OrderListResponseDto>> getAllOrdersByMemberId(
+            @RequestParam("memberId") UUID memberId) {
 
         OrderListResponseDto responseDto = orderService.getAllOrdersByMemberId(memberId);
 
@@ -41,20 +43,12 @@ public class OrderController {
         return new ResponseEntity<>(success(responseDto), HttpStatus.CREATED);
     }
 
-//    @PutMapping("{/orderId}")
-//    public ResponseEntity<ApiResult<String>> updateOrder(@PathVariable("orderId") UUID orderId,
-//                                                         @RequestBody OrderRequestDto requestDto) {
-//
-//        orderService.updateOrder(requestDto);
-//
-//        return new ResponseEntity<>(success("Update Order Success"), HttpStatus.OK);
-//    }
-//
-//    @DeleteMapping("{/orderId}")
-//    public ResponseEntity<ApiResult<String>> deleteOrder(@PathVariable("orderId") UUID orderId) {
-//
-//        orderService.deleteOrder(orderId);
-//
-//        return new ResponseEntity<>(success("Delete Order Success"), HttpStatus.OK);
-//    }
+
+    @PatchMapping
+    public ResponseEntity<ApiResult<String>> cancelOrder(@RequestParam("orderId") UUID orderId) {
+
+        orderService.cancelOrder(orderId);
+
+        return new ResponseEntity<>(success("Cancel Order Success"), HttpStatus.OK);
+    }
 }

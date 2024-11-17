@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class OrderResponseDto {
 
+    private UUID orderId;
     private UUID storeId;
     private AddressDto address;
     private String orderStatus;
@@ -26,13 +27,14 @@ public class OrderResponseDto {
 
     public static OrderResponseDto from(Orders orders) {
         return OrderResponseDto.builder()
+                .orderId(orders.getOrderId())
                 .storeId(orders.getStoreId())
                 .address(AddressDto.from(orders.getAddress()))
                 .orderStatus(orders.getOrderStatus())
                 .orderType(orders.getOrderType())
                 .totalPrice(orders.getOrderTotalPrice())
                 .orderRequest(orders.getOrderRequest())
-                .orderProductList(new OrderProductListDto(orders.getOrderProductList()).getProducts())
+                .orderProductList(orders.getOrderProductList().stream().map(OrderProductDto::from).toList())
                 .build();
     }
 
