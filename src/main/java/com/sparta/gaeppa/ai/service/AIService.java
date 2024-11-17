@@ -14,7 +14,7 @@ import com.sparta.gaeppa.global.exception.ExceptionStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-//@Service
+@Service
 @RequiredArgsConstructor
 public class AIService {
 
