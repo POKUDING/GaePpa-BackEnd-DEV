@@ -1,5 +1,6 @@
 package com.sparta.gaeppa.payment.dto;
 
+import com.sparta.gaeppa.order.dto.OrderAndPaymentRequestDto;
 import com.sparta.gaeppa.order.entity.Orders;
 import com.sparta.gaeppa.payment.entity.Payments;
 import java.util.UUID;
@@ -8,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -15,6 +17,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class PaymentDto {
 
+    @Setter
     private UUID orderId;
     private String payStatus;
     private String payType;
@@ -26,6 +29,14 @@ public class PaymentDto {
                 .payStatus(payments.getPayStatus())
                 .payType(payments.getPayType())
                 .payTransactionCode(payments.getPayTransactionCode())
+                .build();
+    }
+
+    public static PaymentDto from(OrderAndPaymentRequestDto OrderAndPaymentRequestDto) {
+        return PaymentDto.builder()
+                .payStatus(OrderAndPaymentRequestDto.getPayStatus())
+                .payType(OrderAndPaymentRequestDto.getPayType())
+                .payTransactionCode(OrderAndPaymentRequestDto.getPayTransactionCode())
                 .build();
     }
 

@@ -54,7 +54,7 @@ public class PaymentController {
     @PatchMapping
     public ResponseEntity<ApiResult<String>> cancelPayment(@RequestParam("payId") UUID payId) {
 
-        paymentsService.cancelPayment(payId);
+        paymentsService.cancelPaymentByPayId(payId);
 
         return new ResponseEntity<>(success("Cancel Payment Success"), HttpStatus.OK);
     }

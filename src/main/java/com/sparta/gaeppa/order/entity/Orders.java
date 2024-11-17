@@ -65,7 +65,7 @@ public class Orders extends BaseEntity {
         this.memberId = memberId;
         this.storeId = storeId;
         this.address = address;
-        this.orderStatus = "주문대기";
+        this.orderStatus = "주문완료";
         this.orderType = orderType;
         this.orderRequest = orderRequest;
     }

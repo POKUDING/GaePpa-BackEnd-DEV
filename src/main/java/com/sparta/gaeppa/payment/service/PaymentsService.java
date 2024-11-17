@@ -57,12 +57,23 @@ public class PaymentsService {
     }
 
     @Transactional
-    public void cancelPayment(UUID payId) {
+    public void cancelPaymentByPayId(UUID payId) {
 
         Payments payments = paymentsRepository.findById(payId)
                 .orElseThrow(() -> new ServiceException(ExceptionStatus.PAYMENT_NOT_FOUND));
 
         payments.cancel(payId);
+
+    }
+
+    @Transactional
+    public void cancelPaymentByOrderId(UUID orderId) {
+
+        Orders orders = orderRepository.findById(orderId)
+                .orElseThrow(() -> new ServiceException(ExceptionStatus.ORDER_NOT_FOUND));
+
+        Payments payments = paymentsRepository.findPaymentByOrder(orders);
+        payments.cancel(payments.getPayId());
 
     }
 

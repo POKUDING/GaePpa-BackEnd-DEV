@@ -23,6 +23,16 @@ public class OrderRequestDto {
     private String orderRequest;
     private List<OrderProductDto> orderProductList;
 
+    public static OrderRequestDto from(OrderAndPaymentRequestDto orderAndPaymentRequestDto) {
+        return OrderRequestDto.builder()
+                .memberId(orderAndPaymentRequestDto.getMemberId())
+                .storeId(orderAndPaymentRequestDto.getStoreId())
+                .address(orderAndPaymentRequestDto.getAddress())
+                .orderType(orderAndPaymentRequestDto.getOrderType())
+                .orderRequest(orderAndPaymentRequestDto.getOrderRequest())
+                .orderProductList(orderAndPaymentRequestDto.getOrderProductList())
+                .build();
+    }
 
     public Orders toEntity() {
         return Orders.builder()
