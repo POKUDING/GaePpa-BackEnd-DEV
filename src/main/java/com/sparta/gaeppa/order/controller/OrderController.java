@@ -39,6 +39,15 @@ public class OrderController {
         return new ResponseEntity<>(success(responseDto), HttpStatus.OK);
     }
 
+    @GetMapping("/orderId")
+    public ResponseEntity<ApiResult<OrderResponseDto>> getAllOrdersByOrderId(
+            @RequestParam("orderId") UUID orderId) {
+
+        OrderResponseDto responseDto = orderService.getOrderByorderId(orderId);
+
+        return new ResponseEntity<>(success(responseDto), HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<ApiResult<OrderResponseDto>> createOrder(@RequestBody OrderAndPaymentRequestDto requestDto) {
 

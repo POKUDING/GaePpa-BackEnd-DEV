@@ -43,6 +43,15 @@ public class OrderService {
                 .orElseThrow(() -> new ServiceException(ExceptionStatus.ORDER_NOT_FOUND));
     }
 
+    @Transactional(readOnly = true)
+    public OrderResponseDto getOrderByorderId(UUID orderId) {
+
+        Orders order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new ServiceException(ExceptionStatus.ORDER_NOT_FOUND));
+
+        return OrderResponseDto.from(order);
+    }
+
     @Transactional
     public OrderResponseDto createOrder(OrderRequestDto requestDto) {
 
@@ -63,8 +72,6 @@ public class OrderService {
                         orderProduct.putOrderOption(optionDto.toEntity());
                     }
                 }
-
-                log.info("[OrderService] orderProductId >>>>>>>> {}", orderProduct.getOrderProductId());
 
                 orders.putOrderProduct(orderProduct);
 
