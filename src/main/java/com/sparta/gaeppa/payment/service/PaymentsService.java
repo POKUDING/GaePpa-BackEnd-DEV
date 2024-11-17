@@ -49,6 +49,10 @@ public class PaymentsService {
         Orders orders = orderRepository.findById(requestDto.getOrderId())
                 .orElseThrow(() -> new ServiceException(ExceptionStatus.ORDER_NOT_FOUND));
 
+        if (orders.getOrderStatus().equals("주문취소")) {
+            throw new ServiceException(ExceptionStatus.PAYMENT_MODIFICATION_NOT_ALLOWED);
+        }
+
         return PaymentDto.from(paymentsRepository.save(requestDto.toEntity(orders)));
     }
 
