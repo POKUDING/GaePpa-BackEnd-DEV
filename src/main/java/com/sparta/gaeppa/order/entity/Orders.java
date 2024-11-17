@@ -74,17 +74,8 @@ public class Orders extends BaseEntity {
         orderProductList.add(orderProduct);
     }
 
-    public void calOrderTotalPrice() {
-        int price = 0;
-
-        for (OrderProduct orderProduct : orderProductList) {
-            for (OrderOption orderOption : orderProduct.getOrderOptionList()) {
-                orderTotalPrice += orderOption.getOptionPrice();
-            }
-            price += orderProduct.getOrderProductPrice() * orderProduct.getOrderProductQuantity();
-        }
-        this.orderTotalPrice = price;
-
+    public void putTotalPrice(int price) {
+        orderTotalPrice = price;
     }
 
     public void cancel(UUID orderId) {
