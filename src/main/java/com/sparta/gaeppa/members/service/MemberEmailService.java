@@ -46,6 +46,7 @@ public class MemberEmailService {
         javaMailSender.send(message);
     }
 
+    @Transactional
     public Member updateByVerifyToken(String emailToken) {
         Optional<Member> optionalMember = memberRepository.findByEmailToken(emailToken);
 
