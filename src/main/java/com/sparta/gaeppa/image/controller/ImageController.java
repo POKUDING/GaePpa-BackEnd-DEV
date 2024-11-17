@@ -8,12 +8,15 @@ import com.sparta.gaeppa.image.dto.ImageResponseDto;
 import com.sparta.gaeppa.image.dto.ResourceDto;
 import com.sparta.gaeppa.image.service.ProductImageService;
 import com.sparta.gaeppa.image.service.ReviewImageService;
+import com.sparta.gaeppa.security.jwts.entity.CustomUserDetails;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -73,5 +76,23 @@ public class ImageController {
         ImageResponseDto responseDto = reviewImageService.uploadReviewImage(reviewid, file);
 
         return new ResponseEntity<>(success(responseDto), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/product-images/{imageId}")
+    public ResponseEntity<ApiResult<String>> deleteProductImage(@PathVariable UUID imageId, @AuthenticationPrincipal
+    CustomUserDetails userDetails) {
+
+        productImageService.deleteProductImage(imageId, userDetails);
+
+        return new ResponseEntity<>(success("Product Image Deleted"), HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/review-images/{imageId}")
+    public ResponseEntity<ApiResult<String>> deleteReviewImage(@PathVariable UUID imageId, @AuthenticationPrincipal
+    CustomUserDetails userDetails) {
+
+        reviewImageService.deleteReviewImage(imageId, userDetails);
+
+        return new ResponseEntity<>(success("Review Image Deleted"), HttpStatus.NO_CONTENT);
     }
 }

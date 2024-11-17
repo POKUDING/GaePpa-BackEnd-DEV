@@ -8,8 +8,10 @@ import com.sparta.gaeppa.image.dto.ResourceDto;
 import com.sparta.gaeppa.image.entity.ProductImage;
 import com.sparta.gaeppa.image.mime.MimeType;
 import com.sparta.gaeppa.image.repository.ProductImageRepository;
+import com.sparta.gaeppa.members.entity.MemberRole;
 import com.sparta.gaeppa.product.entity.Product;
 import com.sparta.gaeppa.product.repository.ProductRepository;
+import com.sparta.gaeppa.security.jwts.entity.CustomUserDetails;
 import java.nio.file.Path;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -56,5 +58,18 @@ public class ProductImageService {
         return ResourceDto.builder()
                 .resource(resource)
                 .mimeType(productImage.getMimeType()).build();
+    }
+
+    public void deleteProductImage(UUID imageId, CustomUserDetails userDetails) {
+
+        ProductImage productImage = productImageRepository.findById(imageId)
+                .orElseThrow(() -> new ServiceException(ExceptionStatus.PRODUCT_IMAGE_NOT_FOUND));
+
+        if (userDetails.getMemberRole() != MemberRole.MANAGER && userDetails.getMemberRole() != MemberRole.OWNER
+                && !productImage.getCreatedBy().equals(userDetails.getUsername())) {
+            throw new ServiceException(ExceptionStatus.UNAUTHORIZED);
+        }
+
+        productImage.delete(userDetails.getUsername());
     }
 }
