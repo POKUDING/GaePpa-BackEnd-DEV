@@ -5,6 +5,8 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -42,11 +44,13 @@ public class Orders extends BaseEntity {
     @Embedded
     private Address address;
 
+    @Enumerated(value = EnumType.STRING)
     @Column(nullable = false, name = "order_status")
-    private String orderStatus;
+    private OrderStatus orderStatus;
 
+    @Enumerated(value = EnumType.STRING)
     @Column(nullable = false, name = "order_type")
-    private String orderType;
+    private OrderType orderType;
 
     @Column(nullable = false, name = "order_total_price")
     private int orderTotalPrice;
@@ -60,12 +64,12 @@ public class Orders extends BaseEntity {
 
 
     @Builder
-    private Orders(UUID memberId, UUID storeId, Address address, String orderType,
+    private Orders(UUID memberId, UUID storeId, Address address, OrderType orderType,
                    String orderRequest) {
         this.memberId = memberId;
         this.storeId = storeId;
         this.address = address;
-        this.orderStatus = "주문완료";
+        this.orderStatus = OrderStatus.COMPLETED;
         this.orderType = orderType;
         this.orderRequest = orderRequest;
     }
@@ -79,6 +83,6 @@ public class Orders extends BaseEntity {
     }
 
     public void cancel(UUID orderId) {
-        this.orderStatus = "주문취소";
+        this.orderStatus = OrderStatus.CANCELED;
     }
 }

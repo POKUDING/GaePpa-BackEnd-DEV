@@ -26,7 +26,7 @@ public class PaymentDto {
     public static PaymentDto from(Payments payments) {
         return PaymentDto.builder()
                 .orderId(payments.getOrder().getOrderId())
-                .payStatus(payments.getPayStatus())
+                .payStatus(payments.getPayStatus().toString())
                 .payType(payments.getPayType())
                 .payTransactionCode(payments.getPayTransactionCode())
                 .build();
@@ -43,7 +43,6 @@ public class PaymentDto {
     public Payments toEntity(Orders orders) {
         return Payments.builder()
                 .order(orders)
-                .payStatus(payStatus)
                 .payType(payType)
                 .payTransactionCode(payTransactionCode)
                 .build();

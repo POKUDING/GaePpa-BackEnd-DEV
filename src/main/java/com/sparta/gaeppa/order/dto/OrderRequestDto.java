@@ -1,5 +1,6 @@
 package com.sparta.gaeppa.order.dto;
 
+import com.sparta.gaeppa.order.entity.OrderType;
 import com.sparta.gaeppa.order.entity.Orders;
 import java.util.List;
 import java.util.UUID;
@@ -39,7 +40,7 @@ public class OrderRequestDto {
                 .memberId(this.memberId)
                 .storeId(this.storeId)
                 .address(AddressDto.toEntity(this.address))
-                .orderType(this.orderType)
+                .orderType(OrderType.valueOf(this.orderType))
                 .orderRequest(this.orderRequest)
                 .build();
     }
