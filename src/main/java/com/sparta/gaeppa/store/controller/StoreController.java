@@ -3,7 +3,11 @@ package com.sparta.gaeppa.store.controller;
 
 import static com.sparta.gaeppa.global.util.ApiResponseUtil.success;
 
+import com.sparta.gaeppa.global.exception.ExceptionStatus;
+import com.sparta.gaeppa.global.exception.ServiceException;
 import com.sparta.gaeppa.global.util.ApiResponseUtil.ApiResult;
+import com.sparta.gaeppa.members.entity.Member;
+import com.sparta.gaeppa.members.repository.MemberRepository;
 import com.sparta.gaeppa.store.dto.StoreCreateRequestDto;
 import com.sparta.gaeppa.store.dto.StoreResponseDto;
 import com.sparta.gaeppa.store.dto.StoreUpdateRequestDto;
@@ -29,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class StoreController {
 
     private final StoreService storeService;
+    private final MemberRepository memberRepository;
 
     /**
      * 1. 가게를 새롭게 등록하는 일 [ROLE : OWNER] POST
@@ -38,10 +43,10 @@ public class StoreController {
      * reviewAvg, reviewCount -> 'Default = 0' 으로 설정
      * @return
      */
-    @PostMapping
-    public ResponseEntity<ApiResult<StoreResponseDto>> createStore(@Valid @RequestBody StoreCreateRequestDto requestDto) {
+    @PostMapping("/{memberid}")
+    public ResponseEntity<ApiResult<StoreResponseDto>> createStore(@Valid @RequestBody StoreCreateRequestDto requestDto, @PathVariable UUID memberid) {
 
-        Store store = storeService.createStore(requestDto);
+        Store store = storeService.createOwnerStore(requestDto, memberid);
 
         return new ResponseEntity<>(success(StoreResponseDto.fromEntity(store)), HttpStatus.CREATED);
     }
@@ -49,10 +54,12 @@ public class StoreController {
     /**
      * 2. 나의 가게에 대한 정보를 조회 [ROLE : OWNER] GET
      */
-    @GetMapping
-    public ResponseEntity<ApiResult<StoreResponseDto>> getMyStore(@PathVariable UUID storeId) {
+    @GetMapping("/{memberid}")
+    public ResponseEntity<ApiResult<StoreResponseDto>> getMyStore(@PathVariable UUID memberid) {
 
-        Store store = storeService.getMyStore(storeId);
+        Member member = memberRepository.findById(memberid)
+                .orElseThrow(() -> new ServiceException(ExceptionStatus.MEMBER_NOT_FOUND));
+        Store store = storeService.getMyStoreByMemberId(memberid);
 
         return new ResponseEntity<>(success(StoreResponseDto.fromEntity(store)), HttpStatus.OK);
     }
@@ -78,7 +85,7 @@ public class StoreController {
     @PostMapping("/{storeId}")
     public ResponseEntity<ApiResult<String>> deActivateStore(@PathVariable UUID storeId) {
 
-        Store store = storeService.getMyStore(storeId);
+        Store store = storeService.getMyStoreByStoreId(storeId);
         store.toggleVisibility(); // 항상 상태를 반전
 
         String message = store.isVisible()
@@ -87,10 +94,6 @@ public class StoreController {
 
         return new ResponseEntity<>(success(message), HttpStatus.CREATED);
     }
-    // 1. 가게를 새롭게 등록하는 일 [ROLE : OWNER] POST
-    // 2. 나의 가게에 대한 정보를 조회 [ROLE : OWNER] GET
-    // 3. 가게 정보를 수정하는 일  [ROLE : OWNER] PUT
-    // 4. 가게를 비활성화(검색이 불가하도록), 재활성화 하는 일 [ROLE : OWNER]
 
     // 가게의 리뷰가 달릴 때, reviewAvg, reviewCount 를 변경해주는 서비스 메서드가 필요함. -> 컨트롤러는 ReviewController 에서 관리
 
