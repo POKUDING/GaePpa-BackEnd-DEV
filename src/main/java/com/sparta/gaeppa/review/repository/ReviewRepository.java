@@ -12,8 +12,8 @@ public interface ReviewRepository extends JpaRepository<Review, UUID> {
 
     boolean existsReviewByOrder_orderId(UUID orderId);
 
-    @Query(value = "SELECT r FROM Review r JOIN Orders od WHERE od.orderId = r.order.orderId AND r.deletedAt IS NULL")
+    @Query(value = "SELECT r FROM Review r JOIN Orders od on r.order.orderId = od.orderId WHERE r.deletedAt IS NULL")
     List<Review> getAllReviewsByStoreId(UUID storeId);
 
-    Review findByOrder_OrderId(UUID orderId);
+    Review findByOrder_OrderIdAndDeletedAtIsNull(UUID orderId);
 }
