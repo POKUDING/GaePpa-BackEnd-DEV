@@ -82,7 +82,7 @@ public class ReviewService {
 
     }
 
-
+    @Transactional
     public void deleteReview(UUID reviewId, String username) {
 
         Review review = reviewRepository.findById(reviewId)
