@@ -2,6 +2,7 @@ package com.sparta.gaeppa.payment.service;
 
 import com.sparta.gaeppa.global.exception.ExceptionStatus;
 import com.sparta.gaeppa.global.exception.ServiceException;
+import com.sparta.gaeppa.order.entity.OrderStatus;
 import com.sparta.gaeppa.order.entity.Orders;
 import com.sparta.gaeppa.order.repository.OrderRepository;
 import com.sparta.gaeppa.payment.dto.PaymentDto;
@@ -49,7 +50,7 @@ public class PaymentsService {
         Orders orders = orderRepository.findById(requestDto.getOrderId())
                 .orElseThrow(() -> new ServiceException(ExceptionStatus.ORDER_NOT_FOUND));
 
-        if (orders.getOrderStatus().equals("주문취소")) {
+        if (orders.getOrderStatus().equals(OrderStatus.CANCELED)) {
             throw new ServiceException(ExceptionStatus.PAYMENT_MODIFICATION_NOT_ALLOWED);
         }
 
@@ -57,12 +58,23 @@ public class PaymentsService {
     }
 
     @Transactional
-    public void cancelPayment(UUID payId) {
+    public void cancelPaymentByPayId(UUID payId) {
 
         Payments payments = paymentsRepository.findById(payId)
                 .orElseThrow(() -> new ServiceException(ExceptionStatus.PAYMENT_NOT_FOUND));
 
         payments.cancel(payId);
+
+    }
+
+    @Transactional
+    public void cancelPaymentByOrderId(UUID orderId) {
+
+        Orders orders = orderRepository.findById(orderId)
+                .orElseThrow(() -> new ServiceException(ExceptionStatus.ORDER_NOT_FOUND));
+
+        Payments payments = paymentsRepository.findPaymentByOrder(orders);
+        payments.cancel(payments.getPayId());
 
     }
 

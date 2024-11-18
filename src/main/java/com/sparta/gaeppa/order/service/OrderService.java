@@ -7,6 +7,7 @@ import com.sparta.gaeppa.order.dto.OrderProductDto;
 import com.sparta.gaeppa.order.dto.OrderProductOptionDto;
 import com.sparta.gaeppa.order.dto.OrderRequestDto;
 import com.sparta.gaeppa.order.dto.OrderResponseDto;
+import com.sparta.gaeppa.order.entity.OrderOption;
 import com.sparta.gaeppa.order.entity.OrderProduct;
 import com.sparta.gaeppa.order.entity.Orders;
 import com.sparta.gaeppa.order.repository.OrderRepository;
@@ -43,6 +44,15 @@ public class OrderService {
                 .orElseThrow(() -> new ServiceException(ExceptionStatus.ORDER_NOT_FOUND));
     }
 
+    @Transactional(readOnly = true)
+    public OrderResponseDto getOrderByorderId(UUID orderId) {
+
+        Orders order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new ServiceException(ExceptionStatus.ORDER_NOT_FOUND));
+
+        return OrderResponseDto.from(order);
+    }
+
     @Transactional
     public OrderResponseDto createOrder(OrderRequestDto requestDto) {
 
@@ -64,15 +74,13 @@ public class OrderService {
                     }
                 }
 
-                log.info("[OrderService] orderProductId >>>>>>>> {}", orderProduct.getOrderProductId());
-
                 orders.putOrderProduct(orderProduct);
 
             } catch (NullPointerException e) {
                 throw new ServiceException(ExceptionStatus.ORDER_REQUEST_NOT_FOUND);
             }
         }
-        orders.calOrderTotalPrice();
+        orders.putTotalPrice(calOrderTotalPrice(orders));
         return OrderResponseDto.from(orderRepository.save(orders));
     }
 
@@ -95,6 +103,19 @@ public class OrderService {
         Duration duration = Duration.between(order.getCreatedAt(), now);
 
         return duration.toMinutes() < 5;
+    }
+
+    public int calOrderTotalPrice(Orders orders) {
+        int price = 0;
+
+        for (OrderProduct orderProduct : orders.getOrderProductList()) {
+            for (OrderOption orderOption : orderProduct.getOrderOptionList()) {
+                price += orderOption.getOptionPrice();
+            }
+            price += orderProduct.getOrderProductPrice() * orderProduct.getOrderProductQuantity();
+        }
+        return price;
+
     }
 
 

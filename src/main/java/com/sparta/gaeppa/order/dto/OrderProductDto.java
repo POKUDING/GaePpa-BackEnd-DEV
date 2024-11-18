@@ -18,12 +18,16 @@ import lombok.NoArgsConstructor;
 public class OrderProductDto {
 
     private UUID productId;
+    private String productName;
     private int productQuantity;
     private List<OrderProductOptionDto> productOptionList;
 
     public static OrderProductDto from(OrderProduct orderProduct) {
         return OrderProductDto.builder()
+                .productId(orderProduct.getOrderProductId())
+                .productName(orderProduct.getProduct().getName())
                 .productQuantity(orderProduct.getOrderProductQuantity())
+                .productOptionList(orderProduct.getOrderOptionList().stream().map(OrderProductOptionDto::from).toList())
                 .build();
     }
 

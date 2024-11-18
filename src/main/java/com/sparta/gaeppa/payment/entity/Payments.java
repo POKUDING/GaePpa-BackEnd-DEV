@@ -4,6 +4,8 @@ import com.sparta.gaeppa.global.base.BaseEntity;
 import com.sparta.gaeppa.order.entity.Orders;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -31,8 +33,9 @@ public class Payments extends BaseEntity {
     @JoinColumn(nullable = false, name = "order_id")
     private Orders order;
 
+    @Enumerated(value = EnumType.STRING)
     @Column(nullable = false, name = "pay_status")
-    private String payStatus;
+    private PaymentStatus payStatus;
 
     @Column(nullable = false, name = "pay_type")
     private String payType;
@@ -41,14 +44,14 @@ public class Payments extends BaseEntity {
     private String payTransactionCode;
 
     @Builder
-    private Payments(Orders order, String payStatus, String payType, String payTransactionCode) {
+    private Payments(Orders order, String payType, String payTransactionCode) {
         this.order = order;
-        this.payStatus = payStatus;
+        this.payStatus = PaymentStatus.COMPLETED;
         this.payType = payType;
         this.payTransactionCode = payTransactionCode;
     }
 
     public void cancel(UUID payId) {
-        this.payStatus = "결제취소";
+        this.payStatus = PaymentStatus.CANCELED;
     }
 }
