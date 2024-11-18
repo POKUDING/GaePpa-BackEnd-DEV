@@ -9,6 +9,8 @@ public interface StorageService {
 
     void init();
 
+    void createDirectory(Path targetLocation);
+
     void store(MultipartFile file, Path targetLocation, String fileName);
 
     Stream<Path> loadAll();
