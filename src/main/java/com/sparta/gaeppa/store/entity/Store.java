@@ -15,6 +15,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -86,8 +87,8 @@ public class Store extends BaseEntity {
 
     @Builder
     private Store(Member member, StoreCategory category, String storeName, String storeAddress,
-                    String storeTelephone, String storeIntroduce, String businessTime,
-                    boolean isVisible, BigDecimal reviewAvg, int reviewCount) {
+                  String storeTelephone, String storeIntroduce, String businessTime,
+                  boolean isVisible, BigDecimal reviewAvg, int reviewCount) {
         this.member = member;
         this.category = category;
         this.storeName = storeName;
@@ -100,7 +101,8 @@ public class Store extends BaseEntity {
         this.reviewCount = reviewCount;
     }
 
-    public void updateStore(String storeName, String storeAddress, String storeTelephone, String storeIntroduce, String businessTime, StoreCategory category) {
+    public void updateStore(String storeName, String storeAddress, String storeTelephone, String storeIntroduce,
+                            String businessTime, StoreCategory category) {
         this.storeName = storeName;
         this.storeAddress = storeAddress;
         this.storeTelephone = storeTelephone;
@@ -112,5 +114,14 @@ public class Store extends BaseEntity {
     // isVisible 값을 반전시키는 메서드
     public void toggleVisibility() {
         this.isVisible = !this.isVisible;
+    }
+
+    // Review 추가시 업데이트시키는 메서드
+    public void updateReviewAvg(int newReviewScore) {
+
+        this.reviewCount++;
+        this.reviewAvg = this.reviewAvg.multiply(BigDecimal.valueOf(reviewCount - 1))
+                .add(BigDecimal.valueOf(newReviewScore))
+                .divide(BigDecimal.valueOf(reviewCount), 2, RoundingMode.HALF_UP); // 소수점 둘째 자리에서 반올림
     }
 }
