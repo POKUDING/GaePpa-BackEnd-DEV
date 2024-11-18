@@ -43,9 +43,9 @@ public class ReviewService {
     @Transactional(readOnly = true)
     public ReviewResponseDto getReviewByOrderId(UUID orderId) {
 
-        Review review = reviewRepository.findByOrder_OrderId(orderId);
-
-        return ReviewResponseDto.from(review);
+        return Optional.ofNullable(reviewRepository.findByOrder_OrderIdAndDeletedAtIsNull(orderId))
+                .map(ReviewResponseDto::from)
+                .orElseThrow(() -> new ServiceException(ExceptionStatus.REVIEW_NOT_FOUND));
     }
 
     @Transactional
