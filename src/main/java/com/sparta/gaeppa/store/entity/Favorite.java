@@ -37,9 +37,6 @@ public class Favorite extends BaseEntity {
     @JoinColumn(name = "store_id", nullable = false)
     private Store store; // 즐겨찾기한 가게
 
-    @Column(nullable = false)
-    private LocalDateTime createdAt; // 즐겨찾기한 날짜
-
     @Builder
     private Favorite(Profile profile, Store store) {
         this.profile = profile;
