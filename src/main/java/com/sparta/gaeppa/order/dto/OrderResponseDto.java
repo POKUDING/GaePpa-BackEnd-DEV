@@ -18,6 +18,7 @@ public class OrderResponseDto {
 
     private UUID orderId;
     private UUID storeId;
+    private String storeName;
     private AddressDto address;
     private String orderStatus;
     private String orderType;
@@ -28,7 +29,8 @@ public class OrderResponseDto {
     public static OrderResponseDto from(Orders orders) {
         return OrderResponseDto.builder()
                 .orderId(orders.getOrderId())
-                .storeId(orders.getStoreId())
+                .storeId(orders.getStore().getStoreId())
+                .storeName(orders.getStore().getStoreName())
                 .address(AddressDto.from(orders.getAddress()))
                 .orderStatus(orders.getOrderStatus().toString())
                 .orderType(orders.getOrderType().toString())

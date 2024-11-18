@@ -1,14 +1,18 @@
 package com.sparta.gaeppa.order.entity;
 
 import com.sparta.gaeppa.global.base.BaseEntity;
+import com.sparta.gaeppa.store.entity.Store;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
@@ -33,13 +37,9 @@ public class Orders extends BaseEntity {
     @Column(nullable = false, name = "member_id")
     private UUID memberId;
 
-//    Store API 추가 후 수정
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(nullable = false, name = "store_id")
-//    private Store store;
-
-    @Column(nullable = false, name = "store_id")
-    private UUID storeId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false, name = "store_id")
+    private Store store;
 
     @Embedded
     private Address address;
@@ -64,10 +64,10 @@ public class Orders extends BaseEntity {
 
 
     @Builder
-    private Orders(UUID memberId, UUID storeId, Address address, OrderType orderType,
+    private Orders(UUID memberId, Store store, Address address, OrderType orderType,
                    String orderRequest) {
         this.memberId = memberId;
-        this.storeId = storeId;
+        this.store = store;
         this.address = address;
         this.orderStatus = OrderStatus.COMPLETED;
         this.orderType = orderType;

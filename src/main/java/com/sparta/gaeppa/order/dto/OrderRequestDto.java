@@ -2,6 +2,7 @@ package com.sparta.gaeppa.order.dto;
 
 import com.sparta.gaeppa.order.entity.OrderType;
 import com.sparta.gaeppa.order.entity.Orders;
+import com.sparta.gaeppa.store.entity.Store;
 import java.util.List;
 import java.util.UUID;
 import lombok.AccessLevel;
@@ -18,6 +19,7 @@ public class OrderRequestDto {
 
     private UUID memberId;
     private UUID storeId;
+    private Store store;
     private AddressDto address;
     private String orderType;
     private int totalPrice;
@@ -38,11 +40,15 @@ public class OrderRequestDto {
     public Orders toEntity() {
         return Orders.builder()
                 .memberId(this.memberId)
-                .storeId(this.storeId)
+                .store(this.store)
                 .address(AddressDto.toEntity(this.address))
                 .orderType(OrderType.valueOf(this.orderType))
                 .orderRequest(this.orderRequest)
                 .build();
+    }
+
+    public void putStore(Store store) {
+        this.store = store;
     }
 
 }
