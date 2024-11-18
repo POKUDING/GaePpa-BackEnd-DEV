@@ -1,5 +1,11 @@
 spring:
   jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+        default_batch_fetch_size: 1000 #최적화 옵션
     hibernate:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
@@ -9,11 +15,6 @@ spring:
       #  update	변경된 스키마 적용 (운영 DB 에서 사용X)
       #  validate Entity 와 테이블이 정상 매핑 되었는지 확인
       #  none 기존테이블을 더 이상 건드리지 않음.
-    properties:
-      hibernate:
-        #        show_sql: true
-        format_sql: false
-        default_batch_fetch_size: 1000 #최적화 옵션
     open-in-view: true
 
   jackson:

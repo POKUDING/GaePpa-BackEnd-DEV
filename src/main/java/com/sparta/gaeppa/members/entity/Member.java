@@ -48,7 +48,7 @@ public class Member extends BaseEntity {
     private LoginType loginType;
 
     @Column(name = "provider_user_id", unique = true, nullable = false)
-    private String providerUserId; // Provider + provider Id 형식
+    private String providerUserId; // Provider + "-" + provider Id 형식
 
     @Column(name = "email_token")
     private String emailToken;
@@ -101,6 +101,10 @@ public class Member extends BaseEntity {
 
     public void setLastLoginDate(LocalDateTime now) {
         this.lastLoginAt = now;
+    }
+
+    public void updateRole(MemberRole newRole) {
+        this.role = newRole;
     }
 
     // 일반 회원 생성 메서드

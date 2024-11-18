@@ -10,6 +10,7 @@ import com.sparta.gaeppa.store.dto.StoreUpdateRequestDto;
 import com.sparta.gaeppa.store.entity.Store;
 import com.sparta.gaeppa.store.entity.StoreCategory;
 import com.sparta.gaeppa.store.repository.StoreRepository;
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,10 +20,10 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional
 public class StoreService {
-    MemberRepository memberRepository;
-    StoreRepository storeRepository;
-    StoreCategoryService storeCategoryService;
-    AuditorAwareImpl auditorAware;
+    private final MemberRepository memberRepository;
+    private final StoreRepository storeRepository;
+    private final StoreCategoryService storeCategoryService;
+    private final AuditorAwareImpl auditorAware;
 
     @Transactional
     public Store createStore(StoreCreateRequestDto storeCreateRequestDto) {
@@ -32,6 +33,22 @@ public class StoreService {
 
         // 회원 조회
         Member member = memberRepository.findById(userId)
+                .orElseThrow(() -> new ServiceException(ExceptionStatus.MEMBER_NOT_FOUND));
+
+        // 카테고리 생성 또는 예외 발생
+        StoreCategory storeCategory = storeCategoryService.createIfNotExists(
+                storeCreateRequestDto.getStoreCategoryName()
+        );
+
+        // Store 엔티티 생성 및 저장
+        Store store = storeCreateRequestDto.toStoreEntity(storeCategory, member);
+        return storeRepository.save(store);
+    }
+
+    @Transactional
+    public Store createOwnerStore(StoreCreateRequestDto storeCreateRequestDto, UUID ownerId) {
+        // 회원 조회
+        Member member = memberRepository.findById(ownerId)
                 .orElseThrow(() -> new ServiceException(ExceptionStatus.MEMBER_NOT_FOUND));
 
         // 카테고리 생성 또는 예외 발생
@@ -69,10 +86,30 @@ public class StoreService {
     }
 
     @Transactional(readOnly = true)
-    public Store getMyStore(UUID storeId) {
+    public Store getMyStoreByStoreId(UUID storeId) {
 
         return storeRepository.findById(storeId)
                 .orElseThrow(() -> new ServiceException(ExceptionStatus.STORE_NOT_FOUND));
     }
 
+    @Transactional(readOnly = true)
+    public Store getMyStoreByMemberId(UUID memberId) {
+
+        return storeRepository.findByMemberMemberId(memberId)
+                .orElseThrow(() -> new ServiceException(ExceptionStatus.STORE_NOT_FOUND));
+    }
+
+    // 가게 전체를 조회하는 메서드
+    @Transactional(readOnly = true)
+    public List<Store> getAllStores() {
+        return storeRepository.findAll();
+    }
+
+    // 가게를 삭제하는 메서드
+    @Transactional
+    public void deleteStore(UUID storeId) {
+        Store store = storeRepository.findById(storeId)
+                .orElseThrow(() -> new ServiceException(ExceptionStatus.STORE_NOT_FOUND));
+        storeRepository.delete(store);
+    }
 }
