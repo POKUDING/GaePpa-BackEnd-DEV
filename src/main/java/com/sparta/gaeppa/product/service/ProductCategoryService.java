@@ -57,6 +57,6 @@ public class ProductCategoryService {
             throw new ServiceException(ExceptionStatus.PRODUCT_CATEGORY_HAS_PRODUCTS);
         }
 
-        productCategoryRepository.deleteById(productCategoryId);
+        productCategory.delete(userDetails.getUsername());
     }
 }
