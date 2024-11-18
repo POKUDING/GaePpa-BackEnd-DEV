@@ -11,19 +11,26 @@ import com.sparta.gaeppa.order.entity.OrderOption;
 import com.sparta.gaeppa.order.entity.OrderProduct;
 import com.sparta.gaeppa.order.entity.Orders;
 import com.sparta.gaeppa.order.repository.OrderRepository;
+import com.sparta.gaeppa.product.entity.Product;
+import com.sparta.gaeppa.product.repository.ProductRepository;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class OrderService {
 
 
     private final OrderRepository orderRepository;
+    private final ProductRepository productRepository;
 
 
     @Transactional(readOnly = true)
@@ -37,31 +44,79 @@ public class OrderService {
                 .orElseThrow(() -> new ServiceException(ExceptionStatus.ORDER_NOT_FOUND));
     }
 
+    @Transactional(readOnly = true)
+    public OrderResponseDto getOrderByorderId(UUID orderId) {
+
+        Orders order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new ServiceException(ExceptionStatus.ORDER_NOT_FOUND));
+
+        return OrderResponseDto.from(order);
+    }
+
     @Transactional
     public OrderResponseDto createOrder(OrderRequestDto requestDto) {
 
         Orders orders = requestDto.toEntity();
-        List<OrderProductDto> productListDto = requestDto.getOrderProductList();
 
-        for (OrderProductDto productDto : productListDto) {
+        for (OrderProductDto orderProductDto : requestDto.getOrderProductList()) {
 
             try {
-                OrderProduct product = productDto.toEntity(orders);
-                orders.putOrderProduct(product);
 
-                List<OrderProductOptionDto> optionListDto = productDto.getProductOptionList();
-                for (OrderProductOptionDto optionDto : optionListDto) {
-                    OrderOption option = optionDto.toEntity(product);
-                    product.putOrderOption(option);
+                Product product = productRepository.findById(orderProductDto.getProductId())
+                        .orElseThrow(() -> new ServiceException(ExceptionStatus.PRODUCT_NOT_FOUND));
+
+                OrderProduct orderProduct = orderProductDto.toEntity(orders, product);
+
+                if (!orderProduct.getOrderOptionList().isEmpty()) {
+
+                    for (OrderProductOptionDto optionDto : orderProductDto.getProductOptionList()) {
+                        orderProduct.putOrderOption(optionDto.toEntity());
+                    }
                 }
 
+                orders.putOrderProduct(orderProduct);
 
             } catch (NullPointerException e) {
                 throw new ServiceException(ExceptionStatus.ORDER_REQUEST_NOT_FOUND);
             }
         }
-
+        orders.putTotalPrice(calOrderTotalPrice(orders));
         return OrderResponseDto.from(orderRepository.save(orders));
     }
+
+    @Transactional
+    public void cancelOrder(UUID orderId) {
+
+        Orders orders = orderRepository.findById(orderId)
+                .orElseThrow(() -> new ServiceException(ExceptionStatus.ORDER_NOT_FOUND));
+
+        if (!isWithinFiveMinutes(orders)) {
+            throw new ServiceException(ExceptionStatus.ORDER_MODIFICATION_NOT_ALLOWED);
+        }
+
+        orders.cancel(orderId);
+    }
+
+    private boolean isWithinFiveMinutes(Orders order) {
+
+        LocalDateTime now = LocalDateTime.now();
+        Duration duration = Duration.between(order.getCreatedAt(), now);
+
+        return duration.toMinutes() < 5;
+    }
+
+    public int calOrderTotalPrice(Orders orders) {
+        int price = 0;
+
+        for (OrderProduct orderProduct : orders.getOrderProductList()) {
+            for (OrderOption orderOption : orderProduct.getOrderOptionList()) {
+                price += orderOption.getOptionPrice();
+            }
+            price += orderProduct.getOrderProductPrice() * orderProduct.getOrderProductQuantity();
+        }
+        return price;
+
+    }
+
 
 }

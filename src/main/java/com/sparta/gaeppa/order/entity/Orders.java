@@ -5,6 +5,8 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -16,7 +18,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "p_orders")
@@ -37,17 +38,19 @@ public class Orders extends BaseEntity {
 //    @JoinColumn(nullable = false, name = "store_id")
 //    private Store store;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "store_id")
     private UUID storeId;
 
     @Embedded
     private Address address;
 
+    @Enumerated(value = EnumType.STRING)
     @Column(nullable = false, name = "order_status")
-    private String orderStatus;
+    private OrderStatus orderStatus;
 
+    @Enumerated(value = EnumType.STRING)
     @Column(nullable = false, name = "order_type")
-    private String orderType;
+    private OrderType orderType;
 
     @Column(nullable = false, name = "order_total_price")
     private int orderTotalPrice;
@@ -55,39 +58,31 @@ public class Orders extends BaseEntity {
     @Column(name = "order_request")
     private String orderRequest;
 
-    @Setter
     @OneToMany(mappedBy = "order",
             cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderProduct> orderProductList = new ArrayList<>();
 
-//    Store API 추가 후 수정
-//    @Builder
-//    private Orders(UUID memberId, Store store, Address address, int orderTotalPrice, String orderType,
-//                   String orderRequest, List<OrderProduct> orderProductList) {
-//        this.memberId = memberId;
-//        this.store = store;
-//        this.address = address;
-//        this.orderStatus = "주문대기";
-//        this.orderType = orderType;
-//        this.orderTotalPrice = orderTotalPrice;
-//        this.orderRequest = orderRequest;
-//        this.orderProductList = orderProductList;
-//    }
 
-    // Store 추가 후 삭제
     @Builder
-    private Orders(UUID memberId, UUID storeId, Address address, String orderType, int orderTotalPrice,
+    private Orders(UUID memberId, UUID storeId, Address address, OrderType orderType,
                    String orderRequest) {
         this.memberId = memberId;
         this.storeId = storeId;
         this.address = address;
-        this.orderStatus = "주문대기";
+        this.orderStatus = OrderStatus.COMPLETED;
         this.orderType = orderType;
-        this.orderTotalPrice = orderTotalPrice;
         this.orderRequest = orderRequest;
     }
 
     public void putOrderProduct(OrderProduct orderProduct) {
-        this.orderProductList.add(orderProduct);
+        orderProductList.add(orderProduct);
+    }
+
+    public void putTotalPrice(int price) {
+        orderTotalPrice = price;
+    }
+
+    public void cancel(UUID orderId) {
+        this.orderStatus = OrderStatus.CANCELED;
     }
 }

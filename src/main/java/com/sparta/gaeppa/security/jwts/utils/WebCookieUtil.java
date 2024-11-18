@@ -4,26 +4,32 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
-@Component
+
+
 public class WebCookieUtil {
 
-    public Cookie createCookieLocal(String key, String value) {
+    // Private constructor to prevent instantiation
+    private WebCookieUtil() {
+        throw new UnsupportedOperationException("Utility class cannot be instantiated");
+    }
+
+    public static Cookie createCookieLocal(String key, String value) {
         Cookie cookie = new Cookie(key, value);
         cookie.setPath("/");
         cookie.setHttpOnly(true);
         return cookie;
     }
 
-    public Cookie createCookieRelease(String key, String value) {
+    public static Cookie createCookieRelease(String key, String value) {
         Cookie cookie = new Cookie(key, value);
-        cookie.setMaxAge(60 * 60 * 60);
+        cookie.setMaxAge(60 * 60 * 60); // 1 hour max-age
         cookie.setSecure(true);
         cookie.setPath("/");
         cookie.setHttpOnly(true);
         return cookie;
     }
 
-    public String getCookieValue(HttpServletRequest request, String cookieName) {
+    public static String getCookieValue(HttpServletRequest request, String cookieName) {
         if (request.getCookies() != null) {
             for (Cookie cookie : request.getCookies()) {
                 if (cookieName.equals(cookie.getName())) {
@@ -34,11 +40,12 @@ public class WebCookieUtil {
         return null;
     }
 
-    public void deleteCookie(HttpServletResponse response, String cookieName) {
+    public static void deleteCookie(HttpServletResponse response, String cookieName) {
         Cookie cookie = new Cookie(cookieName, null);
         cookie.setPath("/");
         cookie.setHttpOnly(true);
-        cookie.setMaxAge(0);
+        cookie.setMaxAge(0); // Set expiry to zero to delete the cookie
         response.addCookie(cookie);
     }
 }
+

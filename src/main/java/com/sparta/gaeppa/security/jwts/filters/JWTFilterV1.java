@@ -10,6 +10,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -60,7 +61,7 @@ public class JWTFilterV1 extends OncePerRequestFilter {
             String accessToken = authorization.split(" ")[1];
 
             if (jwtUtil.isExpired(accessToken)) {
-                String memberId = jwtUtil.getMemberId(accessToken);
+                UUID memberId = jwtUtil.getMemberId(accessToken);
                 log.warn("JWTFilterV1 - Access token expired for member ID: {}, redirecting to login.", memberId);
                 handleUnauthorizedRedirect(response);
                 return;
@@ -84,10 +85,10 @@ public class JWTFilterV1 extends OncePerRequestFilter {
             throw new BadCredentialsException("Invalid token");
         }
 
-        String memberId = jwtUtil.getMemberId(token);
+        UUID memberId = jwtUtil.getMemberId(token);
         MemberRole role = jwtUtil.getRole(token);
 
-        AuthenticatedUserDto authenticatedUserDto = AuthenticatedUserDto.createAuthenticatedUserDto(Long.valueOf(memberId), role, true);
+        AuthenticatedUserDto authenticatedUserDto = AuthenticatedUserDto.createAuthenticatedUserDto(memberId, role, true);
         CustomUserDetails customOAuth2User = new CustomUserDetails(authenticatedUserDto);
 
         log.debug("JWTFilterV1 - Created CustomUserDetails for member ID: {}", memberId);

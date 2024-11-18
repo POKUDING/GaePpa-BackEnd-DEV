@@ -4,6 +4,7 @@ import com.sparta.gaeppa.order.entity.OrderProduct;
 import com.sparta.gaeppa.order.entity.Orders;
 import com.sparta.gaeppa.product.entity.Product;
 import java.util.List;
+import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,27 +17,30 @@ import lombok.NoArgsConstructor;
 @Builder
 public class OrderProductDto {
 
-    private Product product;
+    private UUID productId;
     private String productName;
     private int productQuantity;
-    private int productPrice;
     private List<OrderProductOptionDto> productOptionList;
 
     public static OrderProductDto from(OrderProduct orderProduct) {
         return OrderProductDto.builder()
-                .productName(orderProduct.getOrderProductName())
+                .productId(orderProduct.getOrderProductId())
+                .productName(orderProduct.getProduct().getName())
                 .productQuantity(orderProduct.getOrderProductQuantity())
-                .productPrice(orderProduct.getOrderProductPrice())
+                .productOptionList(orderProduct.getOrderOptionList().stream().map(OrderProductOptionDto::from).toList())
                 .build();
     }
 
-    public OrderProduct toEntity(Orders orders) {
+    public OrderProduct toEntity(Orders order, Product product) {
+
         return OrderProduct.builder()
+                .order(order)
                 .product(product)
-                .order(orders)
-                .orderProductName(productName)
-                .orderProductQuantity(productQuantity)
-                .orderProductPrice(productPrice)
+                .orderProductName(product.getName())
+                .orderProductPrice(product.getPrice())
+                .orderProductQuantity(getProductQuantity())
                 .build();
+
     }
+
 }

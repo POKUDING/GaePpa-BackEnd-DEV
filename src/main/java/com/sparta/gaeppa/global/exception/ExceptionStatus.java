@@ -22,11 +22,28 @@ public enum ExceptionStatus {
     //ProductOption
     PRODUCT_OPTION_NOT_FOUND(HttpStatus.NOT_FOUND, "PO001", "상품 옵션이 존재하지 않습니다."),
 
-    //Users
+    // Users, Auditor
+    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "M001", "회원이 존재하지 않습니다."),
+    AUDITOR_NOT_FOUND(HttpStatus.NOT_FOUND, "M002", "인증 객체가 존재하지 않습니다."),
+
+    // Profile
+    PROFILE_NOT_FOUND(HttpStatus.NOT_FOUND, "P001","회원 프로필이 존재하지 않습니다." ),
 
     //Orders
     ORDER_NOT_FOUND(HttpStatus.NOT_FOUND, "o001", "주문이 존재하지 않습니다."),
-    ORDER_REQUEST_NOT_FOUND(HttpStatus.NOT_FOUND, "o001", "주문이 존재하지 않습니다."),
+    ORDER_REQUEST_NOT_FOUND(HttpStatus.NOT_FOUND, "o002", "잘못된 주문 요청 입니다."),
+    ORDER_MODIFICATION_NOT_ALLOWED(HttpStatus.BAD_REQUEST, "o003", "주문 시간이 5분이 경과되어 수정이 불가능합니다."),
+
+    //Payments
+    PAYMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "PAY001", "결제내역이 존재하지 않습니다."),
+    PAYMENT_MODIFICATION_NOT_ALLOWED(HttpStatus.BAD_REQUEST, "PAY002", "취소된 주문은 결제 추가가 불가능합니다."),
+
+    // Store
+    STORE_NOT_FOUND(HttpStatus.NOT_FOUND, "S001", "해당 가게를 찾을 수 없습니다."),
+    STORE_CATEGORY_NAME_NOT_FOUND(HttpStatus.NOT_FOUND, "S002", "해당 가게의 카테고리를 찾을 수 없습니다."),
+    CATEGORY_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "S003", "이미 존재하는 가게 카테고리 입니다."),
+    // FAVORITE
+    FAVORITE_NOT_FOUND(HttpStatus.NOT_FOUND, "F001", "해당 프로필과 스토어를 통한 즐겨찾기를 찾을 수 없습니다."),
 
     // JWT
     INVALID_REFRESH_TOKEN(HttpStatus.FORBIDDEN, "j001", "유효하지 않은 리프레시 토큰입니다."),
@@ -59,7 +76,6 @@ public enum ExceptionStatus {
     AUTHENTICATION_FAILED(HttpStatus.UNAUTHORIZED, "a003", "인증에 실패했습니다."),
     DUPLICATE_MEMBER(HttpStatus.UNAUTHORIZED, "a004", "중복되는 회원입니다."),
     EXISTING_MEMBER_EMAIL(HttpStatus.BAD_REQUEST, "a005", "해당 이메일에 여러 계정이 존재합니다."),
-    // Authentication 관련 예외 추가
     AUTHENTICATION_EMAIL_NOT_VERIFIED(HttpStatus.UNAUTHORIZED, "a006", "이메일 인증이 완료되지 않았습니다."),
     AUTHENTICATION_INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "a007", "인증에 실패했습니다."),
     AUTHENTICATION_INVALID_CONTENT_TYPE(HttpStatus.BAD_REQUEST, "a008", "지원하지 않는 Content-Type입니다."),

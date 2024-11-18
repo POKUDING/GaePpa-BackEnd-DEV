@@ -3,6 +3,8 @@ package com.sparta.gaeppa.security.jwts.entity;
 import com.sparta.gaeppa.members.entity.MemberRole;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,9 +17,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Collection<GrantedAuthority> collection = new ArrayList<>();
-        collection.add((GrantedAuthority) () -> authenticatedUserDto.getMemberRole().toString());
-        return collection;
+        return List.of((GrantedAuthority) () -> authenticatedUserDto.getMemberRole().toString());
     }
 
     @Override
@@ -30,7 +30,7 @@ public class CustomUserDetails implements UserDetails {
         return authenticatedUserDto.getEmail();
     }
 
-    public Long getMemberId() { return authenticatedUserDto.getMemberId(); }
+    public UUID getMemberId() { return authenticatedUserDto.getMemberId(); }
 
     public MemberRole getMemberRole(){
         return authenticatedUserDto.getMemberRole();
