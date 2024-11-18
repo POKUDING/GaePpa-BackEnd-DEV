@@ -83,6 +83,11 @@ public class ProductService {
                                                    String sortDirection,
                                                    int page,
                                                    int size) {
+
+        if (size != 10 && size != 30 && size != 50) {
+            throw new ServiceException(ExceptionStatus.INVALID_PAGE_SIZE);
+        }
+
         Pageable pageable = PageRequest.of(page - 1, size);
 
         // Querydsl 동적 검색 수행
