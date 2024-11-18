@@ -36,7 +36,7 @@ public class StoreCategoryService {
      * @return Optional<StoreCategory>
      */
     @Transactional(readOnly = true)
-    public Optional<StoreCategory> findStoreCategoryByName(String storeCategoryName) {
+    public StoreCategory findStoreCategoryByName(String storeCategoryName) {
         // 카테고리 이름으로 조회
         return storeCategoryRepository.findByCategoryName(storeCategoryName)
                 .orElseThrow(() -> new ServiceException(ExceptionStatus.STORE_CATEGORY_NAME_NOT_FOUND));
