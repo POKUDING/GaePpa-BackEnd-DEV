@@ -13,6 +13,8 @@ import com.sparta.gaeppa.order.entity.Orders;
 import com.sparta.gaeppa.order.repository.OrderRepository;
 import com.sparta.gaeppa.product.entity.Product;
 import com.sparta.gaeppa.product.repository.ProductRepository;
+import com.sparta.gaeppa.store.entity.Store;
+import com.sparta.gaeppa.store.repository.StoreRepository;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,6 +33,7 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
+    private final StoreRepository storeRepository;
 
 
     @Transactional(readOnly = true)
@@ -56,6 +59,9 @@ public class OrderService {
     @Transactional
     public OrderResponseDto createOrder(OrderRequestDto requestDto) {
 
+        Store store = storeRepository.findById(requestDto.getStoreId())
+                .orElseThrow(() -> new ServiceException(ExceptionStatus.STORE_NOT_FOUND));
+        requestDto.putStore(store);
         Orders orders = requestDto.toEntity();
 
         for (OrderProductDto orderProductDto : requestDto.getOrderProductList()) {
