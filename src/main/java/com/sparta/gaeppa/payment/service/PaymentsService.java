@@ -36,7 +36,7 @@ public class PaymentsService {
     @Transactional(readOnly = true)
     public List<PaymentDto> getAllPaymentsByMemberId(UUID memberId) {
 
-        return Optional.of(paymentsRepository.findAllPaymentsByMemberId(memberId))
+        return Optional.of(paymentsRepository.findAllPaymentsByMember_MemberId(memberId))
                 .filter(list -> !list.isEmpty())
                 .orElseThrow(() -> new ServiceException(ExceptionStatus.PAYMENT_NOT_FOUND))
                 .stream()
