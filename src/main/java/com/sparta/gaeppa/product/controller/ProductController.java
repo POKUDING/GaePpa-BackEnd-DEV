@@ -9,6 +9,7 @@ import com.sparta.gaeppa.product.dto.product.StoreProductListResponseDto;
 import com.sparta.gaeppa.product.service.ProductService;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,6 +28,24 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductController {
 
     private final ProductService productService;
+
+    @GetMapping("/search")
+    public ResponseEntity<ApiResult<Page<ProductResponseDto>>> searchProducts(
+            @RequestParam(required = false) String productName,
+            @RequestParam(required = false) String categoryName,
+            @RequestParam(required = false) String optionName,
+            @RequestParam(required = false) String optionCategoryName,
+            @RequestParam(required = false) String storeCategoryName,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDirection,
+            @RequestParam(required = false, defaultValue = "1") int page,
+            @RequestParam(required = false, defaultValue = "10") int size) {
+
+        Page<ProductResponseDto> responseDtoPage = productService.searchProducts(productName, categoryName, optionName,
+                optionCategoryName, storeCategoryName, sortBy, sortDirection, page, size);
+
+        return new ResponseEntity<>(success(responseDtoPage), HttpStatus.OK);
+    }
 
     @GetMapping
     public ResponseEntity<ApiResult<StoreProductListResponseDto>> getProducts(@RequestParam("storeid") UUID storeId) {
