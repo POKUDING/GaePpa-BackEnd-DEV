@@ -11,7 +11,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -41,6 +40,5 @@ public class Favorite extends BaseEntity {
     private Favorite(Profile profile, Store store) {
         this.profile = profile;
         this.store = store;
-        this.createdAt = LocalDateTime.now();
     }
 }
