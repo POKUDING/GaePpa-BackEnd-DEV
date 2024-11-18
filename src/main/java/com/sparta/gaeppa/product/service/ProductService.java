@@ -13,6 +13,10 @@ import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -70,5 +74,26 @@ public class ProductService {
                 .orElseThrow(() -> new ServiceException(ExceptionStatus.PRODUCT_NOT_FOUND));
 
         productRepository.delete(product);
+    }
+
+    @Transactional
+    public Page<ProductResponseDto> searchProducts(String productName, String categoryName, String optionName,
+                                                   String optionCategoryName, String storeCategoryName,
+                                                   String sortBy,
+                                                   String sortDirection,
+                                                   int page,
+                                                   int size) {
+        Pageable pageable = PageRequest.of(page - 1, size);
+
+        // Querydsl 동적 검색 수행
+        Page<Product> products = productRepository.searchProducts(productName, categoryName, optionName,
+                optionCategoryName, storeCategoryName, pageable, sortBy, sortDirection);
+
+        // DTO 변환
+        List<ProductResponseDto> responseDtoList = products.stream()
+                .map(ProductResponseDto::from)
+                .toList();
+
+        return new PageImpl<>(responseDtoList, pageable, products.getTotalElements());
     }
 }
