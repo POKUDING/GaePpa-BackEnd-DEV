@@ -27,12 +27,18 @@ public enum ExceptionStatus {
     AUDITOR_NOT_FOUND(HttpStatus.NOT_FOUND, "M002", "인증 객체가 존재하지 않습니다."),
 
     // Profile
-    PROFILE_NOT_FOUND(HttpStatus.NOT_FOUND, "P001","회원 프로필이 존재하지 않습니다." ),
+    PROFILE_NOT_FOUND(HttpStatus.NOT_FOUND, "P001", "회원 프로필이 존재하지 않습니다."),
 
     //Orders
     ORDER_NOT_FOUND(HttpStatus.NOT_FOUND, "o001", "주문이 존재하지 않습니다."),
     ORDER_REQUEST_NOT_FOUND(HttpStatus.NOT_FOUND, "o002", "잘못된 주문 요청 입니다."),
     ORDER_MODIFICATION_NOT_ALLOWED(HttpStatus.BAD_REQUEST, "o003", "주문 시간이 5분이 경과되어 수정이 불가능합니다."),
+
+    //REVIEW
+    REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, "r001", "리뷰가 존재하지 않습니다."),
+    REVIEW_ALREADY_EXISTS(HttpStatus.CONFLICT, "r002", "이미 작성한 리뷰가 존재합니다."),
+    REVIEW_NOT_AVAILABLE(HttpStatus.BAD_REQUEST, "r003", "리뷰 작성이 불가능합니다."),
+
 
     //Payments
     PAYMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "PAY001", "결제내역이 존재하지 않습니다."),
@@ -84,8 +90,7 @@ public enum ExceptionStatus {
     AUTHENTICATION_PASSWORD_NOT_PROVIDED(HttpStatus.BAD_REQUEST, "a011", "비밀번호가 입력되지 않았습니다."),
 
     //Authorization
-    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "z001", "인증에 실패했습니다."),
-    ;
+    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "z001", "인증에 실패했습니다.");
 
 
     private final int status;

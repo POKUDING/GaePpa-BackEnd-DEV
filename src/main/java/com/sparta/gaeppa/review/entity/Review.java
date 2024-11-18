@@ -11,6 +11,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.UUID;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -35,4 +36,10 @@ public class Review extends BaseEntity {
     @Column(nullable = false, name = "review_score")
     private int reviewScore;
 
+    @Builder
+    public Review(Orders order, String reviewContent, int reviewScore) {
+        this.order = order;
+        this.reviewContent = reviewContent;
+        this.reviewScore = reviewScore;
+    }
 }
