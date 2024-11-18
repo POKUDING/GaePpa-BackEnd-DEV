@@ -98,4 +98,13 @@ public class FileSystemStorageService implements StorageService {
             throw new StorageException(ExceptionStatus.STORAGE_SERVICE_INIT_FAILED);
         }
     }
+
+    @Override
+    public void createDirectory(Path targetLocation) {
+        try {
+            Files.createDirectories(this.rootLocation.resolve(targetLocation));
+        } catch (IOException e) {
+            throw new StorageException(ExceptionStatus.DIRECTORY_CREATION_FAILED);
+        }
+    }
 }

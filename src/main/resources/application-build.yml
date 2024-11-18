@@ -1,10 +1,10 @@
 spring:
   jpa:
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
-        format_sql: true
-        use_sql_comments: true
+        format_sql: false
+        use_sql_comments: false
         default_batch_fetch_size: 1000 #최적화 옵션
     hibernate:
       naming:
@@ -23,30 +23,30 @@ spring:
 
 
 # 개발 단계에서 로깅 레벨
-logging:
-  level:
-    root: INFO  # 전체 로그를 INFO, DEBUG, WARN 수준으로 설정
-    org.springframework.security: TRACE
-    org.springframework.web: INFO
-    com.sparta.gaeppa: DEBUG
-    # 필요 시 특정 SQL 로그를 추가하거나 Hibernate SQL 로그를 설정
-    hibernate.SQL: INFO
-    org.springframework.boot.autoconfigure: INFO
-    org.springframework.beans.factory.support.DefaultListableBeanFactory: WARN
-    # 아직 Thymeleaf 를 사용하지 않기 때문에, 경고 메세지를 제거합니다.
-    spring.thymeleaf.check-template-location: false
-    org.hibernate.type: INFO
-
-# 배포 단계에서 로깅 레벨
 #logging:
 #  level:
-#    root: INFO  # 전체 로그를 INFO 수준으로 설정
-#    org.springframework: WARN  # 스프링 프레임워크 로그를 WARN 이상으로 설정하여 주요 문제만 로깅
-#    com.your.package: INFO  # 사용자 패키지 로그를 INFO 수준으로 설정
-#    # 필요시 SQL 에러 로그만 남길 수 있음
-#    hibernate.SQL: ERROR
-#  file:
-#    path: /var/log/your-application/ # 운영 서버의 로그 파일 경로 설정
-#  pattern:
-#    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n" # 콘솔 로그 출력 패턴
-#    file: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"    # 파일 로그 출력 패턴
+#    root: INFO  # 전체 로그를 INFO, DEBUG, WARN 수준으로 설정
+#    org.springframework.security: TRACE
+#    org.springframework.web: INFO
+#    com.sparta.gaeppa: DEBUG
+#    # 필요 시 특정 SQL 로그를 추가하거나 Hibernate SQL 로그를 설정
+#    hibernate.SQL: INFO
+#    org.springframework.boot.autoconfigure: INFO
+#    org.springframework.beans.factory.support.DefaultListableBeanFactory: WARN
+#    # 아직 Thymeleaf 를 사용하지 않기 때문에, 경고 메세지를 제거합니다.
+#    spring.thymeleaf.check-template-location: false
+#    org.hibernate.type: INFO
+
+# 배포 단계에서 로깅 레벨
+logging:
+  level:
+    root: INFO  # 전체 로그를 INFO 수준으로 설정
+    org.springframework: WARN  # 스프링 프레임워크 로그를 WARN 이상으로 설정하여 주요 문제만 로깅
+    com.your.package: INFO  # 사용자 패키지 로그를 INFO 수준으로 설정
+    # 필요시 SQL 에러 로그만 남길 수 있음
+    hibernate.SQL: ERROR
+  file:
+    path: /var/log/your-application/ # 운영 서버의 로그 파일 경로 설정
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n" # 콘솔 로그 출력 패턴
+    file: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"    # 파일 로그 출력 패턴

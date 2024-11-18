@@ -89,7 +89,7 @@ class ProductServiceTest {
         given(productRepository.save(any(Product.class))).willReturn(product);
 
         //when
-        ProductResponseDto responseDto = productService.createProduct(productRequestDto);
+        ProductResponseDto responseDto = productService.createProduct(productRequestDto, userDetails);
 
         //then
         assertEquals(product.getName(), responseDto.getProductName());
@@ -115,7 +115,7 @@ class ProductServiceTest {
 
         //when-then
         ServiceException exception = assertThrows(ServiceException.class,
-                () -> productService.createProduct(productRequestDto));
+                () -> productService.createProduct(productRequestDto, userDetails));
         assertEquals("상품 카테고리가 존재하지 않습니다.", exception.getMessage());
         assertEquals(404, exception.getStatus());
     }
@@ -139,7 +139,7 @@ class ProductServiceTest {
                 java.util.Optional.of(ProductCategory.builder().name("category2").build()));
 
         //when-then
-        productService.updateProduct(productId, productRequestDto);
+        productService.updateProduct(productId, productRequestDto, userDetails);
     }
 
     @Test
@@ -158,7 +158,7 @@ class ProductServiceTest {
 
         //when-then
         ServiceException exception = assertThrows(ServiceException.class,
-                () -> productService.updateProduct(productId, productRequestDto));
+                () -> productService.updateProduct(productId, productRequestDto, userDetails));
         assertEquals("상품이 존재하지 않습니다.", exception.getMessage());
         assertEquals(404, exception.getStatus());
     }
@@ -183,7 +183,7 @@ class ProductServiceTest {
 
         //when-then
         ServiceException exception = assertThrows(ServiceException.class,
-                () -> productService.updateProduct(productId, productRequestDto));
+                () -> productService.updateProduct(productId, productRequestDto, userDetails));
         assertEquals("상품 카테고리가 존재하지 않습니다.", exception.getMessage());
     }
 

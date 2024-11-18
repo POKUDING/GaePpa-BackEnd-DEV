@@ -29,7 +29,7 @@ public class ProductCategoryController {
     private final ProductCategoryService productCategoryService;
 
     @PostMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER') or hasRole('ROLE_OWNER')")
+    @PreAuthorize("hasAnyRole('ROLE_MASTER', 'ROLE_MANAGER', 'ROLE_OWNER')")
     public ResponseEntity<ApiResult<ProductCategoryResponseDto>> createProductCategory(
             @RequestBody ProductCategoryRequestDto requestDto, @AuthenticationPrincipal CustomUserDetails userDetails) {
 
@@ -41,7 +41,7 @@ public class ProductCategoryController {
 
 
     @PutMapping("/{productCategoryId}")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER') or hasRole('ROLE_OWNER')")
+    @PreAuthorize("hasAnyRole('ROLE_MASTER', 'ROLE_MANAGER', 'ROLE_OWNER')")
     public ResponseEntity<ApiResult<String>> updateProductCategory(@PathVariable UUID productCategoryId,
                                                                    @RequestBody ProductCategoryRequestDto requestDto,
                                                                    @AuthenticationPrincipal CustomUserDetails userDetails) {
@@ -53,7 +53,7 @@ public class ProductCategoryController {
 
 
     @DeleteMapping("/{productCategoryId}")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER') or hasRole('ROLE_OWNER')")
+    @PreAuthorize("hasAnyRole('ROLE_MASTER', 'ROLE_MANAGER', 'ROLE_OWNER')")
     public ResponseEntity<ApiResult<String>> deleteProductCategory(@PathVariable UUID productCategoryId,
                                                                    @AuthenticationPrincipal
                                                                    CustomUserDetails userDetails) {

@@ -14,13 +14,11 @@ import com.sparta.gaeppa.product.repository.ProductRepository;
 import com.sparta.gaeppa.security.jwts.entity.CustomUserDetails;
 import java.nio.file.Path;
 import java.util.UUID;
-import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-@RequiredArgsConstructor
 public class ProductImageService {
 
     private final StorageService storageService;
@@ -29,6 +27,14 @@ public class ProductImageService {
 
     private static final Path PRODUCT_IMAGE_PATH = Path.of("product-images");
 
+    public ProductImageService(StorageService storageService, ProductImageRepository productImageRepository,
+                               ProductRepository productRepository) {
+        this.storageService = storageService;
+        this.productImageRepository = productImageRepository;
+        this.productRepository = productRepository;
+        this.storageService.createDirectory(PRODUCT_IMAGE_PATH);
+    }
+    
     public ImageResponseDto uploadProductImage(String productId, MultipartFile file) {
 
         Product product = productRepository.findById(UUID.fromString(productId))

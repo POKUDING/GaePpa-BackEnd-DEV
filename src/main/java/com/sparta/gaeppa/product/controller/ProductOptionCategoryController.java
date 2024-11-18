@@ -30,7 +30,7 @@ public class ProductOptionCategoryController {
     private final ProductOptionCategoryService productOptionCategoryService;
 
     @PostMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER') or hasRole('ROLE_OWNER')")
+    @PreAuthorize("hasAnyRole('ROLE_MASTER', 'ROLE_MANAGER', 'ROLE_OWNER')")
     public ResponseEntity<ApiResult<ProductOptionCategoryResponseDto>> createProductOptionCategory(
             @RequestBody ProductOptionCategoryRequestDto requestDto,
             @AuthenticationPrincipal CustomUserDetails userDetails) {
@@ -42,7 +42,7 @@ public class ProductOptionCategoryController {
     }
 
     @PutMapping("/{optionCategoryId}")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER') or hasRole('ROLE_OWNER')")
+    @PreAuthorize("hasAnyRole('ROLE_MASTER', 'ROLE_MANAGER', 'ROLE_OWNER')")
     public ResponseEntity<ApiResult<String>> updateProductOptionCategory(@PathVariable UUID optionCategoryId,
                                                                          @RequestBody ProductOptionCategoryPutRequestDto requestDto,
                                                                          @AuthenticationPrincipal CustomUserDetails userDetails) {
@@ -53,7 +53,7 @@ public class ProductOptionCategoryController {
     }
 
     @DeleteMapping("/{optionCategoryId}")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER') or hasRole('ROLE_OWNER')")
+    @PreAuthorize("hasAnyRole('ROLE_MASTER', 'ROLE_MANAGER', 'ROLE_OWNER')")
     public ResponseEntity<ApiResult<String>> deleteProductOptionCategory(@PathVariable UUID optionCategoryId,
                                                                          @AuthenticationPrincipal CustomUserDetails userDetails) {
 

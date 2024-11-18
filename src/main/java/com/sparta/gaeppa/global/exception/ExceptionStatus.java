@@ -68,6 +68,7 @@ public enum ExceptionStatus {
     READ_FILE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "s005", "파일 읽기에 실패했습니다."),
     FILE_NOT_FOUND(HttpStatus.NOT_FOUND, "s006", "파일이 존재하지 않습니다."),
     STORAGE_SERVICE_INIT_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "s007", "파일 저장 서비스 초기화에 실패했습니다."),
+    DIRECTORY_CREATION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "s008", "디렉토리 생성에 실패했습니다."),
 
     //Image
     PRODUCT_IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "i001", "상품 이미지가 존재하지 않습니다."),

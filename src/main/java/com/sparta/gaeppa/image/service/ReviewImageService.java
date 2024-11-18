@@ -14,13 +14,11 @@ import com.sparta.gaeppa.review.repository.ReviewRepository;
 import com.sparta.gaeppa.security.jwts.entity.CustomUserDetails;
 import java.nio.file.Path;
 import java.util.UUID;
-import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-@RequiredArgsConstructor
 public class ReviewImageService {
 
     private final StorageService storageService;
@@ -28,6 +26,14 @@ public class ReviewImageService {
     private final ReviewRepository reviewRepository;
 
     private static final Path REVIEW_IMAGE_PATH = Path.of("review-images");
+
+    public ReviewImageService(StorageService storageService, ReviewImageRepository reviewImageRepository,
+                              ReviewRepository reviewRepository) {
+        this.storageService = storageService;
+        this.reviewImageRepository = reviewImageRepository;
+        this.reviewRepository = reviewRepository;
+        this.storageService.createDirectory(REVIEW_IMAGE_PATH);
+    }
 
     public ImageResponseDto uploadReviewImage(String productId, MultipartFile file) {
 
