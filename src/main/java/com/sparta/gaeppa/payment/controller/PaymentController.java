@@ -5,11 +5,13 @@ import static com.sparta.gaeppa.global.util.ApiResponseUtil.success;
 import com.sparta.gaeppa.global.util.ApiResponseUtil.ApiResult;
 import com.sparta.gaeppa.payment.dto.PaymentDto;
 import com.sparta.gaeppa.payment.service.PaymentsService;
+import com.sparta.gaeppa.security.jwts.entity.CustomUserDetails;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,11 +36,11 @@ public class PaymentController {
         return new ResponseEntity<>(success(responseDto), HttpStatus.OK);
     }
 
-    @GetMapping("/memberid")
+    @GetMapping("/memberId")
     public ResponseEntity<ApiResult<List<PaymentDto>>> getAllPaymentsByMemberId(
-            @RequestParam("memberId") UUID memberId) {
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
 
-        List<PaymentDto> responseDto = paymentsService.getAllPaymentsByMemberId(memberId);
+        List<PaymentDto> responseDto = paymentsService.getAllPaymentsByMemberId(userDetails.getMemberId());
 
         return new ResponseEntity<>(success(responseDto), HttpStatus.OK);
     }

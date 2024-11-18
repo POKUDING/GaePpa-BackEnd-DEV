@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 public interface PaymentsRepository extends JpaRepository<Payments, UUID> {
     Payments findPaymentByOrder(Orders order);
 
-    @Query(value = "SELECT p FROM Payments p JOIN Orders po ON p.order = po where po.memberId = :memberId")
-    List<Payments> findAllPaymentsByMemberId(UUID memberId);
+    @Query(value = "SELECT p FROM Payments p JOIN Orders po ON p.order = po where po.member.memberId = :memberId")
+    List<Payments> findAllPaymentsByMember_MemberId(UUID memberId);
 }
+

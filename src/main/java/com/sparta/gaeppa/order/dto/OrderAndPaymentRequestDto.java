@@ -26,4 +26,9 @@ public class OrderAndPaymentRequestDto {
     private String payStatus;
     private String payType;
     private String payTransactionCode;
+
+
+    public void setMemberIdByUserDetail(UUID memberId) {
+        this.memberId = memberId;
+    }
 }

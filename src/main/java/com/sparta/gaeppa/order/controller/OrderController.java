@@ -10,10 +10,12 @@ import com.sparta.gaeppa.order.dto.OrderResponseDto;
 import com.sparta.gaeppa.order.service.OrderService;
 import com.sparta.gaeppa.payment.dto.PaymentDto;
 import com.sparta.gaeppa.payment.service.PaymentsService;
+import com.sparta.gaeppa.security.jwts.entity.CustomUserDetails;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,9 +34,9 @@ public class OrderController {
 
     @GetMapping
     public ResponseEntity<ApiResult<OrderListResponseDto>> getAllOrdersByMemberId(
-            @RequestParam("memberId") UUID memberId) {
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
 
-        OrderListResponseDto responseDto = orderService.getAllOrdersByMemberId(memberId);
+        OrderListResponseDto responseDto = orderService.getAllOrdersByMemberId(userDetails.getMemberId());
 
         return new ResponseEntity<>(success(responseDto), HttpStatus.OK);
     }
@@ -43,14 +45,16 @@ public class OrderController {
     public ResponseEntity<ApiResult<OrderResponseDto>> getAllOrdersByOrderId(
             @RequestParam("orderId") UUID orderId) {
 
-        OrderResponseDto responseDto = orderService.getOrderByorderId(orderId);
+        OrderResponseDto responseDto = orderService.getOrderByOrderId(orderId);
 
         return new ResponseEntity<>(success(responseDto), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<ApiResult<OrderResponseDto>> createOrder(@RequestBody OrderAndPaymentRequestDto requestDto) {
+    public ResponseEntity<ApiResult<OrderResponseDto>> createOrder(@RequestBody OrderAndPaymentRequestDto requestDto,
+                                                                   @AuthenticationPrincipal CustomUserDetails userDetails) {
 
+        requestDto.setMemberIdByUserDetail(userDetails.getMemberId());
         OrderResponseDto responseDto = orderService.createOrder(OrderRequestDto.from(requestDto));
 
         PaymentDto paymentDto = PaymentDto.from(requestDto);

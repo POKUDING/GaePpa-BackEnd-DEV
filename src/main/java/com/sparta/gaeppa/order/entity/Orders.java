@@ -1,6 +1,7 @@
 package com.sparta.gaeppa.order.entity;
 
 import com.sparta.gaeppa.global.base.BaseEntity;
+import com.sparta.gaeppa.members.entity.Member;
 import com.sparta.gaeppa.store.entity.Store;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -34,8 +35,9 @@ public class Orders extends BaseEntity {
     @Column(name = "order_id")
     private UUID orderId;
 
-    @Column(nullable = false, name = "member_id")
-    private UUID memberId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false, name = "member_id")
+    private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false, name = "store_id")
@@ -64,9 +66,9 @@ public class Orders extends BaseEntity {
 
 
     @Builder
-    private Orders(UUID memberId, Store store, Address address, OrderType orderType,
+    private Orders(Member member, Store store, Address address, OrderType orderType,
                    String orderRequest) {
-        this.memberId = memberId;
+        this.member = member;
         this.store = store;
         this.address = address;
         this.orderStatus = OrderStatus.COMPLETED;
