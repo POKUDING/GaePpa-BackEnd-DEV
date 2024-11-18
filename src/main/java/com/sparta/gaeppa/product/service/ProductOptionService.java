@@ -73,6 +73,6 @@ public class ProductOptionService {
             throw new ServiceException(ExceptionStatus.UNAUTHORIZED);
         }
 
-        productOptionRepository.delete(productOption);
+        productOption.delete(userDetails.getUsername());
     }
 }

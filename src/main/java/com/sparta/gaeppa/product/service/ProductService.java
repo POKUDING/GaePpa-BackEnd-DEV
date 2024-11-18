@@ -76,6 +76,6 @@ public class ProductService {
             throw new ServiceException(ExceptionStatus.UNAUTHORIZED);
         }
 
-        productRepository.delete(product);
+        product.delete(userDetails.getUsername());
     }
 }
