@@ -62,17 +62,15 @@ public class StoreService {
     }
 
     @Transactional
-    public Store updateStore(StoreUpdateRequestDto storeUpdateRequestDto, UUID storeId) {
+    public Store updateStore(StoreUpdateRequestDto storeUpdateRequestDto, UUID storeId, UUID memberId) {
         // 기존 Store 엔티티 조회
-        Store store = storeRepository.findById(storeId)
-                .orElseThrow(() -> new ServiceException(ExceptionStatus.STORE_NOT_FOUND));
+        Store myStore = getMyStore(storeId, memberId);
 
         // 스토어 카테고리 조회 또는 생성
         StoreCategory storeCategory = storeCategoryService.findStoreCategoryByName(storeUpdateRequestDto.getStoreCategoryName());
 
-
         // Store 엔티티 수정
-        store.updateStore(
+        myStore.updateStore(
                 storeUpdateRequestDto.getStoreName(),
                 storeUpdateRequestDto.getStoreAddress(),
                 storeUpdateRequestDto.getStoreTelephone(),
@@ -82,7 +80,7 @@ public class StoreService {
         );
 
         // 저장 및 반환
-        return storeRepository.save(store);
+        return storeRepository.save(myStore);
     }
 
     @Transactional(readOnly = true)
@@ -111,5 +109,29 @@ public class StoreService {
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(() -> new ServiceException(ExceptionStatus.STORE_NOT_FOUND));
         storeRepository.delete(store);
+    }
+
+    @Transactional(readOnly = true)
+    public Store getMyStore(UUID storeId, UUID memberId) {
+        Store storeByStoreId = storeRepository.findByMemberMemberId(memberId)
+                .orElseThrow(() -> new ServiceException(ExceptionStatus.STORE_NOT_FOUND));
+        Store storeByMemberId = storeRepository.findById(storeId)
+                .orElseThrow(() -> new ServiceException(ExceptionStatus.STORE_NOT_FOUND));
+        if (storeByMemberId.getStoreId().equals(storeByStoreId.getStoreId())) {
+            return storeByMemberId;
+        } else {
+            throw new ServiceException(ExceptionStatus.STORE_NOT_FOUND);
+        }
+
+    }
+
+    @Transactional(readOnly = true)
+    public Store getStore(UUID storeId) {
+        Store storeByMemberId = storeRepository.findById(storeId)
+                .orElseThrow(() -> new ServiceException(ExceptionStatus.STORE_NOT_FOUND));
+        if (storeByMemberId.isVisible()) {
+            return storeByMemberId;
+        }
+        throw new ServiceException(ExceptionStatus.STORE_NOT_FOUND);
     }
 }

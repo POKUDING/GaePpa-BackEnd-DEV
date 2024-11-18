@@ -3,10 +3,8 @@ package com.sparta.gaeppa.profile.controller;
 import com.sparta.gaeppa.global.util.ApiResponseUtil;
 import com.sparta.gaeppa.global.util.ApiResponseUtil.ApiResult;
 import com.sparta.gaeppa.profile.entity.Profile;
-import com.sparta.gaeppa.profile.repository.ProfileRepository;
 import com.sparta.gaeppa.profile.service.ProfileService;
 import com.sparta.gaeppa.store.entity.Favorite;
-import com.sparta.gaeppa.store.repository.StoreRepository;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProfileController {
 
     private final ProfileService profileService;
-    private final ProfileRepository profileRepository;
-    private final StoreRepository storeRepository;
 
     /**
      * 멤버 ID로 프로필 조회
@@ -43,57 +39,41 @@ public class ProfileController {
 
     /**
      * 프로필 소개 수정
-     * @param profileId 프로필 ID
+     * @param memberId 멤버 ID
      * @param introduce 새로운 소개글
      * @return 수정된 프로필 정보
      */
-    @PutMapping("/{profileId}/introduce")
+    @PutMapping("/introduce/{memberId}")
     public ResponseEntity<ApiResult<Profile>> updateIntroduce(
-            @PathVariable UUID profileId,
+            @PathVariable UUID memberId,
             @RequestBody String introduce) {
-        Profile updatedProfile = profileService.updateProfileIntroduce(profileId, introduce);
-        return ResponseEntity.ok(ApiResponseUtil.success(updatedProfile));
-    }
-
-    /**
-     * 프로필 이미지 수정
-     * @param profileId 프로필 ID
-     * @param imgName 이미지 파일 이름
-     * @param imgPath 이미지 파일 경로
-     * @return 수정된 프로필 정보
-     */
-    @PutMapping("/{profileId}/image")
-    public ResponseEntity<ApiResult<Profile>> updateProfileImage(
-            @PathVariable UUID profileId,
-            @RequestParam String imgName,
-            @RequestParam String imgPath) {
-        Profile updatedProfile = profileService.updateProfileImage(profileId, imgName, imgPath);
+        Profile updatedProfile = profileService.updateProfileIntroduce(memberId, introduce);
         return ResponseEntity.ok(ApiResponseUtil.success(updatedProfile));
     }
 
     /**
      * 프로필의 모든 즐겨찾기 조회
-     * @param profileId 프로필 ID
+     * @param memberId 멤버 ID
      * @return 즐겨찾기 목록
      */
-    @GetMapping("/{profileId}/favorites")
-    public ResponseEntity<ApiResult<List<Favorite>>> getFavorites(@PathVariable UUID profileId) {
-        List<Favorite> favorites = profileService.getFavoritesByProfile(profileId);
+    @GetMapping("/favorites/{memberId}")
+    public ResponseEntity<ApiResult<List<Favorite>>> getFavorites(@PathVariable UUID memberId) {
+        List<Favorite> favorites = profileService.getFavoritesByProfile(memberId);
         return ResponseEntity.ok(ApiResponseUtil.success(favorites));
     }
 
     /**
      * 즐겨찾기 토글 API
      * @param profileId 프로필 ID
-     * @param storeId 스토어 ID
+     * @param memberId 멤버 ID
      * @return 즐겨찾기 상태와 메시지
      */
-    @PostMapping("/favorites/{storeId}")
+    @PostMapping("/favorites/{memberId}")
     public ResponseEntity<ApiResult<String>> toggleFavorite(
             @RequestParam UUID profileId,
-            @PathVariable UUID storeId) {
-        // 서비스 계층에 토글 로직 위임
-        String message = profileService.toggleFavorite(profileId, storeId);
+            @PathVariable UUID memberId) {
+        // 서비스 계층에 즐겨찾기 토글 로직 위임
+        String message = profileService.toggleFavorite(profileId, memberId);
 
         // 성공 응답 반환
         return ResponseEntity.status(HttpStatus.CREATED)
