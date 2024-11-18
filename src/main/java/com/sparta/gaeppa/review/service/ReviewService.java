@@ -32,7 +32,7 @@ public class ReviewService {
     @Transactional(readOnly = true)
     public List<ReviewResponseDto> getAllReviewsByStoreId(UUID storeId) {
 
-        List<Review> reviewList = reviewRepository.findAllByStoreId(storeId);
+        List<Review> reviewList = reviewRepository.getAllReviewsByStoreId(storeId);
 
         return Optional.of(reviewList)
                 .filter(list -> !list.isEmpty())
@@ -41,10 +41,9 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public ReviewResponseDto getReviewsByReviewId(UUID reviewId) {
+    public ReviewResponseDto getReviewByOrderId(UUID orderId) {
 
-        Review review = reviewRepository.findById(reviewId)
-                .orElseThrow(() -> new ServiceException(ExceptionStatus.REVIEW_NOT_FOUND));
+        Review review = reviewRepository.findByOrder_OrderId(orderId);
 
         return ReviewResponseDto.from(review);
     }
@@ -69,7 +68,7 @@ public class ReviewService {
 
     private void reviewAvailableOrder(Orders order) {
 
-        if (reviewRepository.existsReviewByOrderId(order.getOrderId())) {
+        if (reviewRepository.existsReviewByOrder_orderId(order.getOrderId())) {
             throw new ServiceException(ExceptionStatus.REVIEW_ALREADY_EXISTS);
         }
 

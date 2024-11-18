@@ -4,6 +4,7 @@ import com.sparta.gaeppa.global.base.BaseEntity;
 import com.sparta.gaeppa.order.entity.Orders;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -26,7 +27,7 @@ public class Review extends BaseEntity {
     @GeneratedValue
     private UUID reviewId;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false, name = "order_id")
     private Orders order;
 
