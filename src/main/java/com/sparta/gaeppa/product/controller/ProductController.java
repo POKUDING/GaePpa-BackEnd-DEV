@@ -59,7 +59,7 @@ public class ProductController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER') or hasRole('ROLE_OWNER')")
+    @PreAuthorize("hasAnyRole('ROLE_MASTER', 'ROLE_MANAGER', 'ROLE_OWNER')")
     public ResponseEntity<ApiResult<ProductResponseDto>> createProduct(@RequestBody ProductRequestDto requestDto,
                                                                        @AuthenticationPrincipal CustomUserDetails userDetails) {
 
@@ -69,7 +69,7 @@ public class ProductController {
     }
 
     @PutMapping("/{productId}")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER') or hasRole('ROLE_OWNER')")
+    @PreAuthorize("hasAnyRole('ROLE_MASTER', 'ROLE_MANAGER', 'ROLE_OWNER')")
     public ResponseEntity<ApiResult<String>> updateProduct(@PathVariable UUID productId,
                                                            @RequestBody ProductRequestDto requestDto,
                                                            @AuthenticationPrincipal CustomUserDetails userDetails) {
@@ -80,7 +80,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{productId}")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER') or hasRole('ROLE_OWNER')")
+    @PreAuthorize("hasAnyRole('ROLE_MASTER', 'ROLE_MANAGER', 'ROLE_OWNER')")
     public ResponseEntity<ApiResult<String>> deleteProduct(@PathVariable UUID productId, @AuthenticationPrincipal
     CustomUserDetails userDetails) {
 
