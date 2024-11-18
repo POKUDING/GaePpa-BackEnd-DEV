@@ -1,8 +1,8 @@
 ### 1. StoreId로 전체 ReviewList 조회
-GET http://localhost:8080/api/v1/review?storeId=5ca2977c-a578-11ef-a7cd-d8bbc1571db6
+GET http://localhost:8080/api/v1/review?storeId=5ca2a451-a578-11ef-a7cd-d8bbc1571db6
 
 ### 2. OrderId로 Review 조회
-GET http://localhost:8080/api/v1/review/orderId?orderId=34f4de20-4ab6-4985-9845-e729ab039357
+GET http://localhost:8080/api/v1/review/orderId?orderId=6a14f583-ed7b-4f97-970c-a8f105e084d5
 
 
 ### 3. 신규 Review 추가
@@ -17,4 +17,4 @@ Content-Type: application/json
 }
 
 ### 4. Review 삭제
-PATCH http://localhost:8080/api/v1/review?reviewId=cd51c13d-0c9e-43f9-8b5e-541bdd741699&username=user1
+PATCH http://localhost:8080/api/v1/review?reviewId=e6a48938-42f8-491d-8ffb-0b7f65f72e11&username=user1

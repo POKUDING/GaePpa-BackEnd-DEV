@@ -27,4 +27,8 @@ public class ReviewRequestDto {
                 .reviewScore(reviewScore)
                 .build();
     }
+
+    public void setMemberIdByUserDetail(UUID memberId) {
+        this.memberId = memberId;
+    }
 }

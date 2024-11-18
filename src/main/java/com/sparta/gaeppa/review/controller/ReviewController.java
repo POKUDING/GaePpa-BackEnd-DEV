@@ -6,11 +6,13 @@ import com.sparta.gaeppa.global.util.ApiResponseUtil.ApiResult;
 import com.sparta.gaeppa.review.dto.ReviewRequestDto;
 import com.sparta.gaeppa.review.dto.ReviewResponseDto;
 import com.sparta.gaeppa.review.service.ReviewService;
+import com.sparta.gaeppa.security.jwts.entity.CustomUserDetails;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,18 +47,21 @@ public class ReviewController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResult<ReviewResponseDto>> createReview(@RequestBody ReviewRequestDto requestDto) {
+    public ResponseEntity<ApiResult<ReviewResponseDto>> createReview(@RequestBody ReviewRequestDto requestDto,
+                                                                     @AuthenticationPrincipal CustomUserDetails userDetails) {
 
+        requestDto.setMemberIdByUserDetail(userDetails.getMemberId());
         ReviewResponseDto responseDto = reviewService.createReview(requestDto);
 
         return new ResponseEntity<>(success(responseDto), HttpStatus.CREATED);
     }
 
     @PatchMapping
-    public ResponseEntity<ApiResult<String>> deleteReview(@RequestParam UUID reviewId, @RequestParam String username) {
+    public ResponseEntity<ApiResult<String>> deleteReview(@RequestParam UUID reviewId,
+                                                          @AuthenticationPrincipal CustomUserDetails userDetails) {
 
         // 삭제 권한 manager 제한 필요
-        reviewService.deleteReview(reviewId, username);
+        reviewService.deleteReview(reviewId, userDetails);
 
         return new ResponseEntity<>(success("Review deleted Success"), HttpStatus.OK);
     }

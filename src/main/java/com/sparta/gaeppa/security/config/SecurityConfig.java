@@ -67,9 +67,8 @@ public class SecurityConfig {
                                 .requestMatchers("/api/v1/admin/**").hasAnyRole("MANAGER", "MASTER")
                                 .requestMatchers("/api/v1/profiles/**").authenticated()
                                 .requestMatchers("/api/v1/stores/**").hasAnyRole("OWNER", "MANAGER", "MASTER")
-//                        .requestMatchers("/api/v1/orders/**").authenticated()
-//                        .requestMatchers("/api/v1/payments/**").authenticated()
-//                        .requestMatchers("/api/v1/reviews/**").authenticated()
+                                .requestMatchers("/api/v1/orders/**", "/api/v1/payments/**", "/api/v1/reviews/**")
+                                .authenticated()
                                 .requestMatchers("/api/v1/product-categories/**").authenticated()
 //                        .anyRequest().denyAll()
                                 .requestMatchers(

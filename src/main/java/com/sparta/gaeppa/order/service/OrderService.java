@@ -2,6 +2,8 @@ package com.sparta.gaeppa.order.service;
 
 import com.sparta.gaeppa.global.exception.ExceptionStatus;
 import com.sparta.gaeppa.global.exception.ServiceException;
+import com.sparta.gaeppa.members.entity.Member;
+import com.sparta.gaeppa.members.repository.MemberRepository;
 import com.sparta.gaeppa.order.dto.OrderListResponseDto;
 import com.sparta.gaeppa.order.dto.OrderProductDto;
 import com.sparta.gaeppa.order.dto.OrderProductOptionDto;
@@ -34,12 +36,13 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
     private final StoreRepository storeRepository;
+    private final MemberRepository memberRepository;
 
 
     @Transactional(readOnly = true)
     public OrderListResponseDto getAllOrdersByMemberId(UUID memberId) {
 
-        List<Orders> orderList = orderRepository.findAllOrdersByMemberId(memberId);
+        List<Orders> orderList = orderRepository.findAllOrdersByMember_MemberId(memberId);
 
         return Optional.of(orderList)
                 .filter(list -> !list.isEmpty())
@@ -48,7 +51,7 @@ public class OrderService {
     }
 
     @Transactional(readOnly = true)
-    public OrderResponseDto getOrderByorderId(UUID orderId) {
+    public OrderResponseDto getOrderByOrderId(UUID orderId) {
 
         Orders order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new ServiceException(ExceptionStatus.ORDER_NOT_FOUND));
@@ -59,10 +62,13 @@ public class OrderService {
     @Transactional
     public OrderResponseDto createOrder(OrderRequestDto requestDto) {
 
+        Member member = memberRepository.findById(requestDto.getMemberId())
+                .orElseThrow(() -> new ServiceException(ExceptionStatus.MEMBER_NOT_FOUND));
+
         Store store = storeRepository.findById(requestDto.getStoreId())
                 .orElseThrow(() -> new ServiceException(ExceptionStatus.STORE_NOT_FOUND));
         requestDto.putStore(store);
-        Orders orders = requestDto.toEntity();
+        Orders orders = requestDto.toEntity(member);
 
         for (OrderProductDto orderProductDto : requestDto.getOrderProductList()) {
 

@@ -23,7 +23,7 @@ public class ReviewResponseDto {
 
     public static ReviewResponseDto from(Review review) {
         return ReviewResponseDto.builder()
-                .userName(review.getCreatedBy())
+//                .userName(review.getCreatedBy())
                 .orderId(review.getOrder().getOrderId())
                 .createdAt(review.getCreatedAt().toString())
                 .reviewContent(review.getReviewContent())

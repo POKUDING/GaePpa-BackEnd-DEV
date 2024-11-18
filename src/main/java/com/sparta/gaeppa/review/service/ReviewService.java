@@ -9,6 +9,7 @@ import com.sparta.gaeppa.review.dto.ReviewRequestDto;
 import com.sparta.gaeppa.review.dto.ReviewResponseDto;
 import com.sparta.gaeppa.review.entity.Review;
 import com.sparta.gaeppa.review.repository.ReviewRepository;
+import com.sparta.gaeppa.security.jwts.entity.CustomUserDetails;
 import com.sparta.gaeppa.store.entity.Store;
 import com.sparta.gaeppa.store.repository.StoreRepository;
 import java.time.Duration;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,9 +45,9 @@ public class ReviewService {
     @Transactional(readOnly = true)
     public ReviewResponseDto getReviewByOrderId(UUID orderId) {
 
-        Review review = reviewRepository.findByOrder_OrderId(orderId);
-
-        return ReviewResponseDto.from(review);
+        return Optional.ofNullable(reviewRepository.findByOrder_OrderIdAndDeletedAtIsNull(orderId))
+                .map(ReviewResponseDto::from)
+                .orElseThrow(() -> new ServiceException(ExceptionStatus.REVIEW_NOT_FOUND));
     }
 
     @Transactional
@@ -83,11 +85,12 @@ public class ReviewService {
     }
 
     @Transactional
-    public void deleteReview(UUID reviewId, String username) {
+    @PreAuthorize("hasAnyRole('ROLE_MASTER', 'ROLE_MANAGER')")
+    public void deleteReview(UUID reviewId, CustomUserDetails userDetails) {
 
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new ServiceException(ExceptionStatus.REVIEW_NOT_FOUND));
 
-        review.delete(username);
+        review.delete(userDetails.getUsername());
     }
 }
