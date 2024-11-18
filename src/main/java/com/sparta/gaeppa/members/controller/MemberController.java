@@ -9,6 +9,8 @@ import com.sparta.gaeppa.members.dto.join.JoinResponseDto;
 import com.sparta.gaeppa.members.entity.Member;
 import com.sparta.gaeppa.members.service.MemberEmailService;
 import com.sparta.gaeppa.members.service.MemberService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -63,6 +65,13 @@ public class MemberController {
             return new ResponseEntity<>(success("유효하지 않은 토큰입니다."), HttpStatus.CREATED);
         }
         return new ResponseEntity<>(success("이메일 인증이 성공적으로 완료되었습니다."), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<ApiResult<?>> logout(@CookieValue(name = "refreshAuthorization", required = false) String refreshAuthorization, HttpServletRequest request,
+                                    HttpServletResponse response) {
+
+        return new ResponseEntity<>(success(memberService.memberLogout(refreshAuthorization, request, response)), HttpStatus.OK);
     }
 
 }

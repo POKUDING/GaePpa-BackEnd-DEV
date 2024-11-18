@@ -21,7 +21,7 @@ public class RefreshService {
 
 
     /**
-     * [Refresh 토큰 - DB에서 관리] 로그인 성공 시 리프레시 토큰을 업데이트하거나 새로 저장합니다.
+     * [Refresh 토큰 - DB 에서 관리] 로그인 성공 시 리프레시 토큰을 업데이트하거나 새로 저장합니다.
      *
      * @param member          회원의 PK로 리프레시 토큰 조회
      * @param newRefreshToken 새롭게 생성된 리프레시 토큰

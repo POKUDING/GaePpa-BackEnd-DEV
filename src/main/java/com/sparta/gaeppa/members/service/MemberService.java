@@ -11,14 +11,22 @@ import com.sparta.gaeppa.members.entity.Member;
 import com.sparta.gaeppa.members.repository.MemberRepository;
 import com.sparta.gaeppa.profile.entity.Profile;
 import com.sparta.gaeppa.profile.repository.ProfileRepository;
+import com.sparta.gaeppa.security.jwts.entity.Refresh;
 import com.sparta.gaeppa.security.jwts.repository.RefreshRepository;
+import com.sparta.gaeppa.security.jwts.utils.WebCookieUtil;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -260,6 +268,51 @@ public class MemberService {
 
         return memberRepository.save(member);
     }
+
+    @Transactional
+    public String memberLogout(String refreshAuthorization, HttpServletRequest request, HttpServletResponse response) {
+
+        // RefreshAuthorization 검증
+        String refreshToken = extractRefreshToken(refreshAuthorization);
+        if (refreshToken == null) {
+            throw new IllegalArgumentException("Invalid or missing refreshAuthorization cookie");
+        }
+
+        // Refresh Token 유효성 검증 및 삭제 처리
+        Optional<Refresh> optionalRefresh = refreshRepository.findByRefreshToken(refreshToken);
+        if (optionalRefresh.isEmpty()) {
+            throw new IllegalArgumentException("Invalid Refresh Token");
+        }
+
+        Refresh refreshEntity = optionalRefresh.get();
+        Member member = memberRepositoryV1.findById(refreshEntity.getMember().getMemberId())
+                .orElseThrow(() -> new UsernameNotFoundException("Member not found for ID: " + refreshEntity.getMember().getMemberId()));
+
+        // 쿠키 삭제
+        WebCookieUtil.deleteCookie(response, "refreshAuthorization");
+
+        // Refresh Token 삭제
+        refreshRepository.delete(refreshEntity);
+
+        log.info("Member ID: {} has logged out.", member.getMemberId());
+
+        // 메시지만 반환
+        return "Member ID: " + member.getMemberId() + " has logged out.";
+    }
+
+    private String extractRefreshToken(String refreshAuthorization) {
+        if (refreshAuthorization == null || refreshAuthorization.isEmpty()) {
+            return null;
+        }
+
+        if (!refreshAuthorization.startsWith("Bearer+")) {
+            return null;
+        }
+
+        String refreshToken = refreshAuthorization.substring(7);
+        return refreshToken.isEmpty() ? null : refreshToken;
+    }
+
 
     // 사용자 정의 예외 클래스
     public static class ExistingMemberException extends ServiceException {
