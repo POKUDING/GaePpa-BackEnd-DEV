@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Base64;
 import java.util.Date;
+import java.util.UUID;
 import javax.crypto.SecretKey;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -52,8 +53,8 @@ public class JwtUtil {
     }
 
 
-    public String getMemberId(String token) {
-        return parseToken(token).get(MEMBERPK_CLAIM_KEY, String.class);
+    public UUID getMemberId(String token) {
+        return parseToken(token).get(MEMBERPK_CLAIM_KEY, UUID.class);
     }
 
     public String getCategory(String token) {

@@ -35,6 +35,14 @@ public class MemberService {
     private final MemberEmailService memberEmailService;
     private final MemberRepository memberRepository;
 
+    /**
+     * 이메일 인증을 통한 회원가입
+     * - 이메일과 닉네임 중복 여부를 확인 후 회원가입 처리
+     * - 이메일 인증 메일 발송
+     *
+     * @param joinGeneralMemberRequestDto 회원가입 요청 DTO
+     * @return 가입된 회원의 응답 DTO
+     */
     @Transactional
     public JoinResponseDto joinMemberByEmailAuthentication(JoinGeneralMemberRequestDto joinGeneralMemberRequestDto) throws Exception {
         // 닉네임 유효성 검사
@@ -63,6 +71,13 @@ public class MemberService {
         return JoinResponseDto.from(newJoinMember);
     }
 
+    /**
+     * 이메일 인증 없이 관리자 회원가입
+     * - 이메일 인증 과정을 생략
+     *
+     * @param joinMasterMemberRequestDto 관리자 회원가입 요청 DTO
+     * @return 가입된 회원의 응답 DTO
+     */
     @Transactional
     public JoinResponseDto joinMemberNoEmailAuthentication(JoinMasterMemberRequestDto joinMasterMemberRequestDto) throws Exception {
         // 닉네임 유효성 검사
@@ -88,6 +103,13 @@ public class MemberService {
         return JoinResponseDto.from(joinMember);
     }
 
+    /**
+     * 일반 회원 로그인
+     * - 이메일로 회원 조회 후 로그인 처리
+     *
+     * @param email 로그인 이메일
+     * @return 로그인된 회원 객체
+     */
     @Transactional
     public Member memberLogin(String email) {
         List<Member> generalMembersByEmail = findGeneralMembersByEmail(email);
@@ -104,6 +126,14 @@ public class MemberService {
         return member;
     }
 
+    /**
+     * 이메일과 비밀번호를 통한 인증
+     * - 이메일 인증 여부와 비밀번호를 검증
+     *
+     * @param email 로그인 이메일
+     * @param password 비밀번호
+     * @return 인증된 회원 객체
+     */
     @Transactional(readOnly = true)
     public Member authenticateMember(String email, String password) {
         Member generalMember = findSingleGeneralMemberByEmail(email);
@@ -119,7 +149,14 @@ public class MemberService {
         return generalMember;
     }
 
-
+    /**
+     * 비밀번호 검증
+     * - 이메일로 조회한 회원의 비밀번호가 일치하는지 확인
+     *
+     * @param email 회원 이메일
+     * @param password 입력된 비밀번호
+     * @return 비밀번호가 일치하면 true, 그렇지 않으면 false
+     */
     @Transactional(readOnly = true)
     public boolean checkPassword(String email, String password) {
         List<Member> generalMembersByEmail = findGeneralMembersByEmail(email);
@@ -134,6 +171,12 @@ public class MemberService {
         return passwordEncoder.matches(password, member.getPassword());
     }
 
+    /**
+     * 이메일 중복 여부 확인
+     * - 이미 존재하는 이메일인지 검증
+     *
+     * @param email 회원 이메일
+     */
     @Transactional(readOnly = true)
     public void validateExistedMemberByEmail(String email) {
         if (memberRepositoryV1.existsByEmail(email)) {
@@ -141,6 +184,13 @@ public class MemberService {
         }
     }
 
+    /**
+     * 이메일 인증 메일 발송
+     * - 인증 메일을 회원 이메일로 전송
+     *
+     * @param email 회원 이메일
+     * @param token 인증 토큰
+     */
     // 이메일 인증 보내는 서비스는 DB 을 수정하거나 생성하는 트랜젝션이 필요 없어서 readOnly 를 걸었습니다.
     @Transactional(readOnly = true)
     public void sendVerificationEmail(String email, String token) throws Exception {
@@ -154,6 +204,12 @@ public class MemberService {
     }
 
 
+    /**
+     * 일반 회원 조회 (LoginType.GENERAL)
+     *
+     * @param email 회원 이메일
+     * @return 일반 회원 리스트
+     */
     @Transactional(readOnly = true)
     public List<Member> findGeneralMembersByEmail(String email) {
         // 이메일로 모든 회원을 조회한 후, LoginType이 GENERAL인 회원만 필터링하여 반환
@@ -163,6 +219,14 @@ public class MemberService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 단일 일반 회원 조회
+     *
+     * @param email 회원 이메일
+     * @return 일반 회원 객체
+     * @throws EmailNotFoundException 이메일이 존재하지 않을 경우
+     * @throws DuplicateMemberException 일반 회원이 1명 이상일 경우
+     */
     public Member findSingleGeneralMemberByEmail(String email) {
         List<Member> generalMembers = findGeneralMembersByEmail(email);
 

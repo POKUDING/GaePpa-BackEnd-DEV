@@ -7,7 +7,6 @@ import com.sparta.gaeppa.security.jwts.filters.JWTFilterV1;
 import com.sparta.gaeppa.security.jwts.filters.JWTFilterV2;
 import com.sparta.gaeppa.security.jwts.service.RefreshService;
 import com.sparta.gaeppa.security.jwts.utils.JwtUtil;
-import com.sparta.gaeppa.security.jwts.utils.WebCookieUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,11 +30,10 @@ public class SecurityConfig {
     private final JwtUtil jwtUtil;
     private final RefreshService refreshService;
     private final AuthenticationConfiguration authenticationConfiguration;
-    private final WebCookieUtil webCookieUtil;
 
     @Bean
     public JWTFilterV2 jwtFilter() {
-        return new JWTFilterV2(jwtUtil, webCookieUtil);
+        return new JWTFilterV2(jwtUtil);
     }
 
     @Bean
@@ -64,14 +62,12 @@ public class SecurityConfig {
 //                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/members/login", "/api/v1/members/join", "/api/v1/members/master/join", "/error").permitAll()
-//                        .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
-//                        .requestMatchers("/api/v1/profiles/**").authenticated()
-//                        // ORDER
+                        .requestMatchers("/api/v1/admin/**").hasAnyRole("MANAGER", "MASTER")
+                        .requestMatchers("/api/v1/profiles/**").authenticated()
+                        .requestMatchers("/api/v1/stores/**").hasAnyRole("OWNER", "MANAGER", "MASTER")
 //                        .requestMatchers("/api/v1/orders/**").authenticated()
 //                        .requestMatchers("/api/v1/payments/**").authenticated()
 //                        .requestMatchers("/api/v1/reviews/**").authenticated()
-//                        // PRODUCT
-//                        .requestMatchers("/api/v1/products/**").authenticated()
 //                        .anyRequest().denyAll()
                         .anyRequest().permitAll()
                 )// 나머지 요청은 모두 차단
