@@ -2,6 +2,7 @@ package com.sparta.gaeppa.members.service;
 
 import com.sparta.gaeppa.global.exception.ExceptionStatus;
 import com.sparta.gaeppa.global.exception.ServiceException;
+import com.sparta.gaeppa.members.dto.admin.MemberResponseDto;
 import com.sparta.gaeppa.members.dto.join.JoinGeneralMemberRequestDto;
 import com.sparta.gaeppa.members.dto.join.JoinMasterMemberRequestDto;
 import com.sparta.gaeppa.members.dto.join.JoinResponseDto;
@@ -237,6 +238,27 @@ public class MemberService {
         }
 
         return generalMembers.getFirst();
+    }
+
+    public List<Member> findAllMembers() {
+        return memberRepository.findAll();
+    }
+
+    /**
+     * 회원의 MemberRole을 업데이트
+     *
+     * @param requestDto 요청 DTO
+     * @return 업데이트된 Member 엔티티
+     */
+    public Member updateMemberRole(MemberResponseDto requestDto, UUID memberId) {
+        // 회원 조회
+        Member member = memberRepository.findById(requestDto.getMemberId())
+                .orElseThrow(() -> new ServiceException(ExceptionStatus.MEMBER_NOT_FOUND));
+
+        // 역할 업데이트
+        member.updateRole(requestDto.getRole());
+
+        return memberRepository.save(member);
     }
 
     // 사용자 정의 예외 클래스

@@ -64,7 +64,8 @@ public class Store extends BaseEntity {
     private int reviewCount = 0;
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Favorite> favoritedBy = new ArrayList<>(); // 즐겨찾기된 기록
+    private List<Favorite> favoritedBy = new ArrayList<>();
+
 
     public Store(UUID storeId, Member member, StoreCategory category, String storeName, String storeAddress,
                  String storeTelephone, String storeIntroduce, String businessTime, boolean isVisible,
