@@ -7,10 +7,13 @@ import com.sparta.gaeppa.product.dto.productOptionCategory.ProductOptionCategory
 import com.sparta.gaeppa.product.dto.productOptionCategory.ProductOptionCategoryRequestDto;
 import com.sparta.gaeppa.product.dto.productOptionCategory.ProductOptionCategoryResponseDto;
 import com.sparta.gaeppa.product.service.ProductOptionCategoryService;
+import com.sparta.gaeppa.security.jwts.entity.CustomUserDetails;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,28 +30,34 @@ public class ProductOptionCategoryController {
     private final ProductOptionCategoryService productOptionCategoryService;
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER') or hasRole('ROLE_OWNER')")
     public ResponseEntity<ApiResult<ProductOptionCategoryResponseDto>> createProductOptionCategory(
-            @RequestBody ProductOptionCategoryRequestDto requestDto) {
+            @RequestBody ProductOptionCategoryRequestDto requestDto,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
 
         ProductOptionCategoryResponseDto productOptionCategoryResponseDto = productOptionCategoryService.createProductOptionCategory(
-                requestDto);
+                requestDto, userDetails);
 
         return new ResponseEntity<>(success(productOptionCategoryResponseDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{optionCategoryId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER') or hasRole('ROLE_OWNER')")
     public ResponseEntity<ApiResult<String>> updateProductOptionCategory(@PathVariable UUID optionCategoryId,
-                                                                         @RequestBody ProductOptionCategoryPutRequestDto requestDto) {
+                                                                         @RequestBody ProductOptionCategoryPutRequestDto requestDto,
+                                                                         @AuthenticationPrincipal CustomUserDetails userDetails) {
 
-        productOptionCategoryService.updateProductOptionCategory(optionCategoryId, requestDto);
+        productOptionCategoryService.updateProductOptionCategory(optionCategoryId, requestDto, userDetails);
 
         return new ResponseEntity<>(success("Update Product Option Category Success"), HttpStatus.OK);
     }
 
     @DeleteMapping("/{optionCategoryId}")
-    public ResponseEntity<ApiResult<String>> deleteProductOptionCategory(@PathVariable UUID optionCategoryId) {
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER') or hasRole('ROLE_OWNER')")
+    public ResponseEntity<ApiResult<String>> deleteProductOptionCategory(@PathVariable UUID optionCategoryId,
+                                                                         @AuthenticationPrincipal CustomUserDetails userDetails) {
 
-        productOptionCategoryService.deleteProductOptionCategory(optionCategoryId);
+        productOptionCategoryService.deleteProductOptionCategory(optionCategoryId, userDetails);
 
         return new ResponseEntity<>(success("Delete Product Option Category Success"), HttpStatus.NO_CONTENT);
     }

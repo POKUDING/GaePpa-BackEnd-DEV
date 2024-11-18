@@ -88,10 +88,10 @@ public class ProfileController {
      * @param storeId 스토어 ID
      * @return 즐겨찾기 상태와 메시지
      */
-    @PostMapping("/favorites")
+    @PostMapping("/favorites/{storeId}")
     public ResponseEntity<ApiResult<String>> toggleFavorite(
             @RequestParam UUID profileId,
-            @RequestParam UUID storeId) {
+            @PathVariable UUID storeId) {
         // 서비스 계층에 토글 로직 위임
         String message = profileService.toggleFavorite(profileId, storeId);
 

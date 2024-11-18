@@ -64,9 +64,13 @@ public class Profile extends BaseEntity {
         this.memberGender = memberGender;
     }
 
-    // 최초 회원가입 시, 기본적으로 만들어주는 프로필. Profile 과 Member 는 강한 종속성을 띱니다.
+    /**
+     * 최초 회원가입 시, 기본적으로 만들어주는 프로필. Profile 과 Member 는 강한 종속성을 띱니다.
+     * Member 는 인증, 인가에 대한 책임
+     * Profile 은 회원 서비스에 대한 책임을 갖습니다.
+      */
     public static Profile createMemberProfile(Member member) {
-        return new Profile(member, "자기 소개를 수정해주세요. ", null, null, null);
+        return new Profile(member, "프로필이미지없음", null, "소개 없음", MemberGender.NON_PROVIDED);
     }
 
     // 프로필 이미지 설정 메서드

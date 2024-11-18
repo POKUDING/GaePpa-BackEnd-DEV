@@ -6,12 +6,16 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 import com.sparta.gaeppa.global.exception.ServiceException;
+import com.sparta.gaeppa.members.entity.MemberRole;
 import com.sparta.gaeppa.product.dto.productCategory.ProductCategoryRequestDto;
 import com.sparta.gaeppa.product.dto.productCategory.ProductCategoryResponseDto;
 import com.sparta.gaeppa.product.entity.ProductCategory;
 import com.sparta.gaeppa.product.repository.ProductCategoryRepository;
 import com.sparta.gaeppa.product.repository.ProductRepository;
+import com.sparta.gaeppa.security.jwts.entity.AuthenticatedUserDto;
+import com.sparta.gaeppa.security.jwts.entity.CustomUserDetails;
 import java.util.UUID;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,7 +33,17 @@ class ProductCategoryServiceTest {
     private ProductCategoryRepository productCategoryRepository;
 
     @Mock
-    ProductRepository productRepository;
+    private ProductRepository productRepository;
+
+    private CustomUserDetails userDetails;
+
+    @BeforeEach
+    void setUp() {
+        AuthenticatedUserDto authenticatedUserDto = new AuthenticatedUserDto(UUID.randomUUID(), "example@example.com",
+                "master",
+                "password", MemberRole.MASTER, true);
+        userDetails = new CustomUserDetails(authenticatedUserDto);
+    }
 
     @Test
     @DisplayName("상품 카테고리 생성 성공 테스트")
@@ -42,7 +56,7 @@ class ProductCategoryServiceTest {
         given(productCategoryRepository.save(any(ProductCategory.class))).willReturn(categoryEntity);
 
         //when
-        ProductCategoryResponseDto responseDto = productCategoryService.createProductCategory(requestDto);
+        ProductCategoryResponseDto responseDto = productCategoryService.createProductCategory(requestDto, userDetails);
 
         //then
         assertEquals(requestDto.getCategoryName(), responseDto.getName());
@@ -58,7 +72,7 @@ class ProductCategoryServiceTest {
                 java.util.Optional.of(requestDto.toEntity()));
 
         //when-then
-        productCategoryService.updateProductCategory(UUID.randomUUID(), requestDto);
+        productCategoryService.updateProductCategory(UUID.randomUUID(), requestDto, userDetails);
     }
 
     @Test
@@ -72,9 +86,9 @@ class ProductCategoryServiceTest {
 
         //when-then
         ServiceException exception = assertThrows(ServiceException.class,
-                () -> productCategoryService.updateProductCategory(UUID.randomUUID(), requestDto));
-        assertEquals(exception.getMessage(),"상품 카테고리가 존재하지 않습니다.");
-        assertEquals(exception.getStatus(), 404);
+                () -> productCategoryService.updateProductCategory(UUID.randomUUID(), requestDto, userDetails));
+        assertEquals("상품 카테고리가 존재하지 않습니다.", exception.getMessage());
+        assertEquals(404, exception.getStatus());
     }
 
     @Test
@@ -89,7 +103,7 @@ class ProductCategoryServiceTest {
                 java.util.Optional.of(productCategory));
 
         //when-then
-        productCategoryService.deleteProductCategory(categoryId);
+        productCategoryService.deleteProductCategory(categoryId, userDetails);
     }
 
     @Test
@@ -103,9 +117,9 @@ class ProductCategoryServiceTest {
 
         //when-then
         ServiceException exception = assertThrows(ServiceException.class,
-                () -> productCategoryService.deleteProductCategory(categoryId));
-        assertEquals(exception.getMessage(),"상품 카테고리가 존재하지 않습니다.");
-        assertEquals(exception.getStatus(), 404);
+                () -> productCategoryService.deleteProductCategory(categoryId, userDetails));
+        assertEquals("상품 카테고리가 존재하지 않습니다.", exception.getMessage());
+        assertEquals(404, exception.getStatus());
     }
 
     @Test
@@ -123,9 +137,9 @@ class ProductCategoryServiceTest {
 
         //when-then
         ServiceException exception = assertThrows(ServiceException.class,
-                () -> productCategoryService.deleteProductCategory(categoryId));
-        assertEquals(exception.getMessage(),"상품 카테고리에 상품이 존재합니다.");
-        assertEquals(exception.getStatus(), 400);
+                () -> productCategoryService.deleteProductCategory(categoryId, userDetails));
+        assertEquals("상품 카테고리에 상품이 존재합니다.", exception.getMessage());
+        assertEquals(400, exception.getStatus());
     }
 }
 

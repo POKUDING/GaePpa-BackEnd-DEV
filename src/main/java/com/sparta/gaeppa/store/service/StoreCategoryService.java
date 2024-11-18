@@ -49,9 +49,7 @@ public class StoreCategoryService {
      */
     @Transactional
     public StoreCategory createIfNotExists(String storeCategoryName) {
-        if (storeCategoryRepository.findByCategoryName(storeCategoryName).isPresent()) {
-            throw new ServiceException(ExceptionStatus.CATEGORY_ALREADY_EXISTS);
-        }
-        return createStoreCategoryByName(storeCategoryName);
+        return storeCategoryRepository.findByCategoryName(storeCategoryName)
+                .orElseGet(() -> createStoreCategoryByName(storeCategoryName));
     }
 }
