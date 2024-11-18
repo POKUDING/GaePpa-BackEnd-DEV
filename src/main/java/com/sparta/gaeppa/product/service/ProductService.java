@@ -2,6 +2,7 @@ package com.sparta.gaeppa.product.service;
 
 import com.sparta.gaeppa.global.exception.ExceptionStatus;
 import com.sparta.gaeppa.global.exception.ServiceException;
+import com.sparta.gaeppa.members.entity.MemberRole;
 import com.sparta.gaeppa.product.dto.product.ProductRequestDto;
 import com.sparta.gaeppa.product.dto.product.ProductResponseDto;
 import com.sparta.gaeppa.product.dto.product.StoreProductListResponseDto;
@@ -9,6 +10,7 @@ import com.sparta.gaeppa.product.entity.Product;
 import com.sparta.gaeppa.product.entity.ProductCategory;
 import com.sparta.gaeppa.product.repository.ProductCategoryRepository;
 import com.sparta.gaeppa.product.repository.ProductRepository;
+import com.sparta.gaeppa.security.jwts.entity.CustomUserDetails;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
@@ -64,10 +66,15 @@ public class ProductService {
     }
 
     @Transactional
-    public void deleteProduct(UUID productId) {
+    public void deleteProduct(UUID productId, CustomUserDetails userDetails) {
 
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ServiceException(ExceptionStatus.PRODUCT_NOT_FOUND));
+
+        if (userDetails.getMemberRole() != MemberRole.MASTER && userDetails.getMemberRole() != MemberRole.MANAGER
+                && !product.getCreatedBy().equals(userDetails.getUsername())) {
+            throw new ServiceException(ExceptionStatus.UNAUTHORIZED);
+        }
 
         productRepository.delete(product);
     }
