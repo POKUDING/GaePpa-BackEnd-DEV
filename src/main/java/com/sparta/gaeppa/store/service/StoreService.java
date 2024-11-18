@@ -51,8 +51,8 @@ public class StoreService {
                 .orElseThrow(() -> new ServiceException(ExceptionStatus.STORE_NOT_FOUND));
 
         // 스토어 카테고리 조회 또는 생성
-        StoreCategory storeCategory = storeCategoryService.findStoreCategoryByName(storeUpdateRequestDto.getStoreCategoryName())
-                .orElseThrow(() -> new ServiceException(ExceptionStatus.STORE_CATEGORY_NAME_NOT_FOUND));
+        StoreCategory storeCategory = storeCategoryService.findStoreCategoryByName(storeUpdateRequestDto.getStoreCategoryName());
+
 
         // Store 엔티티 수정
         store.updateStore(
