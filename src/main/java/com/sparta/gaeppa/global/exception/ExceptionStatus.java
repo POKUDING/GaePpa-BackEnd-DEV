@@ -27,7 +27,7 @@ public enum ExceptionStatus {
     AUDITOR_NOT_FOUND(HttpStatus.NOT_FOUND, "M002", "인증 객체가 존재하지 않습니다."),
 
     // Profile
-    PROFILE_NOT_FOUND(HttpStatus.NOT_FOUND, "P001","회원 프로필이 존재하지 않습니다." ),
+    PROFILE_NOT_FOUND(HttpStatus.NOT_FOUND, "P001", "회원 프로필이 존재하지 않습니다."),
 
     //Orders
     ORDER_NOT_FOUND(HttpStatus.NOT_FOUND, "o001", "주문이 존재하지 않습니다."),
@@ -68,7 +68,8 @@ public enum ExceptionStatus {
     NOT_SUPPORTED_EXTENSION(HttpStatus.BAD_REQUEST, "i002", "지원하지 않는 확장자입니다."),
 
     //Common
-    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "s001", "서버 에러입니다."),
+    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "c001", "서버 에러입니다."),
+    INVALID_PAGE_SIZE(HttpStatus.BAD_REQUEST, "c002", "페이지 사이즈가 올바르지 않습니다. 10, 30, 50 만 허용됩니다."),
 
     // Authentication
     AUTHENTICATION_INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "a001", "틀린 비밀번호를 입력했습니다."),
