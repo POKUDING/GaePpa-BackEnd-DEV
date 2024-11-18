@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 import com.sparta.gaeppa.global.exception.ServiceException;
+import com.sparta.gaeppa.members.entity.MemberRole;
 import com.sparta.gaeppa.product.dto.productOption.ProductOptionListResponseDto;
 import com.sparta.gaeppa.product.dto.productOption.ProductOptionRequestDto;
 import com.sparta.gaeppa.product.dto.productOption.ProductOptionResponseDto;
@@ -13,8 +14,11 @@ import com.sparta.gaeppa.product.entity.ProductOption;
 import com.sparta.gaeppa.product.entity.ProductOptionCategory;
 import com.sparta.gaeppa.product.repository.ProductOptionCategoryRepository;
 import com.sparta.gaeppa.product.repository.ProductOptionRepository;
+import com.sparta.gaeppa.security.jwts.entity.AuthenticatedUserDto;
+import com.sparta.gaeppa.security.jwts.entity.CustomUserDetails;
 import java.util.List;
 import java.util.UUID;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,6 +37,16 @@ class ProductOptionServiceTest {
 
     @Mock
     ProductOptionRepository productOptionRepository;
+
+    private CustomUserDetails userDetails;
+
+    @BeforeEach
+    void setUp() {
+        AuthenticatedUserDto authenticatedUserDto = new AuthenticatedUserDto(UUID.randomUUID(), "example@example.com",
+                "master",
+                "password", MemberRole.MASTER, true);
+        userDetails = new CustomUserDetails(authenticatedUserDto);
+    }
 
     @Test
     @DisplayName("상품 옵션 가져오기 성공 테스트")
@@ -90,9 +104,10 @@ class ProductOptionServiceTest {
                 java.util.Optional.empty());
 
         //when-then
-        ServiceException exception = assertThrows(ServiceException.class, () -> productOptionService.createProductOption(requestDto));
-        assertEquals(exception.getMessage(), "상품 옵션 카테고리가 존재하지 않습니다.");
-        assertEquals(exception.getStatus(), 404);
+        ServiceException exception = assertThrows(ServiceException.class,
+                () -> productOptionService.createProductOption(requestDto));
+        assertEquals("상품 옵션 카테고리가 존재하지 않습니다.", exception.getMessage());
+        assertEquals(404, exception.getStatus());
     }
 
     @Test
@@ -128,9 +143,10 @@ class ProductOptionServiceTest {
         given(productOptionRepository.findById(optionId)).willReturn(java.util.Optional.empty());
 
         //when-then
-        ServiceException exception = assertThrows(ServiceException.class, () -> productOptionService.updateProductOption(optionId, requestDto));
-        assertEquals(exception.getMessage(), "상품 옵션이 존재하지 않습니다.");
-        assertEquals(exception.getStatus(), 404);
+        ServiceException exception = assertThrows(ServiceException.class,
+                () -> productOptionService.updateProductOption(optionId, requestDto));
+        assertEquals("상품 옵션이 존재하지 않습니다.", exception.getMessage());
+        assertEquals(404, exception.getStatus());
     }
 
     @Test
@@ -150,9 +166,10 @@ class ProductOptionServiceTest {
                 java.util.Optional.empty());
 
         //when-then
-        ServiceException exception = assertThrows(ServiceException.class, () -> productOptionService.updateProductOption(optionId, requestDto));
-        assertEquals(exception.getMessage(), "상품 옵션 카테고리가 존재하지 않습니다.");
-        assertEquals(exception.getStatus(), 404);
+        ServiceException exception = assertThrows(ServiceException.class,
+                () -> productOptionService.updateProductOption(optionId, requestDto));
+        assertEquals("상품 옵션 카테고리가 존재하지 않습니다.", exception.getMessage());
+        assertEquals(404, exception.getStatus());
     }
 
     @Test
@@ -165,7 +182,7 @@ class ProductOptionServiceTest {
         given(productOptionRepository.findById(optionId)).willReturn(java.util.Optional.of(productOption));
 
         //when-then
-        productOptionService.deleteProductOption(optionId);
+        productOptionService.deleteProductOption(optionId, userDetails);
     }
 
     @Test
@@ -176,8 +193,10 @@ class ProductOptionServiceTest {
         given(productOptionRepository.findById(optionId)).willReturn(java.util.Optional.empty());
 
         //when-then
-        ServiceException exception = assertThrows(ServiceException.class, () -> productOptionService.deleteProductOption(optionId));
-        assertEquals(exception.getMessage(), "상품 옵션이 존재하지 않습니다.");
-        assertEquals(exception.getStatus(), 404);
+        ServiceException exception = assertThrows(ServiceException.class,
+                () -> productOptionService.deleteProductOption(optionId,
+                        userDetails));
+        assertEquals("상품 옵션이 존재하지 않습니다.", exception.getMessage());
+        assertEquals(404, exception.getStatus());
     }
 }

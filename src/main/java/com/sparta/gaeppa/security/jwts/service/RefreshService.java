@@ -43,7 +43,8 @@ public class RefreshService {
     }
 
     private void updateRefreshToken(Refresh existingRefresh, String newRefreshToken, LocalDateTime expirationDateTime) {
-        RefreshDto refreshDto = RefreshDto.builder().refreshToken(newRefreshToken).expirationDate(expirationDateTime).build();
+        RefreshDto refreshDto = RefreshDto.builder().refreshToken(newRefreshToken).expirationDate(expirationDateTime)
+                .build();
         existingRefresh.updateRefreshTokenAndExpiration(refreshDto.getRefreshToken(), refreshDto.getExpirationDate());
         refreshRepository.save(existingRefresh);
     }

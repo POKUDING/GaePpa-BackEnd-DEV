@@ -7,10 +7,12 @@ import com.sparta.gaeppa.product.dto.productOption.ProductOptionListResponseDto;
 import com.sparta.gaeppa.product.dto.productOption.ProductOptionRequestDto;
 import com.sparta.gaeppa.product.dto.productOption.ProductOptionResponseDto;
 import com.sparta.gaeppa.product.service.ProductOptionService;
+import com.sparta.gaeppa.security.jwts.entity.CustomUserDetails;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,9 +56,10 @@ public class ProductOptionController {
     }
 
     @DeleteMapping("/options/{optionId}")
-    public ResponseEntity<ApiResult<String>> deleteProductOption(@PathVariable UUID optionId) {
+    public ResponseEntity<ApiResult<String>> deleteProductOption(@PathVariable UUID optionId,
+                                                                 @AuthenticationPrincipal CustomUserDetails userDetails) {
 
-        productOptionService.deleteProductOption(optionId);
+        productOptionService.deleteProductOption(optionId, userDetails);
 
         return new ResponseEntity<>(success("Delete Product Option Success"), HttpStatus.NO_CONTENT);
     }

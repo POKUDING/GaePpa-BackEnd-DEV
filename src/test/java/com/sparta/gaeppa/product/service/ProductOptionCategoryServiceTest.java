@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 import com.sparta.gaeppa.global.exception.ServiceException;
+import com.sparta.gaeppa.members.entity.MemberRole;
 import com.sparta.gaeppa.product.dto.productOptionCategory.ProductOptionCategoryPutRequestDto;
 import com.sparta.gaeppa.product.dto.productOptionCategory.ProductOptionCategoryRequestDto;
 import com.sparta.gaeppa.product.dto.productOptionCategory.ProductOptionCategoryResponseDto;
@@ -14,7 +15,10 @@ import com.sparta.gaeppa.product.entity.ProductOptionCategory;
 import com.sparta.gaeppa.product.repository.ProductOptionCategoryRepository;
 import com.sparta.gaeppa.product.repository.ProductOptionRepository;
 import com.sparta.gaeppa.product.repository.ProductRepository;
+import com.sparta.gaeppa.security.jwts.entity.AuthenticatedUserDto;
+import com.sparta.gaeppa.security.jwts.entity.CustomUserDetails;
 import java.util.UUID;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,6 +40,16 @@ class ProductOptionCategoryServiceTest {
 
     @Mock
     ProductOptionRepository productOptionRepository;
+
+    private CustomUserDetails userDetails;
+
+    @BeforeEach
+    void setUp() {
+        AuthenticatedUserDto authenticatedUserDto = new AuthenticatedUserDto(UUID.randomUUID(), "example@example.com",
+                "master",
+                "password", MemberRole.MASTER, true);
+        userDetails = new CustomUserDetails(authenticatedUserDto);
+    }
 
     @Test
     @DisplayName("상품 옵션 카테고리 생성 성공 테스트")
@@ -77,8 +91,8 @@ class ProductOptionCategoryServiceTest {
         //when-then
         ServiceException exception = assertThrows(ServiceException.class,
                 () -> productOptionCategoryService.createProductOptionCategory(requestDto));
-        assertEquals(exception.getMessage(), "상품이 존재하지 않습니다.");
-        assertEquals(exception.getStatus(), 404);
+        assertEquals("상품이 존재하지 않습니다.", exception.getMessage());
+        assertEquals(404, exception.getStatus());
     }
 
     @Test
@@ -114,8 +128,8 @@ class ProductOptionCategoryServiceTest {
         //when-then
         ServiceException exception = assertThrows(ServiceException.class,
                 () -> productOptionCategoryService.updateProductOptionCategory(optionCategoryId, requestDto));
-        assertEquals(exception.getMessage(), "상품 옵션 카테고리가 존재하지 않습니다.");
-        assertEquals(exception.getStatus(), 404);
+        assertEquals("상품 옵션 카테고리가 존재하지 않습니다.", exception.getMessage());
+        assertEquals(404, exception.getStatus());
     }
 
     @Test
@@ -131,7 +145,7 @@ class ProductOptionCategoryServiceTest {
         given(productOptionRepository.existsByProductOptionCategory(productOptionCategory)).willReturn(false);
 
         //when-then
-        productOptionCategoryService.deleteProductOptionCategory(optionCategoryId);
+        productOptionCategoryService.deleteProductOptionCategory(optionCategoryId, userDetails);
     }
 
     @Test
@@ -144,8 +158,8 @@ class ProductOptionCategoryServiceTest {
 
         //when-then
         ServiceException exception = assertThrows(ServiceException.class,
-                () -> productOptionCategoryService.deleteProductOptionCategory(optionCategoryId));
-        assertEquals(exception.getMessage(), "상품 옵션 카테고리가 존재하지 않습니다.");
-        assertEquals(exception.getStatus(), 404);
+                () -> productOptionCategoryService.deleteProductOptionCategory(optionCategoryId, userDetails));
+        assertEquals("상품 옵션 카테고리가 존재하지 않습니다.", exception.getMessage());
+        assertEquals(404, exception.getStatus());
     }
 }
