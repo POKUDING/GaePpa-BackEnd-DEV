@@ -68,7 +68,7 @@ class ProductOptionCategoryServiceTest {
 
         //when
         ProductOptionCategoryResponseDto responseDto = productOptionCategoryService.createProductOptionCategory(
-                requestDto);
+                requestDto, userDetails);
 
         //then
         assertEquals(requestDto.getProductOptionCategoryName(), responseDto.getProductOptionCategoryName());
@@ -90,7 +90,7 @@ class ProductOptionCategoryServiceTest {
 
         //when-then
         ServiceException exception = assertThrows(ServiceException.class,
-                () -> productOptionCategoryService.createProductOptionCategory(requestDto));
+                () -> productOptionCategoryService.createProductOptionCategory(requestDto, userDetails));
         assertEquals("상품이 존재하지 않습니다.", exception.getMessage());
         assertEquals(404, exception.getStatus());
     }
@@ -110,7 +110,7 @@ class ProductOptionCategoryServiceTest {
                 java.util.Optional.of(productOptionCategory));
 
         //when-then
-        productOptionCategoryService.updateProductOptionCategory(optionCategoryId, requestDto);
+        productOptionCategoryService.updateProductOptionCategory(optionCategoryId, requestDto, userDetails);
     }
 
     @Test
@@ -127,7 +127,8 @@ class ProductOptionCategoryServiceTest {
 
         //when-then
         ServiceException exception = assertThrows(ServiceException.class,
-                () -> productOptionCategoryService.updateProductOptionCategory(optionCategoryId, requestDto));
+                () -> productOptionCategoryService.updateProductOptionCategory(optionCategoryId, requestDto,
+                        userDetails));
         assertEquals("상품 옵션 카테고리가 존재하지 않습니다.", exception.getMessage());
         assertEquals(404, exception.getStatus());
     }

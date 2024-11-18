@@ -14,6 +14,9 @@ import com.sparta.gaeppa.product.repository.ProductCategoryRepository;
 import com.sparta.gaeppa.product.repository.ProductRepository;
 import com.sparta.gaeppa.security.jwts.entity.AuthenticatedUserDto;
 import com.sparta.gaeppa.security.jwts.entity.CustomUserDetails;
+import com.sparta.gaeppa.store.entity.Store;
+import com.sparta.gaeppa.store.repository.StoreRepository;
+import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -28,6 +31,9 @@ class ProductCategoryServiceTest {
 
     @InjectMocks
     private ProductCategoryService productCategoryService;
+
+    @Mock
+    private StoreRepository storeRepository;
 
     @Mock
     private ProductCategoryRepository productCategoryRepository;
@@ -52,6 +58,9 @@ class ProductCategoryServiceTest {
         ProductCategoryRequestDto requestDto = ProductCategoryRequestDto.builder().categoryName("면류").build();
 
         ProductCategory categoryEntity = requestDto.toEntity();
+
+        given(storeRepository.getStoreByMember_MemberId(any(UUID.class))).willReturn(
+                Optional.ofNullable(Store.builder().build()));
 
         given(productCategoryRepository.save(any(ProductCategory.class))).willReturn(categoryEntity);
 
