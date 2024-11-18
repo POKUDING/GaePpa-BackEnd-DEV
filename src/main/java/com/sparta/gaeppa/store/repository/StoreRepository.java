@@ -11,4 +11,6 @@ public interface StoreRepository extends JpaRepository<Store, UUID> {
     Optional<Store> findByMemberMemberId(UUID memberId);
 
     Store findByStoreName(String storeName);
+
+    Optional<Store> getStoreByMember_MemberId(UUID memberId);
 }

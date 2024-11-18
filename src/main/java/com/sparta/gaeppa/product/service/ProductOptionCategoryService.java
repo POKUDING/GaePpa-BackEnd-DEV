@@ -26,11 +26,17 @@ public class ProductOptionCategoryService {
     private final ProductOptionRepository productOptionRepository;
 
     @Transactional
-    public ProductOptionCategoryResponseDto createProductOptionCategory(ProductOptionCategoryRequestDto requestDto) {
+    public ProductOptionCategoryResponseDto createProductOptionCategory(ProductOptionCategoryRequestDto requestDto,
+                                                                        CustomUserDetails userDetails) {
 
         Product product = productRepository.findById(requestDto.getProductId())
                 .orElseThrow(() -> new ServiceException(
                         ExceptionStatus.PRODUCT_NOT_FOUND));
+
+        if (userDetails.getMemberRole() != MemberRole.MASTER && userDetails.getMemberRole() != MemberRole.MANAGER
+                && !product.getCreatedBy().equals(userDetails.getUsername())) {
+            throw new ServiceException(ExceptionStatus.UNAUTHORIZED);
+        }
 
         ProductOptionCategory productOptionCategory = requestDto.toEntity();
         productOptionCategory.setProduct(product);
@@ -39,11 +45,17 @@ public class ProductOptionCategoryService {
     }
 
     @Transactional
-    public void updateProductOptionCategory(UUID optionCategoryId, ProductOptionCategoryPutRequestDto requestDto) {
+    public void updateProductOptionCategory(UUID optionCategoryId, ProductOptionCategoryPutRequestDto requestDto,
+                                            CustomUserDetails userDetails) {
 
         ProductOptionCategory productOptionCategory = productOptionCategoryRepository.findById(optionCategoryId)
                 .orElseThrow(() -> new ServiceException(
                         ExceptionStatus.PRODUCT_OPTION_CATEGORY_NOT_FOUND));
+
+        if (userDetails.getMemberRole() != MemberRole.MASTER && userDetails.getMemberRole() != MemberRole.MANAGER
+                && !productOptionCategory.getProduct().getCreatedBy().equals(userDetails.getUsername())) {
+            throw new ServiceException(ExceptionStatus.UNAUTHORIZED);
+        }
 
         productOptionCategory.update(requestDto.getProductOptionCategoryName(), requestDto.getMaxLimits());
     }
