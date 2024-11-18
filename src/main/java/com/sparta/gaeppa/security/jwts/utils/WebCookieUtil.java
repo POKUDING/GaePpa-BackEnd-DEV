@@ -3,8 +3,7 @@ package com.sparta.gaeppa.security.jwts.utils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.stereotype.Component;
-
+import java.util.Arrays;
 
 public class WebCookieUtil {
 
@@ -46,6 +45,19 @@ public class WebCookieUtil {
         cookie.setHttpOnly(true);
         cookie.setMaxAge(0); // Set expiry to zero to delete the cookie
         response.addCookie(cookie);
+    }
+
+    public static String getRefreshCookieValue(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies == null) {
+            return null;
+        }
+
+        return Arrays.stream(cookies)
+                .filter(cookie -> cookie.getName().equals("refreshAuthorization"))
+                .findFirst()
+                .map(Cookie::getValue)
+                .orElse(null);
     }
 }
 

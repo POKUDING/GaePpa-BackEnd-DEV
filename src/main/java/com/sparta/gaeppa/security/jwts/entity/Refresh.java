@@ -57,4 +57,8 @@ public class Refresh {
         this.refreshToken = newRefreshToken;
         this.expiration = newExpiration;
     }
+
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
 }
