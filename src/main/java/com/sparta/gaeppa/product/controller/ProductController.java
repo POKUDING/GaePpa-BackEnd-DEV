@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -58,23 +59,28 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResult<ProductResponseDto>> createProduct(@RequestBody ProductRequestDto requestDto) {
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER') or hasRole('ROLE_OWNER')")
+    public ResponseEntity<ApiResult<ProductResponseDto>> createProduct(@RequestBody ProductRequestDto requestDto,
+                                                                       @AuthenticationPrincipal CustomUserDetails userDetails) {
 
-        ProductResponseDto productResponseDto = productService.createProduct(requestDto);
+        ProductResponseDto productResponseDto = productService.createProduct(requestDto, userDetails);
 
         return new ResponseEntity<>(success(productResponseDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{productId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER') or hasRole('ROLE_OWNER')")
     public ResponseEntity<ApiResult<String>> updateProduct(@PathVariable UUID productId,
-                                                           @RequestBody ProductRequestDto requestDto) {
+                                                           @RequestBody ProductRequestDto requestDto,
+                                                           @AuthenticationPrincipal CustomUserDetails userDetails) {
 
-        productService.updateProduct(productId, requestDto);
+        productService.updateProduct(productId, requestDto, userDetails);
 
         return new ResponseEntity<>(success("Update Product Success"), HttpStatus.OK);
     }
 
     @DeleteMapping("/{productId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER') or hasRole('ROLE_OWNER')")
     public ResponseEntity<ApiResult<String>> deleteProduct(@PathVariable UUID productId, @AuthenticationPrincipal
     CustomUserDetails userDetails) {
 

@@ -44,10 +44,15 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductResponseDto createProduct(ProductRequestDto requestDto) {
+    public ProductResponseDto createProduct(ProductRequestDto requestDto, CustomUserDetails userDetails) {
 
         ProductCategory productCategory = productCategoryRepository.findById(requestDto.getProductCategoryId())
                 .orElseThrow(() -> new ServiceException(ExceptionStatus.PRODUCT_CATEGORY_NOT_FOUND));
+
+        if (userDetails.getMemberRole() != MemberRole.MASTER && userDetails.getMemberRole() != MemberRole.MANAGER
+                && !productCategory.getCreatedBy().equals(userDetails.getUsername())) {
+            throw new ServiceException(ExceptionStatus.UNAUTHORIZED);
+        }
 
         Product newProduct = requestDto.toEntity();
         newProduct.setProductCategory(productCategory);
@@ -56,13 +61,19 @@ public class ProductService {
     }
 
     @Transactional
-    public void updateProduct(UUID productId, ProductRequestDto requestDto) {
+    public void updateProduct(UUID productId, ProductRequestDto requestDto, CustomUserDetails userDetails) {
 
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ServiceException(ExceptionStatus.PRODUCT_NOT_FOUND));
 
         ProductCategory productCategory = productCategoryRepository.findById(requestDto.getProductCategoryId())
                 .orElseThrow(() -> new ServiceException(ExceptionStatus.PRODUCT_CATEGORY_NOT_FOUND));
+
+        if (userDetails.getMemberRole() != MemberRole.MASTER && userDetails.getMemberRole() != MemberRole.MANAGER && (
+                !product.getCreatedBy().equals(userDetails.getUsername()) || !productCategory.getCreatedBy()
+                        .equals(userDetails.getUsername()))) {
+            throw new ServiceException(ExceptionStatus.UNAUTHORIZED);
+        }
 
         product.setProductCategory(productCategory);
         product.update(requestDto.getProductName(), requestDto.getProductDescription(), requestDto.getProductPrice(),
