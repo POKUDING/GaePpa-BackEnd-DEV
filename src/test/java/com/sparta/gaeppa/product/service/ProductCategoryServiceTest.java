@@ -56,7 +56,7 @@ class ProductCategoryServiceTest {
         given(productCategoryRepository.save(any(ProductCategory.class))).willReturn(categoryEntity);
 
         //when
-        ProductCategoryResponseDto responseDto = productCategoryService.createProductCategory(requestDto);
+        ProductCategoryResponseDto responseDto = productCategoryService.createProductCategory(requestDto, userDetails);
 
         //then
         assertEquals(requestDto.getCategoryName(), responseDto.getName());
@@ -72,7 +72,7 @@ class ProductCategoryServiceTest {
                 java.util.Optional.of(requestDto.toEntity()));
 
         //when-then
-        productCategoryService.updateProductCategory(UUID.randomUUID(), requestDto);
+        productCategoryService.updateProductCategory(UUID.randomUUID(), requestDto, userDetails);
     }
 
     @Test
@@ -86,7 +86,7 @@ class ProductCategoryServiceTest {
 
         //when-then
         ServiceException exception = assertThrows(ServiceException.class,
-                () -> productCategoryService.updateProductCategory(UUID.randomUUID(), requestDto));
+                () -> productCategoryService.updateProductCategory(UUID.randomUUID(), requestDto, userDetails));
         assertEquals("상품 카테고리가 존재하지 않습니다.", exception.getMessage());
         assertEquals(404, exception.getStatus());
     }
