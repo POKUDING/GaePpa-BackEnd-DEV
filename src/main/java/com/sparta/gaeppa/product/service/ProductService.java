@@ -11,7 +11,6 @@ import com.sparta.gaeppa.product.entity.ProductCategory;
 import com.sparta.gaeppa.product.repository.ProductCategoryRepository;
 import com.sparta.gaeppa.product.repository.ProductRepository;
 import com.sparta.gaeppa.security.jwts.entity.CustomUserDetails;
-import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +19,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,11 +27,9 @@ public class ProductService {
     private final ProductCategoryRepository productCategoryRepository;
     private final ProductRepository productRepository;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public StoreProductListResponseDto getAllProductsByStoreId(UUID storeId) {
 
-        //TODO: store 레포지토리가 완성되면 조회 및 예외처리 로직 추가
-//        storeId = null;
         List<ProductCategory> productCategoryList = productCategoryRepository.findAllByStore_StoreId(storeId);
 
         if (productCategoryList.isEmpty()) {
