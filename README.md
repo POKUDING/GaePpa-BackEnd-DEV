@@ -66,7 +66,7 @@
 | Framework | Spring Boot 3.3.5, Hibernate 6.x, Spring Security, Spring Data JPA |
 | Repository | PostgreSQL |
 | BuildTool | Gradle |
-| Infra | Github, AWS EC2, Docker |
+| Infra | Github, AWS EC2, Docker, AWS RDS |
 | Library | Spring Scheduler, Spring WebFlux, Spring Validation, QueryDSL, ElasticSearch, Filebeat, Kibana |
 | API 문서화 | Swagger (SpringDoc OpenAPI) |
 | 인증/보안 | Spring Security, JWT (io.jsonwebtoken) |
