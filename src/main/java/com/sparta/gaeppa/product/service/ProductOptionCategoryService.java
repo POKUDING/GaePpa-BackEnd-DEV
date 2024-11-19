@@ -12,10 +12,10 @@ import com.sparta.gaeppa.product.repository.ProductOptionCategoryRepository;
 import com.sparta.gaeppa.product.repository.ProductOptionRepository;
 import com.sparta.gaeppa.product.repository.ProductRepository;
 import com.sparta.gaeppa.security.jwts.entity.CustomUserDetails;
-import jakarta.transaction.Transactional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor

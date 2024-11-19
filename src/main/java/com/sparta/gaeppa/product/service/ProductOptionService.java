@@ -11,11 +11,11 @@ import com.sparta.gaeppa.product.entity.ProductOptionCategory;
 import com.sparta.gaeppa.product.repository.ProductOptionCategoryRepository;
 import com.sparta.gaeppa.product.repository.ProductOptionRepository;
 import com.sparta.gaeppa.security.jwts.entity.CustomUserDetails;
-import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +24,7 @@ public class ProductOptionService {
     private final ProductOptionCategoryRepository productOptionCategoryRepository;
     private final ProductOptionRepository productOptionRepository;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public ProductOptionListResponseDto getProductOptionsByProductId(UUID productId) {
 
         List<ProductOptionCategory> productOptionCategoryList = productOptionCategoryRepository.findAllByProductId(
