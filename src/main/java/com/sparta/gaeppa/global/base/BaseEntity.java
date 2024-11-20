@@ -37,10 +37,10 @@ public class BaseEntity {
     private LocalDateTime deletedAt;
 
     @Column(name = "deleted_by")
-    private String deletedBy;
+    private UUID deletedBy;
 
-    public void delete(String username) {
+    public void delete(UUID userId) {
         this.deletedAt = LocalDateTime.now();
-        this.deletedBy = username;
+        this.deletedBy = userId;
     }
 }
