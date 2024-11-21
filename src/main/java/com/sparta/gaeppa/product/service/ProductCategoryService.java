@@ -47,7 +47,7 @@ public class ProductCategoryService {
                 .orElseThrow(() -> new ServiceException(ExceptionStatus.PRODUCT_CATEGORY_NOT_FOUND));
 
         if (userDetails.getMemberRole() != MemberRole.MASTER && userDetails.getMemberRole() != MemberRole.MANAGER &&
-                !productCategory.getCreatedBy().equals(userDetails.getUsername())) {
+                !productCategory.getCreatedBy().equals(userDetails.getMemberId())) {
             throw new ServiceException(ExceptionStatus.UNAUTHORIZED);
         }
 
